@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
   
 	<TableLayout 
 		android:id="@+id/statstable" 
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
-		android:stretchColumns="1">
+		android:stretchColumns="1"
+		android:gravity="center_vertical|center_horizontal">
 		
 		<TableRow>
-			<TextView android:text="@string/hours" android:padding="3dip" />
-			<TextView android:id="@+id/hours" android:padding="3dip" />
+			<TextView android:text="@string/hours" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:id="@+id/hours" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+		</TableRow>
+		
+		<TableRow>
+			<TextView android:text="@string/magazines" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:id="@+id/magazines" android:text="8" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+		</TableRow>
+		
+		<TableRow>
+			<TextView android:text="@string/books" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:id="@+id/books" android:text="0" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+		</TableRow>
+		
+		<TableRow>
+			<TextView android:text="@string/rv" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:id="@+id/rvs" android:text="3" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
 		</TableRow>
 		
 	</TableLayout>

@@ -33,6 +33,17 @@ public class StatisticsActivity extends Activity {
         fillData();
     }
 	
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		fillData();
+	}
+
+
+
 	protected void fillData() {
 		fillHoursSum();
 		

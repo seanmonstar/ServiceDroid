@@ -75,9 +75,11 @@ public class TimeEntryAdapter extends DataAdapter {
 		int LENGTH_INDEX = c.getColumnIndex(KEY_LENGTH);
 		int sum = 0;
 		
-		while(!c.isLast()) {
-			c.moveToNext();
+		c.moveToFirst();
+		
+		while(!c.isAfterLast()) {
 			sum += c.getInt(LENGTH_INDEX);
+			c.moveToNext();
 		}
 		
 		return sum;

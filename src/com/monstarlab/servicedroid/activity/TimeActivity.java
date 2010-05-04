@@ -30,18 +30,29 @@ public class TimeActivity extends ListActivity {
 	private static final int ACTIVITY_CREATE=0;
     private static final int ACTIVITY_EDIT=1;
     
+    private static final String TIMER = "Timer";
+    
     
 	private TimeEntryAdapter mTimeAdapter;
 	private TimeUtil mTimeHelper;
 	private Cursor mCursor;
 	private Boolean mTiming = false;
-	private long mTimerStart;
+	private Long mTimerStart;
 	private Handler mTimer = new Handler();
 	private TextView mTimerView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//try to recover the Timer
+		if(savedInstanceState != null) {
+			mTimerStart = savedInstanceState.getLong(TIMER);
+			if(mTimerStart != null) {
+				mTiming = true;
+			}
+		}
+		
 		setView();
 		
 		
@@ -207,6 +218,14 @@ public class TimeActivity extends ListActivity {
 		}
 	}
 	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if(mTimerStart != null) {
+			outState.putLong(TIMER, mTimerStart);
+		}
+	}
+	
 	private void startTimer() {
 		mTiming = true;
 		mTimerStart = SystemClock.uptimeMillis();
@@ -216,9 +235,11 @@ public class TimeActivity extends ListActivity {
 	private void stopTimer() {
 		if(!mTiming) return;
 		
-		mTiming = false;
+		
 		long timerEnd = SystemClock.uptimeMillis();
 		long diff = timerEnd - mTimerStart;
+		mTiming = false;
+		mTimerStart = null;
 		
 		mTimeAdapter.create((int)diff / 1000);
 		setView();

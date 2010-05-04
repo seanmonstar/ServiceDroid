@@ -12,9 +12,13 @@
 	<string name="stop_time">Stop Time</string>
 	<string name="delete_time">Delete Time</string>
 	<string name="no_time">No service entered for this month.</string>
+	<string name="no_calls">No calls recorded.</string>
 	<string name="length">Time in Service</string>
 	<string name="date">Date</string>
 	<string name="confirm">Confirm</string>
 	<string name="street">Street</string>
 	<string name="name">Name</string>
+	<string name="magazines">Mags</string>
+	<string name="books">Books</string>
+	<string name="rvs">RVs</string>
 </resources>

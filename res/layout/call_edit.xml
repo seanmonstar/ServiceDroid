@@ -7,17 +7,35 @@
    
 	
 	<EditText 
-		android:text="Name" 
-		android:id="@string/name" 
+		android:hint="@string/name" 
+		android:id="@+id/name" 
 		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content"
+		android:inputType="textPersonName|textCapWords" />
 	
 	<EditText 
-		android:text="@string/street" 
+		android:hint="@string/address" 
 		android:id="@+id/address" 
 		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:inputType="textPostalAddress" />
+
+	<View
+		android:layout_width="fill_parent"
+		android:id="@+id/divider"
+		android:layout_height="1px"
+		android:background="?android:attr/listDivider" />
+		
+	<EditText 
+		android:hint="@string/notes" 
+		android:id="@+id/notes" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_weight="1" />
+		
+	<Button android:id="@+id/confirm" 
+	    android:text="@string/confirm"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
-
-
 
 </LinearLayout>

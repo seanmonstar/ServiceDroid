@@ -1,11 +1,15 @@
 package com.monstarlab.servicedroid.activity;
 
 import android.app.ListActivity;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +20,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-import com.monstarlab.servicedroid.model.TimeEntryAdapter;
-import com.monstarlab.servicedroid.util.TimeUtil;
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.model.Models.TimeEntries;
+import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class TimeActivity extends ListActivity {
 	
@@ -32,8 +36,9 @@ public class TimeActivity extends ListActivity {
     
     private static final String TIMER = "Timer";
     
+    private static final String[] PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE };
     
-	private TimeEntryAdapter mTimeAdapter;
+    
 	private TimeUtil mTimeHelper;
 	private Cursor mCursor;
 	private Boolean mTiming = false;
@@ -44,6 +49,12 @@ public class TimeActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		
+		Intent intent = getIntent();
+		if(intent.getData() == null) {
+			intent.setData(TimeEntries.CONTENT_URI);
+		}
 		
 		//try to recover the Timer
 		if(savedInstanceState != null) {
@@ -57,8 +68,6 @@ public class TimeActivity extends ListActivity {
 		
 		
 		mTimeHelper = new TimeUtil(this);
-		mTimeAdapter = new TimeEntryAdapter(this);
-        mTimeAdapter.open();
         
 		fillData();
 		
@@ -67,10 +76,9 @@ public class TimeActivity extends ListActivity {
 	
 	public void fillData() {
 		 // Get all of the entries from the database and create the item list
-		mCursor = mTimeAdapter.findThisMonth();
-        startManagingCursor(mCursor);
+		mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null, null);
 
-        String[] from = new String[] { TimeEntryAdapter.KEY_DATE, TimeEntryAdapter.KEY_LENGTH };
+        String[] from = new String[] { TimeEntries.DATE, TimeEntries.LENGTH };
         int[] to = new int[] { R.id.date, R.id.length };
  
         // Now create an cursor adapter and set it to display using our row
@@ -83,6 +91,9 @@ public class TimeActivity extends ListActivity {
 					text = mTimeHelper.normalizeDate(text);
         			v.setText(text);
         		} else if(v.getId() == R.id.length) {
+        			if(TextUtils.isEmpty(text)) {
+        				text = "0";
+        			}
         			
         			text = TimeUtil.toTimeString(Integer.parseInt(text));
         			
@@ -161,8 +172,9 @@ public class TimeActivity extends ListActivity {
 		switch(item.getItemId()) {
 		case DELETE_ID:
 			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			mTimeAdapter.delete(info.id);
-			fillData();
+			Uri entryUri = ContentUris.withAppendedId(getIntent().getData(), info.id);
+			getContentResolver().delete(entryUri, null, null);
+			//fillData();
 			return true;
 		}
 		
@@ -172,26 +184,18 @@ public class TimeActivity extends ListActivity {
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		Cursor c = mCursor;
-		c.moveToPosition(position);
-		
-		Intent i = new Intent(this, TimeEditActivity.class);
-		i.putExtra(TimeEntryAdapter.KEY_ID, id);
-		i.putExtra(TimeEntryAdapter.KEY_DATE, c.getString(
-                c.getColumnIndexOrThrow(TimeEntryAdapter.KEY_DATE)));
-        i.putExtra(TimeEntryAdapter.KEY_LENGTH, c.getInt(
-                c.getColumnIndexOrThrow(TimeEntryAdapter.KEY_LENGTH)));
-        
-        startActivityForResult(i, ACTIVITY_EDIT);
+		//super.onListItemClick(l, v, position, id);
+		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
+		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, TimeEditActivity.class);
+        startActivity(i);
 	}
 	
 	private void createEntry() {
-		Intent i = new Intent(this, TimeEditActivity.class);
-		startActivityForResult(i, ACTIVITY_CREATE);		
+		Intent i = new Intent(Intent.ACTION_INSERT, getIntent().getData(), this, TimeEditActivity.class);
+		startActivity(i);
 	}
 	
-	@Override
+	/*@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 		
@@ -216,7 +220,7 @@ public class TimeActivity extends ListActivity {
 				break;
 			}
 		}
-	}
+	}*/
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -241,7 +245,10 @@ public class TimeActivity extends ListActivity {
 		mTiming = false;
 		mTimerStart = null;
 		
-		mTimeAdapter.create((int)diff / 1000);
+		//mTimeAdapter.create((int)diff / 1000);
+		ContentValues values = new ContentValues();
+		values.put(TimeEntries.LENGTH, (int) diff / 1000);
+		getContentResolver().insert(getIntent().getData(), values);
 		setView();
 		fillData();
 	}

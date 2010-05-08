@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.monstarlab.servicedroid.model.TimeEntryAdapter;
 import com.monstarlab.servicedroid.util.TimeUtil;
 import com.monstarlab.servicedroid.R;
 
@@ -14,7 +13,6 @@ public class StatisticsActivity extends Activity {
 	
 	//private static final int MENU_ADD = Menu.FIRST;
 	
-	private TimeEntryAdapter mTimeAdapter;
 	//private TimeUtil mTimeHelper;
 	
 	private TextView mHoursDisplay;
@@ -25,8 +23,6 @@ public class StatisticsActivity extends Activity {
         setContentView(R.layout.stats);
         
        // mTimeHelper = new TimeUtil(this);
-        mTimeAdapter = new TimeEntryAdapter(this);
-        mTimeAdapter.open();
         
         mHoursDisplay = (TextView)findViewById(R.id.hours);
         
@@ -51,7 +47,7 @@ public class StatisticsActivity extends Activity {
 	}
 	
 	protected void fillHoursSum() {
-		String sum = TimeUtil.toTimeString(mTimeAdapter.getMonthlySum()); //TODO - pass in a month value
+		String sum = TimeUtil.toTimeString(0); //TODO - pass in a month value
 		mHoursDisplay.setText(sum);
 	}
 	

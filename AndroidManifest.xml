@@ -17,8 +17,13 @@
         </activity>
         <activity android:name=".activity.ReturnVisitsActivity" android:label="@string/rv">
         </activity>
+        <activity android:name=".activity.RVEditActivity" android:label="@string/rv">
+        </activity>
         <activity android:name=".activity.StatisticsActivity" android:label="@string/stats">
         </activity>
+        
+        <provider android:name=".model.ServiceProvider" android:authorities="com.monstarlab.servicedroid">
+        </provider>
 
     </application>
     <uses-sdk android:minSdkVersion="3" />

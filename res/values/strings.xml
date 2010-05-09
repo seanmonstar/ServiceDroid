@@ -11,6 +11,7 @@
 	<string name="start_time">Start Time</string>
 	<string name="stop_time">Stop Time</string>
 	<string name="delete_time">Delete Time</string>
+	<string name="delete_call">Delete Call</string>
 	<string name="no_time">No service entered for this month.</string>
 	<string name="no_calls">No calls recorded.</string>
 	<string name="length">Time in Service</string>

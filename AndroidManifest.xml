@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".activity.ReturnVisitsActivity" android:label="@string/rv">
         </activity>
+        <activity android:name=".activity.RVShowActivity" android:label="@string/rv">
+        </activity>
         <activity android:name=".activity.RVEditActivity" android:label="@string/rv">
         </activity>
         <activity android:name=".activity.StatisticsActivity" android:label="@string/stats">

@@ -36,6 +36,7 @@ public class RVEditActivity extends Activity {
 	private static final int ADDRESS_COLUMN = 2;
 	private static final int NOTES_COLUMN = 3;
 	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		

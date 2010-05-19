@@ -97,7 +97,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		//super.onListItemClick(l, v, position, id);
 		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
-		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, RVEditActivity.class);
+		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, RVShowActivity.class);
         startActivity(i);
 	}
 	

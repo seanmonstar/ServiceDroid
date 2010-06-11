@@ -17,6 +17,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.model.Models.Literature;
+import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 
@@ -25,14 +27,18 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servoid"; //TODO - change to R.app_name
-    private static final int DATABASE_VERSION = 11; //TODO - once DB is finalized, set back to 1.
+    private static final int DATABASE_VERSION = 13; //TODO - once DB is finalized, set back to 1.
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
     private static final String RETURN_VISITS_TABLE = "return_visits";
+    private static final String LITERATURE_TABLE = "literature";
+    private static final String PLACEMENTS_TABLE = "placements";
     
     private static HashMap<String, String> sTimeProjectionMap;
     private static HashMap<String, String> sCallProjectionMap;
     private static HashMap<String, String> sRVProjectionMap;
+    private static HashMap<String, String> sLiteratureProjectionMap;
+    private static HashMap<String, String> sPlacementProjectionMap;
     
     private static final int TIME_ENTRIES = 1;
     private static final int TIME_ENTRY_ID = 2;
@@ -40,6 +46,10 @@ public class ServiceProvider extends ContentProvider {
     private static final int CALLS_ID = 4;
     private static final int RETURN_VISITS = 5;
     private static final int RETURN_VISITS_ID = 6;
+    private static final int PLACEMENTS = 7;
+    private static final int PLACEMENTS_ID = 8;
+    private static final int LITERATURE = 9;
+    private static final int LITERATURE_ID = 10;
     
     private static final UriMatcher sUriMatcher;
     
@@ -51,6 +61,8 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "calls/#", CALLS_ID);
     	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits", RETURN_VISITS);
     	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits/#", RETURN_VISITS_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements", PLACEMENTS);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements/#", PLACEMENTS_ID);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -62,11 +74,22 @@ public class ServiceProvider extends ContentProvider {
     	sCallProjectionMap.put(Calls.NAME, Calls.NAME);
     	sCallProjectionMap.put(Calls.ADDRESS, Calls.ADDRESS);
     	sCallProjectionMap.put(Calls.NOTES, Calls.NOTES);
+    	sCallProjectionMap.put(Calls.BIBLE_STUDY, Calls.BIBLE_STUDY);
     	
     	sRVProjectionMap = new HashMap<String, String>();
     	sRVProjectionMap.put(ReturnVisits._ID, ReturnVisits._ID);
     	sRVProjectionMap.put(ReturnVisits.DATE, ReturnVisits.DATE);
     	sRVProjectionMap.put(ReturnVisits.CALL_ID, ReturnVisits.CALL_ID);
+    	
+    	sLiteratureProjectionMap = new HashMap<String, String>();
+    	sLiteratureProjectionMap.put(Literature._ID, Literature._ID);
+    	sLiteratureProjectionMap.put(Literature.TITLE, Literature.TITLE);
+    	
+    	sPlacementProjectionMap = new HashMap<String, String>();
+    	sPlacementProjectionMap.put(Placements._ID, Placements._ID);
+    	sPlacementProjectionMap.put(Placements.DATE, Placements.DATE);
+    	sPlacementProjectionMap.put(Placements.CALL_ID, Placements.CALL_ID);
+    	sPlacementProjectionMap.put(Placements.LITERATURE_ID, Placements.LITERATURE_ID);
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -86,12 +109,24 @@ public class ServiceProvider extends ContentProvider {
 				+ Calls._ID + " integer primary key autoincrement,"
 			    + Calls.NAME + " varchar(128),"
 			    + Calls.ADDRESS + " varchar(128),"
+			    + Calls.BIBLE_STUDY + " boolean default false,"
+			    + Calls.DATE + " date default current_timestamp,"
 			    + Calls.NOTES + " text );");
 			
 			db.execSQL("create table " +  RETURN_VISITS_TABLE + " (" 
-					+ ReturnVisits._ID + " integer primary key autoincrement,"
-				    + ReturnVisits.DATE + " date default current_timestamp,"
-				    + ReturnVisits.CALL_ID + " integer references calls(id) )");
+				+ ReturnVisits._ID + " integer primary key autoincrement,"
+			    + ReturnVisits.DATE + " date default current_timestamp,"
+			    + ReturnVisits.CALL_ID + " integer references calls(id) )");
+			
+			db.execSQL("create table " +  LITERATURE_TABLE + " (" 
+				+ Literature._ID + " integer primary key autoincrement,"
+			    + Literature.TITLE + " varchar(256))");
+			
+			db.execSQL("create table " +  PLACEMENTS_TABLE + " (" 
+				+ Placements._ID + " integer primary key autoincrement,"
+			    + Placements.DATE + " date default current_timestamp,"
+			    + Placements.CALL_ID + " integer references calls(id),"
+			    + Placements.LITERATURE_ID + " integer references literature(id))");
 			
 		}
 
@@ -102,6 +137,8 @@ public class ServiceProvider extends ContentProvider {
             db.execSQL("DROP TABLE IF EXISTS " + TIME_ENTRIES_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CALLS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + RETURN_VISITS_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS " + PLACEMENTS_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS " + LITERATURE_TABLE);
             onCreate(db);
 			
 		}

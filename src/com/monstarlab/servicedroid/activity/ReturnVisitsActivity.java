@@ -62,7 +62,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        menu.add(0, MENU_ADD, 1, "Add Call");
+        menu.add(0, MENU_ADD, 1, "Add Call").setIcon(android.R.drawable.ic_menu_add);
         return result;
     }
 	

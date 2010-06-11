@@ -115,8 +115,8 @@ public class TimeActivity extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		
 		menu.add(0, INSERT_ID, 1, R.string.add_time)
-			.setShortcut('3', 'a');
-			//.setIcon();
+			.setShortcut('3', 'a')
+			.setIcon(android.R.drawable.ic_menu_add);
 		
 		//Start/Stop Time happens onPrepare
 		
@@ -132,12 +132,12 @@ public class TimeActivity extends ListActivity {
 		if(mTiming) {
 			menu.removeItem(START_ID);
 			if(menu.findItem(STOP_ID) == null) {
-				menu.add(0, STOP_ID, 2, R.string.stop_time);
+				menu.add(0, STOP_ID, 2, R.string.stop_time).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 			}
 		} else {
 			menu.removeItem(STOP_ID);
 			if(menu.findItem(START_ID) == null) {
-				menu.add(0, START_ID, 2, R.string.start_time);
+				menu.add(0, START_ID, 2, R.string.start_time).setIcon(android.R.drawable.ic_menu_recent_history);
 			}
 		}
 		return true;

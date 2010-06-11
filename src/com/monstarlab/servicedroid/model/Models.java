@@ -58,6 +58,16 @@ public final class Models {
 		 * 	type: text
 		 */
 		public static final String NOTES = "notes";
+		
+		/**
+		 * 	type: date
+		 */
+		public static final String DATE = "date";
+		
+		/**
+		 * 	type: boolean
+		 */
+		public static final String BIBLE_STUDY = "bible_study";
 	}
 	
 	public static final class ReturnVisits implements BaseColumns {
@@ -70,7 +80,7 @@ public final class Models {
 		
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.returnvisit";
 		
-		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+		public static final String DEFAULT_SORT_ORDER = "date DESC";
 		
 		/**
 		 * 	type: date
@@ -83,5 +93,55 @@ public final class Models {
 		public static final String CALL_ID = "call_id";
 		
 	}
+	
+	public static final class Placements implements BaseColumns {
+		
+		private Placements() {}
+		
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements");
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.placement";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.placement";
+		
+		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+		
+		/**
+		 * 	type: date
+		 */
+		public static final String DATE = "date";
+		
+		/**
+		 * 	type: date
+		 */
+		public static final String CALL_ID = "call_id";
+		
+		/**
+		 * 	type: date
+		 */
+		public static final String LITERATURE_ID = "literature_id";
+		
+	}
+	
+	public static final class Literature implements BaseColumns {
+		
+		private Literature() {}
+		
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/literature");
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.literature";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.literature";
+		
+		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+		
+		/**
+		 * 	type: date
+		 */
+		public static final String TITLE = "title";
+		
+	}
+	
+	
 	
 }

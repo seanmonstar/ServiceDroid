@@ -32,15 +32,15 @@ public final class Models {
 		public static final String LENGTH = "length";
 	}
 	
-	public static final class ReturnVisits implements BaseColumns {
+	public static final class Calls implements BaseColumns {
 		
-		private ReturnVisits() {}
+		private Calls() {}
 		
-		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/return_visits");
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/calls");
 		
-		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.returnvisit";
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.call";
 		
-		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.returnvisit";
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.call";
 		
 		public static final String DEFAULT_SORT_ORDER = "name ASC";
 		
@@ -58,6 +58,30 @@ public final class Models {
 		 * 	type: text
 		 */
 		public static final String NOTES = "notes";
+	}
+	
+	public static final class ReturnVisits implements BaseColumns {
+		
+		private ReturnVisits() {}
+		
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/returnvisits");
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.returnvisit";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.returnvisit";
+		
+		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+		
+		/**
+		 * 	type: date
+		 */
+		public static final String DATE = "date";
+		
+		/**
+		 * 	type: varchar(128)
+		 */
+		public static final String CALL_ID = "call_id";
+		
 	}
 	
 }

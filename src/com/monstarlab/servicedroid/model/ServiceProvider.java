@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 
@@ -24,17 +25,21 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servoid"; //TODO - change to R.app_name
-    private static final int DATABASE_VERSION = 9; //TODO - once DB is finalized, set back to 1.
+    private static final int DATABASE_VERSION = 11; //TODO - once DB is finalized, set back to 1.
     private static final String TIME_ENTRIES_TABLE = "time_entries";
+    private static final String CALLS_TABLE = "calls";
     private static final String RETURN_VISITS_TABLE = "return_visits";
     
     private static HashMap<String, String> sTimeProjectionMap;
+    private static HashMap<String, String> sCallProjectionMap;
     private static HashMap<String, String> sRVProjectionMap;
     
     private static final int TIME_ENTRIES = 1;
     private static final int TIME_ENTRY_ID = 2;
-    private static final int RETURN_VISITS = 3;
-    private static final int RETURN_VISIT_ID = 4;
+    private static final int CALLS = 3;
+    private static final int CALLS_ID = 4;
+    private static final int RETURN_VISITS = 5;
+    private static final int RETURN_VISITS_ID = 6;
     
     private static final UriMatcher sUriMatcher;
     
@@ -42,19 +47,26 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     	sUriMatcher.addURI(Models.AUTHORITY, "time_entries", TIME_ENTRIES);
     	sUriMatcher.addURI(Models.AUTHORITY, "time_entries/#", TIME_ENTRY_ID);
-    	sUriMatcher.addURI(Models.AUTHORITY, "return_visits", RETURN_VISITS);
-    	sUriMatcher.addURI(Models.AUTHORITY, "return_visits/#", RETURN_VISIT_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "calls", CALLS);
+    	sUriMatcher.addURI(Models.AUTHORITY, "calls/#", CALLS_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits", RETURN_VISITS);
+    	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits/#", RETURN_VISITS_ID);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
     	sTimeProjectionMap.put(TimeEntries.LENGTH, TimeEntries.LENGTH);
     	sTimeProjectionMap.put(TimeEntries.DATE, TimeEntries.DATE);
     	
+    	sCallProjectionMap = new HashMap<String, String>();
+    	sCallProjectionMap.put(Calls._ID, Calls._ID);
+    	sCallProjectionMap.put(Calls.NAME, Calls.NAME);
+    	sCallProjectionMap.put(Calls.ADDRESS, Calls.ADDRESS);
+    	sCallProjectionMap.put(Calls.NOTES, Calls.NOTES);
+    	
     	sRVProjectionMap = new HashMap<String, String>();
     	sRVProjectionMap.put(ReturnVisits._ID, ReturnVisits._ID);
-    	sRVProjectionMap.put(ReturnVisits.NAME, ReturnVisits.NAME);
-    	sRVProjectionMap.put(ReturnVisits.ADDRESS, ReturnVisits.ADDRESS);
-    	sRVProjectionMap.put(ReturnVisits.NOTES, ReturnVisits.NOTES);
+    	sRVProjectionMap.put(ReturnVisits.DATE, ReturnVisits.DATE);
+    	sRVProjectionMap.put(ReturnVisits.CALL_ID, ReturnVisits.CALL_ID);
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -70,11 +82,16 @@ public class ServiceProvider extends ContentProvider {
 			    + TimeEntries.LENGTH + " integer,"
 			    + TimeEntries.DATE + " date not null default current_timestamp);");
 			
+			db.execSQL("create table " +  CALLS_TABLE + " (" 
+				+ Calls._ID + " integer primary key autoincrement,"
+			    + Calls.NAME + " varchar(128),"
+			    + Calls.ADDRESS + " varchar(128),"
+			    + Calls.NOTES + " text );");
+			
 			db.execSQL("create table " +  RETURN_VISITS_TABLE + " (" 
-				+ ReturnVisits._ID + " integer primary key autoincrement,"
-			    + ReturnVisits.NAME + " varchar(128),"
-			    + ReturnVisits.ADDRESS + " varchar(128),"
-			    + ReturnVisits.NOTES + " text );");
+					+ ReturnVisits._ID + " integer primary key autoincrement,"
+				    + ReturnVisits.DATE + " date default current_timestamp,"
+				    + ReturnVisits.CALL_ID + " integer references calls(id) )");
 			
 		}
 
@@ -83,6 +100,7 @@ public class ServiceProvider extends ContentProvider {
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS " + TIME_ENTRIES_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS " + CALLS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + RETURN_VISITS_TABLE);
             onCreate(db);
 			
@@ -110,12 +128,20 @@ public class ServiceProvider extends ContentProvider {
 			String tId = uri.getPathSegments().get(1);
 			count = db.delete(TIME_ENTRIES_TABLE, TimeEntries._ID + "=" + tId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
 			break;
+		case CALLS:
+			count = db.delete(CALLS_TABLE, where, whereArgs);
+			break;
+		case CALLS_ID:
+			String callId = uri.getPathSegments().get(1);
+			count = db.delete(CALLS_TABLE, Calls._ID + "=" + callId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
+			break;
+			
 		case RETURN_VISITS:
 			count = db.delete(RETURN_VISITS_TABLE, where, whereArgs);
 			break;
-		case RETURN_VISIT_ID:
+		case RETURN_VISITS_ID:
 			String rvId = uri.getPathSegments().get(1);
-			count = db.delete(RETURN_VISITS_TABLE, ReturnVisits._ID + "=" + rvId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
+			count = db.delete(RETURN_VISITS_TABLE, Calls._ID + "=" + rvId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
 			break;
 			
 		default:
@@ -133,9 +159,14 @@ public class ServiceProvider extends ContentProvider {
 			return TimeEntries.CONTENT_TYPE;
 		case TIME_ENTRY_ID:
 			return TimeEntries.CONTENT_ITEM_TYPE;
+		case CALLS:
+			return Calls.CONTENT_TYPE;
+		case CALLS_ID:
+			return Calls.CONTENT_ITEM_TYPE;
+			
 		case RETURN_VISITS:
 			return ReturnVisits.CONTENT_TYPE;
-		case RETURN_VISIT_ID:
+		case RETURN_VISITS_ID:
 			return ReturnVisits.CONTENT_ITEM_TYPE;
 			
 		default:
@@ -157,9 +188,14 @@ public class ServiceProvider extends ContentProvider {
 			nullColumn = TimeEntries.LENGTH;
 			contentUri = TimeEntries.CONTENT_URI;
 			break;
+		case CALLS:
+			tableName = CALLS_TABLE;
+			nullColumn = Calls.NAME;
+			contentUri = Calls.CONTENT_URI;
+			break;
 		case RETURN_VISITS:
 			tableName = RETURN_VISITS_TABLE;
-			nullColumn = ReturnVisits.NAME;
+			nullColumn = ReturnVisits.DATE;
 			contentUri = ReturnVisits.CONTENT_URI;
 			break;
 		default:
@@ -209,7 +245,18 @@ public class ServiceProvider extends ContentProvider {
 				orderBy = TimeEntries.DEFAULT_SORT_ORDER;
 			}
 			break;
-		case RETURN_VISIT_ID:
+		case CALLS_ID:
+			qb.appendWhere(Calls._ID + "=" + uri.getPathSegments().get(1));
+			//falls through
+		case CALLS:
+			qb.setTables(CALLS_TABLE);
+			qb.setProjectionMap(sCallProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = Calls.DEFAULT_SORT_ORDER;
+			}
+			break;
+			
+		case RETURN_VISITS_ID:
 			qb.appendWhere(ReturnVisits._ID + "=" + uri.getPathSegments().get(1));
 			//falls through
 		case RETURN_VISITS:
@@ -243,12 +290,19 @@ public class ServiceProvider extends ContentProvider {
 			String tId = uri.getPathSegments().get(1);
 			count = db.update(TIME_ENTRIES_TABLE, values, TimeEntries._ID + "=" + tId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
 			break;
+		case CALLS:
+			count = db.update(CALLS_TABLE, values, where, whereArgs);
+			break;
+		case CALLS_ID:
+			String callId = uri.getPathSegments().get(1);
+			count = db.update(CALLS_TABLE, values, Calls._ID + "=" + callId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
+			break;
 		case RETURN_VISITS:
 			count = db.update(RETURN_VISITS_TABLE, values, where, whereArgs);
 			break;
-		case RETURN_VISIT_ID:
+		case RETURN_VISITS_ID:
 			String rvId = uri.getPathSegments().get(1);
-			count = db.update(RETURN_VISITS_TABLE, values, ReturnVisits._ID + "=" + rvId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
+			count = db.update(RETURN_VISITS_TABLE, values, Calls._ID + "=" + rvId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

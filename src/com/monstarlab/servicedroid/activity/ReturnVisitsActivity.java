@@ -2,6 +2,7 @@ package com.monstarlab.servicedroid.activity;
 
 import android.app.ListActivity;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,17 +14,21 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 
 public class ReturnVisitsActivity extends ListActivity {
 	
 	private static final int MENU_ADD = Menu.FIRST;
-	private static final int DELETE_ID = Menu.FIRST + 1;
+	private static final int EDIT_ID  = Menu.FIRST + 1;
+	private static final int RETURN_ID  = Menu.FIRST + 2;
+	private static final int DELETE_ID = Menu.FIRST + 3;
 	
-	private static final String[] PROJECTION = new String[] { ReturnVisits._ID, ReturnVisits.NAME, ReturnVisits.ADDRESS };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS };
 	
 	
 	@Override
@@ -32,7 +37,7 @@ public class ReturnVisitsActivity extends ListActivity {
         
         Intent intent = getIntent();
 		if(intent.getData() == null) {
-			intent.setData(ReturnVisits.CONTENT_URI);
+			intent.setData(Calls.CONTENT_URI);
 		}
         
         this.setContentView(R.layout.calls);
@@ -46,7 +51,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	protected void fillData() {
 		Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null, null);
 		
-		String[] from = new String[]{ ReturnVisits.NAME, ReturnVisits.ADDRESS };
+		String[] from = new String[]{ Calls.NAME, Calls.ADDRESS };
 		int[] to = new int[]{ R.id.name, R.id.address };
 		
 		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, c, from, to);
@@ -75,16 +80,25 @@ public class ReturnVisitsActivity extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, DELETE_ID, 0, R.string.delete_call);
+		menu.add(0, EDIT_ID, 0, R.string.edit);
+		menu.add(0, RETURN_ID, 1, R.string.make_return);
+        menu.add(0, DELETE_ID, 2, R.string.delete_call);
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		
 		switch(item.getItemId()) {
+		case EDIT_ID:
+			editCall(info.id);
+			return true;
+		case RETURN_ID:
+			returnOnCall(info.id);
+			return true;
 		case DELETE_ID:
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			Uri callUri = ContentUris.withAppendedId(getIntent().getData(), info.id);
-			getContentResolver().delete(callUri, null, null);
+			deleteCall(info.id);
+			
 			//fillData();
 			return true;
 		}
@@ -96,6 +110,15 @@ public class ReturnVisitsActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		//super.onListItemClick(l, v, position, id);
+		editCall(id);
+	}
+	
+	protected void deleteCall(long id) {
+		Uri callUri = ContentUris.withAppendedId(getIntent().getData(), id);
+		getContentResolver().delete(callUri, null, null);
+	}
+	
+	protected void editCall(long id) {
 		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
 		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, RVShowActivity.class);
         startActivity(i);
@@ -105,6 +128,30 @@ public class ReturnVisitsActivity extends ListActivity {
 	protected void createCall() {
 		Intent i = new Intent(Intent.ACTION_INSERT, getIntent().getData(), this, RVEditActivity.class);
 		startActivity(i);
+	}
+	
+	protected void returnOnCall(long id) {
+		ContentValues values = new ContentValues();
+		values.put(ReturnVisits.CALL_ID, id);
+		getContentResolver().insert(ReturnVisits.CONTENT_URI, values);
+		
+		//TODO - show Toast notification
+		
+		String name = getCallName(id);
+		String text = "You made a return visit on " + name;
+		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+	}
+	
+	protected String getCallName(long id) {
+		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
+		Cursor c = getContentResolver().query(uri, new String[] { Calls.NAME }, null, null, null);
+		if(c != null) {
+			c.moveToFirst();
+			String name = c.getString(0);
+			c.close();
+			return name;
+		}
+		return "";
 	}
 
 	

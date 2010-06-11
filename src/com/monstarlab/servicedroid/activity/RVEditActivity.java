@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.monstarlab.servicedroid.R;
-import com.monstarlab.servicedroid.model.Models.ReturnVisits;
+import com.monstarlab.servicedroid.model.Models.Calls;
 
 public class RVEditActivity extends Activity {
 
@@ -31,7 +31,7 @@ public class RVEditActivity extends Activity {
 
 	private Cursor mCursor;
 	
-	private static final String[] PROJECTION = new String[] { ReturnVisits._ID, ReturnVisits.NAME, ReturnVisits.ADDRESS, ReturnVisits.NOTES };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES };
 	private static final int NAME_COLUMN = 1;
 	private static final int ADDRESS_COLUMN = 2;
 	private static final int NOTES_COLUMN = 3;
@@ -122,9 +122,9 @@ public class RVEditActivity extends Activity {
 			//save the current changes to the Provider
 			} else {
 				ContentValues values = new ContentValues();
-				values.put(ReturnVisits.NAME, name);
-				values.put(ReturnVisits.ADDRESS, address);
-				values.put(ReturnVisits.NOTES, notes);
+				values.put(Calls.NAME, name);
+				values.put(Calls.ADDRESS, address);
+				values.put(Calls.NOTES, notes);
 				
 				getContentResolver().update(mUri, values, null, null);
 			}

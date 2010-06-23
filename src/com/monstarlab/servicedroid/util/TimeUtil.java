@@ -23,6 +23,11 @@ public class TimeUtil {
         mDateFormatter = android.text.format.DateFormat.getDateFormat(ctx);
 	}
 	
+	/**
+	 * 
+	 * @param text String A date in "yyyy-MM-dd HH:mm:ss" format.
+	 * @return String A the date formatted to the user's preferences, or the untouched date if errored.
+	 */
 	public String normalizeDate(String text) {
 		try {
 			return formatDate(parseDateText(text));

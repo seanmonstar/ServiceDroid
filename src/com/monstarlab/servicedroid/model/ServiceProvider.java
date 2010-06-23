@@ -27,7 +27,7 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servoid"; //TODO - change to R.app_name
-    private static final int DATABASE_VERSION = 13; //TODO - once DB is finalized, set back to 1.
+    private static final int DATABASE_VERSION = 14; //TODO - once DB is finalized, set back to 1.
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
     private static final String RETURN_VISITS_TABLE = "return_visits";
@@ -74,6 +74,7 @@ public class ServiceProvider extends ContentProvider {
     	sCallProjectionMap.put(Calls.NAME, Calls.NAME);
     	sCallProjectionMap.put(Calls.ADDRESS, Calls.ADDRESS);
     	sCallProjectionMap.put(Calls.NOTES, Calls.NOTES);
+    	sCallProjectionMap.put(Calls.DATE, Calls.DATE);
     	sCallProjectionMap.put(Calls.BIBLE_STUDY, Calls.BIBLE_STUDY);
     	
     	sRVProjectionMap = new HashMap<String, String>();

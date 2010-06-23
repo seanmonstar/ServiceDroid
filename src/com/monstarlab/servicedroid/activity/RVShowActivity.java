@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
+import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class RVShowActivity extends Activity {
 	
@@ -30,16 +31,19 @@ public class RVShowActivity extends Activity {
 	private static final int MENU_STUDY = Menu.FIRST + 3;
 	
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE };
 	private static final int ID_COLUMN = 0;
 	private static final int NAME_COLUMN = 1;
 	private static final int ADDRESS_COLUMN = 2;
 	private static final int NOTES_COLUMN = 3;
+	private static final int DATE_COLUMN = 4;
 	
 	private Uri mUri;
 	private TextView mNameText;
 	private TextView mAddressText;
+	private TextView mLastVisitText;
 	private Cursor mCursor;
+	private TimeUtil mTimeHelper;
 
 	private ListView mListView;
 	
@@ -56,8 +60,11 @@ public class RVShowActivity extends Activity {
 		
 		mNameText = (TextView) findViewById(R.id.name);
 		mAddressText = (TextView) findViewById(R.id.address);
-		mListView = (ListView) findViewById(R.id.rv_data);
-		mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
+		mLastVisitText = (TextView) findViewById(R.id.lastVisit);
+		//mListView = (ListView) findViewById(R.id.rv_data);
+		//mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
+		
+		mTimeHelper = new TimeUtil(this);
 		
 		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
 	}
@@ -74,6 +81,8 @@ public class RVShowActivity extends Activity {
 			String name = mCursor.getString(NAME_COLUMN);
 			String address = mCursor.getString(ADDRESS_COLUMN);
 			//String notes = mCursor.getString(NOTES_COLUMN);
+			updateLastVisited();
+			
 			
 			mNameText.setText(name);
 			mAddressText.setText(address);
@@ -135,7 +144,43 @@ public class RVShowActivity extends Activity {
 			String name = mCursor.getString(NAME_COLUMN);
 			String text = "You made a return visit on " + name;
 			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+			updateLastVisited();
 		}
+	}
+	
+	protected void updateLastVisited() {
+		if(mCursor != null) {
+			//check the most recent Return Visit			
+			String lastVisit = getLatestReturn();
+			
+			//if there has been no return visit
+			if(lastVisit == null) {
+				//show the date the Call was first found home
+				mCursor.moveToFirst();
+				lastVisit = mCursor.getString(DATE_COLUMN);
+			}
+			
+			mLastVisitText.setText("Last Visited: " + mTimeHelper.normalizeDate(lastVisit));
+		}
+	}
+	
+	protected String getLatestReturn() {
+		String date = null;
+		if(mCursor != null) {
+			mCursor.moveToFirst();
+			
+			Cursor c = getContentResolver().query(ReturnVisits.CONTENT_URI, new String[] { ReturnVisits.DATE }, "call_id = ?", new String[] { mCursor.getString(ID_COLUMN) }, "date desc");
+			if(c != null && c.getCount() > 0) {
+				c.moveToFirst();
+				
+				date = c.getString(0);
+				
+				c.close();
+				c = null;
+			}
+		}
+		
+		return date;
 	}
 
 }

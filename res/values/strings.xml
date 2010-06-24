@@ -24,5 +24,8 @@
 	<string name="magazines">Mags</string>
 	<string name="books">Books</string>
 	<string name="rvs">RVs</string>
+	<string name="brochures">Brochures</string>
+	<string name="bible_studies">Bible Studies</string>
 	<string name="notes">Notes</string>
+	<string name="email">E-mail</string>
 </resources>

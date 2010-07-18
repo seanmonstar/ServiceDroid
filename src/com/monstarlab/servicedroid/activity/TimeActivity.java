@@ -29,7 +29,8 @@ public class TimeActivity extends ListActivity {
 	public static final int INSERT_ID = Menu.FIRST;
 	public static final int START_ID = Menu.FIRST + 1;
 	public static final int STOP_ID = Menu.FIRST + 2;
-	private static final int DELETE_ID = Menu.FIRST + 3;
+	private static final int EDIT_ID = Menu.FIRST + 3;
+	private static final int DELETE_ID = Menu.FIRST + 4;
 	
 	private static final int ACTIVITY_CREATE=0;
     private static final int ACTIVITY_EDIT=1;
@@ -164,17 +165,23 @@ public class TimeActivity extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, DELETE_ID, 0, R.string.delete_time);
+		//menu.setHeaderTitle(title);
+		menu.add(0, EDIT_ID, 0, R.string.edit);
+		menu.add(0, DELETE_ID, 0, R.string.delete_time);
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		switch(item.getItemId()) {
+		
+		case EDIT_ID:
+			editEntry(info.id);
+			return true;
+		
 		case DELETE_ID:
-			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-			Uri entryUri = ContentUris.withAppendedId(getIntent().getData(), info.id);
-			getContentResolver().delete(entryUri, null, null);
-			//fillData();
+			
+			deleteEntry(info.id);
 			return true;
 		}
 		
@@ -184,7 +191,10 @@ public class TimeActivity extends ListActivity {
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		//super.onListItemClick(l, v, position, id);
+		editEntry(id);
+	}
+	
+	private void editEntry(long id) {
 		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
 		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, TimeEditActivity.class);
         startActivity(i);
@@ -195,32 +205,10 @@ public class TimeActivity extends ListActivity {
 		startActivity(i);
 	}
 	
-	/*@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		super.onActivityResult(requestCode, resultCode, intent);
-		
-		//intent is null if user hit Back button
-		if(intent != null) {
-			Bundle extras = intent.getExtras();
-			switch(requestCode) {
-			case ACTIVITY_CREATE:
-				int length = extras.getInt(TimeEntryAdapter.KEY_LENGTH);
-				String date = extras.getString(TimeEntryAdapter.KEY_DATE);
-				mTimeAdapter.create(length, date);
-				fillData();
-				break;
-			case ACTIVITY_EDIT:
-				Long id = extras.getLong(TimeEntryAdapter.KEY_ID);
-				if(id != null) {
-					String editDate = extras.getString(TimeEntryAdapter.KEY_DATE);
-					int editLength = extras.getInt(TimeEntryAdapter.KEY_LENGTH);
-					mTimeAdapter.update(id, editLength, editDate);
-				}
-				fillData();
-				break;
-			}
-		}
-	}*/
+	private void deleteEntry(long id) {
+		Uri entryUri = ContentUris.withAppendedId(getIntent().getData(), id);
+		getContentResolver().delete(entryUri, null, null);
+	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

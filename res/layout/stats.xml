@@ -8,36 +8,49 @@
 		android:id="@+id/statstable" 
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
-		android:stretchColumns="1"
+		android:padding="30dip"
+		android:stretchColumns="0,1"
 		android:gravity="center_vertical|center_horizontal">
 		
 		<TableRow>
-			<TextView android:text="@string/hours" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
-			<TextView android:id="@+id/hours" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+		
+			<TextView
+			  	android:id="@+id/stats_timeperiod"
+			  	android:layout_width="fill_parent"
+			  	android:layout_height="wrap_content"
+			  	android:gravity="center_horizontal"
+			    android:layout_span="2"
+			  	android:textAppearance="?android:attr/textAppearanceLarge"
+			  	 />
+			  	 
+		</TableRow>
+		<TableRow>
+			<TextView android:text="@string/hours" android:padding="3dip" android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/hours" android:padding="3dip" android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/magazines" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
-			<TextView android:id="@+id/magazines" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:text="@string/magazines" android:padding="3dip" android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/magazines" android:padding="3dip" android:gravity="center_vertical|right" />
 		</TableRow>
 		<TableRow>
-			<TextView android:text="@string/brochures" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
-			<TextView android:id="@+id/brochures" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
-		</TableRow>
-		
-		<TableRow>
-			<TextView android:text="@string/books" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
-			<TextView android:id="@+id/books" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:text="@string/brochures" android:padding="3dip" android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/brochures" android:padding="3dip" android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/rv" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
-			<TextView android:id="@+id/rvs" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:text="@string/books" android:padding="3dip" android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/books" android:padding="3dip" android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/bible_studies" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
-			<TextView android:id="@+id/bible_studies" android:padding="3dip" android:gravity="center_vertical|center_horizontal" />
+			<TextView android:text="@string/rv" android:padding="3dip" android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/rvs" android:padding="3dip" android:gravity="center_vertical|right" />
+		</TableRow>
+		
+		<TableRow>
+			<TextView android:text="@string/bible_studies" android:padding="3dip" android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/bible_studies" android:padding="3dip" android:gravity="center_vertical|right" />
 		</TableRow>
 		
 	</TableLayout>

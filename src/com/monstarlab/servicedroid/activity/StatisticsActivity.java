@@ -42,7 +42,7 @@ public class StatisticsActivity extends Activity {
         setContentView(R.layout.stats);
         
        // mTimeHelper = new TimeUtil(this);
-        //mTimePeriodDisplay = (TextView)findViewById(R.id.stats_timeperiod);
+        mTimePeriodDisplay = (TextView)findViewById(R.id.stats_timeperiod);
         mHoursDisplay = (TextView)findViewById(R.id.hours);
         mRvsDisplay = (TextView)findViewById(R.id.rvs);
         mMagsDisplay = (TextView)findViewById(R.id.magazines);
@@ -63,7 +63,7 @@ public class StatisticsActivity extends Activity {
 
 
 	protected void fillData() {
-		//mTimePeriodDisplay.setText(mCurrentTimePeriod);
+		mTimePeriodDisplay.setText(mCurrentTimePeriod);
 		mHoursDisplay.setText(getHoursSum());
 		mRvsDisplay.setText(getRVs());
 		mMagsDisplay.setText(getMagazines());

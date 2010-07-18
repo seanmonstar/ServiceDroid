@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, Servoid!</string>
-    <string name="app_name">Servoid</string>
+    <string name="app_name">ServiceDroid</string>
 	<string name="time">Time</string>
     <string name="rv">Return Visits</string>
     <string name="stats">Stats</string>
@@ -27,5 +27,7 @@
 	<string name="brochures">Brochures</string>
 	<string name="bible_studies">Bible Studies</string>
 	<string name="notes">Notes</string>
-	<string name="email">E-mail</string>
+	<string name="send">Send</string>
+	<string name="monthly">Monthly</string>
+	<string name="service_year">Service Year</string>
 </resources>

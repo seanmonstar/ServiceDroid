@@ -1,8 +1,12 @@
 package com.monstarlab.servicedroid.activity;
 
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -26,6 +30,8 @@ import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class TimeActivity extends ListActivity {
 	
+	private static final String TAG = "TimeActivity";
+	
 	public static final int INSERT_ID = Menu.FIRST;
 	public static final int START_ID = Menu.FIRST + 1;
 	public static final int STOP_ID = Menu.FIRST + 2;
@@ -36,6 +42,8 @@ public class TimeActivity extends ListActivity {
     private static final int ACTIVITY_EDIT=1;
     
     private static final String TIMER = "Timer";
+    
+    private static final int SHOW_TIMER_NOTIFICATION = 1;
     
     private static final String[] PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE };
     
@@ -76,8 +84,8 @@ public class TimeActivity extends ListActivity {
 	}
 	
 	public void fillData() {
-		 // Get all of the entries from the database and create the item list
-		mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null, null);
+		 // Get this month's entries from the database and create the item list
+		mCursor = managedQuery(getIntent().getData(), PROJECTION, TimeEntries.DATE + " between ? and ?", getTimePeriodArgs(TimeUtil.getCurrentYear(), TimeUtil.getCurrentMonth()), TimeEntries.DATE + " ASC");
 
         String[] from = new String[] { TimeEntries.DATE, TimeEntries.LENGTH };
         int[] to = new int[] { R.id.date, R.id.length };
@@ -109,6 +117,18 @@ public class TimeActivity extends ListActivity {
         };
         
         setListAdapter(entries);
+	}
+	
+	protected String[] getTimePeriodArgs(int year, int month) {
+		String[] args = new String[2];
+		//beginning of month
+		args[0] = year + "-" + TimeUtil.pad(month) + "-01";
+		
+		//end of month
+		//TODO - possibly fix date?
+		args[1] = year + "-" + TimeUtil.pad(month+1) + "-01";
+		
+		return args;
 	}
 	
 	@Override
@@ -222,11 +242,12 @@ public class TimeActivity extends ListActivity {
 		mTiming = true;
 		mTimerStart = SystemClock.uptimeMillis();
 		setView();
+		showTimerNotification();
 	}
 	
 	private void stopTimer() {
 		if(!mTiming) return;
-		
+		removeTimerNotification();
 		
 		long timerEnd = SystemClock.uptimeMillis();
 		long diff = timerEnd - mTimerStart;
@@ -253,6 +274,29 @@ public class TimeActivity extends ListActivity {
 			setContentView(R.layout.time);
 			mTimer.removeCallbacks(mTimerUpdateTask);
 		}
+	}
+	
+	protected void showTimerNotification() {
+		int icon = R.drawable.icon;    // icon from resources
+		CharSequence tickerText = "Service Timer Active";              // ticker-text
+		long when = System.currentTimeMillis();         // notification time
+		Context context = getApplicationContext();      // application Context
+		CharSequence contentTitle = "ServiceDroid";  // expanded message title
+		CharSequence contentText = "Time in service: n/a";      // expanded message text
+
+		Intent notificationIntent = new Intent(this, TimeActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+		// the next two lines initialize the Notification, using the configurations above
+		Notification notification = new Notification(icon, tickerText, when);
+		
+		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+		
+		((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE)).notify(SHOW_TIMER_NOTIFICATION, notification);
+	}
+	
+	protected void removeTimerNotification() {
+		
 	}
 	
 	private Runnable mTimerUpdateTask = new Runnable() {

@@ -123,10 +123,9 @@ public class TimeEditActivity extends Activity {
 					day = d.getDate();
 				} catch (ParseException e) {
 					e.printStackTrace();
-					Calendar c = Calendar.getInstance();
-					year = c.get(Calendar.YEAR);
-					month = c.get(Calendar.MONTH);
-					day = c.get(Calendar.DATE);
+					year = TimeUtil.getCurrentYear();
+					month = TimeUtil.getCurrentMonth() - 1;
+					day = TimeUtil.getCurrentDay();
 				}
 				mDateText.updateDate(year, month, day);
 			}

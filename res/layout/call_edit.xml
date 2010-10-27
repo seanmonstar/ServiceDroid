@@ -30,8 +30,8 @@
 		android:hint="@string/notes" 
 		android:id="@+id/notes" 
 		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-		android:layout_weight="1" />
+		android:layout_height="fill_parent"
+		android:layout_weight="1" android:autoText="true" android:inputType="text" android:gravity="top"/>
 		
 	<Button android:id="@+id/confirm" 
 	    android:text="@string/confirm"

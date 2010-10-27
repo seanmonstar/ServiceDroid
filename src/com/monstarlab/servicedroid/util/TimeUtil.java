@@ -3,6 +3,7 @@ package com.monstarlab.servicedroid.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
@@ -90,5 +91,28 @@ public class TimeUtil {
 	
 	public static int getMins(int time) {
 		return (time - (getHours(time) * HOUR)) / MIN;
+	}
+	
+	public static String pad(int number) {
+		if(number < 10) {
+			return "0"+number;
+		} else {
+			return ""+number;
+		}
+	}
+	
+	public static int getCurrentYear() {
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.YEAR);
+	}
+	
+	public static int getCurrentMonth() {
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.MONTH) + 1;
+	}
+	
+	public static int getCurrentDay() {
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.DATE);
 	}
 }

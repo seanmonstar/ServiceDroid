@@ -3,13 +3,12 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
-	 
-	<ListView android:id="@android:id/list" 
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content" />
-	<TextView android:id="@android:id/empty"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:text="@string/no_time"
-	        android:gravity="center_vertical|center_horizontal"/>
+  <ListView android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+  <TextView android:id="@android:id/empty"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="@string/no_calls"
+        android:gravity="center_vertical|center_horizontal"/>
 </LinearLayout>

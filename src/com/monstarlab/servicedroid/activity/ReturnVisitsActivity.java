@@ -23,6 +23,8 @@ import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 
 public class ReturnVisitsActivity extends ListActivity {
 	
+	private static final String TAG = "ReturnVisitsActivity";
+	
 	private static final int MENU_ADD = Menu.FIRST;
 	private static final int EDIT_ID  = Menu.FIRST + 1;
 	private static final int RETURN_ID  = Menu.FIRST + 2;

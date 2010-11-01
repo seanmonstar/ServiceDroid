@@ -1,14 +1,19 @@
 package com.monstarlab.servicedroid.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -37,15 +42,19 @@ public class RVShowActivity extends Activity {
 	private static final int ADDRESS_COLUMN = 2;
 	private static final int NOTES_COLUMN = 3;
 	private static final int DATE_COLUMN = 4;
+
+	private static final int DIALOG_PLACEMENT_ID = 0;
 	
 	private Uri mUri;
 	private TextView mNameText;
 	private TextView mAddressText;
 	private TextView mLastVisitText;
+	private TextView mNotesText;
 	private Cursor mCursor;
 	private TimeUtil mTimeHelper;
 
-	private ListView mListView;
+	//private ListView mListView;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,7 @@ public class RVShowActivity extends Activity {
 		mNameText = (TextView) findViewById(R.id.name);
 		mAddressText = (TextView) findViewById(R.id.address);
 		mLastVisitText = (TextView) findViewById(R.id.lastVisit);
+		mNotesText = (TextView) findViewById(R.id.notes);
 		//mListView = (ListView) findViewById(R.id.rv_data);
 		//mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
 		
@@ -80,13 +90,13 @@ public class RVShowActivity extends Activity {
 			
 			String name = mCursor.getString(NAME_COLUMN);
 			String address = mCursor.getString(ADDRESS_COLUMN);
-			//String notes = mCursor.getString(NOTES_COLUMN);
+			String notes = mCursor.getString(NOTES_COLUMN);
 			updateLastVisited();
 			
 			
 			mNameText.setText(name);
 			mAddressText.setText(address);
-			
+			mNotesText.setText(notes);
 		}
 		
 		
@@ -97,11 +107,24 @@ public class RVShowActivity extends Activity {
         boolean result = super.onCreateOptionsMenu(menu);
         menu.add(0, MENU_EDIT, 1, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
         
-        menu.add(0, MENU_PLACEMENT, 2, "Placement").setIcon(android.R.drawable.ic_menu_agenda);
+        menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
         menu.add(0, MENU_RETURN, 3, "Return").setIcon(android.R.drawable.ic_menu_myplaces);
-        menu.add(0, MENU_STUDY, 4, "Bible Study").setIcon(android.R.drawable.ic_menu_search);
+        menu.add(0, MENU_STUDY, 4, R.string.bible_study).setIcon(android.R.drawable.ic_menu_search);
         return result;
     }
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog;
+	    switch(id) {
+	    case DIALOG_PLACEMENT_ID:
+	    	dialog = makePlacementDialog();
+	        break;
+	    default:
+	        dialog = null;
+	    }
+	    return dialog;
+	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -110,7 +133,7 @@ public class RVShowActivity extends Activity {
 			editCall();
 			break;
 		case MENU_PLACEMENT:
-			makePlacement();
+			showDialog(DIALOG_PLACEMENT_ID);
 			break;
 		case MENU_RETURN:
 			returnOnCall();
@@ -128,10 +151,52 @@ public class RVShowActivity extends Activity {
         startActivity(i);
 	}
 	
-	protected void makePlacement() {
-		//TODO - make a placement
+	protected Dialog makePlacementDialog() {
+		final CharSequence[] items = { getString(R.string.magazine), getString(R.string.brochure), getString(R.string.book) };
+		final int MAGAZINE = 0;
+		final int BROCHURE = 1;
+		final int BOOK = 2;
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		builder.setTitle(getString(R.string.placement));
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int itemIndex) {
+		        switch(itemIndex) {
+		        case MAGAZINE:
+		        	makeMagazinePlacement();
+		        	break;
+		        case BROCHURE:
+		        	makeBrochurePlacement();
+		        	break;
+		        case BOOK:
+		        	makeBookPlacement();
+		        	break;
+		        default:
+		        	break;
+		        }
+		    }
+		});
+		return builder.create();
+
 	}
 	
+	protected void makeBookPlacement() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void makeBrochurePlacement() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void makeMagazinePlacement() {
+		Intent i = new Intent(Intent.ACTION_INSERT, getIntent().getData(), this, PlacementActivity.class);
+		startActivity(i);
+		
+	}
+
 	protected void returnOnCall() {
 		if(mCursor != null) {
 			mCursor.moveToFirst();

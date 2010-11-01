@@ -21,13 +21,21 @@
 	<string name="confirm">Confirm</string>
 	<string name="address">Address</string>
 	<string name="name">Name</string>
+	<string name="placement">Placement</string>
+	<string name="issue">Issue</string>
+	<string name="magazine">Magazine</string>
 	<string name="magazines">Mags</string>
+	<string name="book">Book</string>
 	<string name="books">Books</string>
 	<string name="rvs">RVs</string>
+	<string name="brochure">Brochure</string>
 	<string name="brochures">Brochures</string>
+	<string name="bible_study">Bible Study</string>
 	<string name="bible_studies">Bible Studies</string>
 	<string name="notes">Notes</string>
 	<string name="send">Send</string>
 	<string name="monthly">Monthly</string>
+	<string name="month">Month</string>
+	<string name="year">Year</string>
 	<string name="service_year">Service Year</string>
 </resources>

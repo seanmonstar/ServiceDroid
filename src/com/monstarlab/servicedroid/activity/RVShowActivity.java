@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,12 +37,13 @@ public class RVShowActivity extends Activity {
 	private static final int MENU_STUDY = Menu.FIRST + 3;
 	
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.BIBLE_STUDY };
 	private static final int ID_COLUMN = 0;
 	private static final int NAME_COLUMN = 1;
 	private static final int ADDRESS_COLUMN = 2;
-	private static final int NOTES_COLUMN = 3;
+	private static final int NOTES_COLUMN = 3; 
 	private static final int DATE_COLUMN = 4;
+	private static final int STUDY_COLUMN = 5;
 
 	private static final int DIALOG_PLACEMENT_ID = 0;
 	
@@ -52,6 +54,7 @@ public class RVShowActivity extends Activity {
 	private TextView mNotesText;
 	private Cursor mCursor;
 	private TimeUtil mTimeHelper;
+	private CheckBox mBibleStudyCheckbox;
 
 	//private ListView mListView;
 	
@@ -71,8 +74,18 @@ public class RVShowActivity extends Activity {
 		mAddressText = (TextView) findViewById(R.id.address);
 		mLastVisitText = (TextView) findViewById(R.id.lastVisit);
 		mNotesText = (TextView) findViewById(R.id.notes);
+		
 		//mListView = (ListView) findViewById(R.id.rv_data);
 		//mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
+		
+		mBibleStudyCheckbox = (CheckBox) findViewById(R.id.is_bible_study);
+		mBibleStudyCheckbox.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				updateStudyStatus(((CheckBox)v).isChecked());
+			}
+		});
 		
 		mTimeHelper = new TimeUtil(this);
 		
@@ -91,12 +104,15 @@ public class RVShowActivity extends Activity {
 			String name = mCursor.getString(NAME_COLUMN);
 			String address = mCursor.getString(ADDRESS_COLUMN);
 			String notes = mCursor.getString(NOTES_COLUMN);
+			boolean isBibleStudy = ( mCursor.getInt(STUDY_COLUMN) != 0 );
+			
 			updateLastVisited();
 			
 			
 			mNameText.setText(name);
 			mAddressText.setText(address);
 			mNotesText.setText(notes);
+			mBibleStudyCheckbox.setChecked(isBibleStudy);
 		}
 		
 		
@@ -195,6 +211,20 @@ public class RVShowActivity extends Activity {
 		Intent i = new Intent(Intent.ACTION_INSERT, getIntent().getData(), this, PlacementActivity.class);
 		startActivity(i);
 		
+	}
+	
+	protected void updateStudyStatus(boolean isStudy) {
+		if(mUri != null) {
+			ContentValues values = new ContentValues();
+			values.put(Calls.BIBLE_STUDY, isStudy);
+			getContentResolver().update(mUri, values, null, null);
+			
+			
+			String name = mCursor.getString(NAME_COLUMN);
+			String status = isStudy ? "now" : "no longer";
+			String text = name + " is " + status + " a bible study.";
+			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	protected void returnOnCall() {

@@ -21,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.util.TimeUtil;
@@ -38,6 +39,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	//private TimeUtil mTimeHelper;
 	
+	private static String[] CallsProjection = new String[] { Calls._ID, Calls.BIBLE_STUDY };
 	private static String[] TimeProjection = new String[] { TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	private static String[] RVProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
 	
@@ -104,8 +106,15 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	}
 	
 	protected String getBibleStudies() {
-		// TODO Auto-generated method stub
-		return "N/A";
+		Cursor c = getContentResolver().query(Calls.CONTENT_URI, CallsProjection, Calls.BIBLE_STUDY + "=1", null, null);
+		int sum = 0;
+		if(c != null) {
+			c.moveToFirst();
+			sum = c.getCount();
+			c.close();
+			c = null;
+		}
+		return "" + sum;
 	}
 
 

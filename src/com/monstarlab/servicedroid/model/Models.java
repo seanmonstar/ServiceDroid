@@ -67,7 +67,7 @@ public final class Models {
 		/**
 		 * 	type: boolean
 		 */
-		public static final String BIBLE_STUDY = "bible_study";
+		public static final String BIBLE_STUDY = "bible_study"; // TODO- rename to is_bible_study
 	}
 	
 	public static final class ReturnVisits implements BaseColumns {

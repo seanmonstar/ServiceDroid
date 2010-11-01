@@ -37,7 +37,7 @@
         />
     </RelativeLayout>
     
-    <TextView android:id="@+id/lastVisit"
+    <TextView android:id="@+id/lastVisit" 
             android:layout_width="fill_parent"
             android:layout_below="@id/call_header"
             android:layout_height="wrap_content"
@@ -52,6 +52,12 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
         />
+        
+    <CheckBox android:id="@+id/is_bible_study"
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_below="@id/notes"
+        android:text="@string/bible_study" />
 
   
 </RelativeLayout>

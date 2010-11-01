@@ -9,6 +9,6 @@
   <TextView android:id="@android:id/empty"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="@string/no_calls"
+        android:text="@string/no_time"
         android:gravity="center_vertical|center_horizontal"/>
 </LinearLayout>

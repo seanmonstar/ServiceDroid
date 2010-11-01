@@ -150,7 +150,7 @@ public class TimeActivity extends ListActivity {
 		super.onPrepareOptionsMenu(menu);
 		
 		//menu depends on if user has start Service Timer
-		if(mTiming) {
+		/*if(mTiming) {
 			menu.removeItem(START_ID);
 			if(menu.findItem(STOP_ID) == null) {
 				menu.add(0, STOP_ID, 2, R.string.stop_time).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -160,7 +160,7 @@ public class TimeActivity extends ListActivity {
 			if(menu.findItem(START_ID) == null) {
 				menu.add(0, START_ID, 2, R.string.start_time).setIcon(android.R.drawable.ic_menu_recent_history);
 			}
-		}
+		}*/
 		return true;
 	}
 	

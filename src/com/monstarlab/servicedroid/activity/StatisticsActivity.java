@@ -277,7 +277,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		sb.append("Magazines: " + getMagazines() + "\n");
 		sb.append("Brochures: " + getBrochures() + "\n");
 		sb.append("Books: " + getBooks() + "\n");
-		sb.append("Return Vists: " + getRVs() + "\n");
+		sb.append("Return Visits: " + getRVs() + "\n");
 		sb.append("Bible Studies: " + getBibleStudies() + "\n");
 		
 		

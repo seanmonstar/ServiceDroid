@@ -8,7 +8,10 @@ import com.monstarlab.servicedroid.util.TimeUtil;
 
 import com.monstarlab.servicedroid.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -33,19 +37,20 @@ public class PlacementActivity extends Activity {
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.TITLE, Literature.PUBLICATION, Literature.TYPE };
 	
 	private static final String[] YEARS = new String[] { "2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000" };
+	private static final int DIALOG_CREATE_ID = 0;
 	
 	private int mState;
 	private Uri mUri;
 	private Cursor mCursor;
 	private int mPlacementType;
-	private String mMagazine;
+	
 	
 	private Spinner mPublicationSpinner;
 	private Spinner mMonthSpinner;
 	private Spinner mYearSpinner;
 	
-	private String mIssue;
-	private String mTitle;
+	private String mMagazine;
+	private String mBook;
 	private int mCallId;
 	private int mLitID;
 	private int mMonth;
@@ -94,7 +99,7 @@ public class PlacementActivity extends Activity {
 			setupMagazineView();
 			
 		} else  {
-			setupBookView();
+			setupBookAndBrochureView();
 		} 
 		
 		Button confirm = (Button) findViewById(R.id.confirm);
@@ -119,10 +124,8 @@ public class PlacementActivity extends Activity {
 			if (mPlacementType == Literature.TYPE_MAGAZINE) {
 				
 				
-			} else if (mPlacementType == Literature.TYPE_BROCHURE) {
-				
-			} else if (mPlacementType == Literature.TYPE_BOOK) {
-				updateBookSpinner();
+			} else {
+				updateBookAndBrochureSpinner();
 			}
 			
 		}
@@ -153,6 +156,53 @@ public class PlacementActivity extends Activity {
 		}
 	}
 	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog;
+		switch(id) {
+	    case DIALOG_CREATE_ID:
+	    	dialog = makeCreateLiteratureDialog();
+	        break;
+	    default:
+	        dialog = null;
+	    }
+		return dialog;
+	}
+	
+	private Dialog makeCreateLiteratureDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setTitle(R.string.create_placement);
+
+        // Set an EditText view to get user input 
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+			    String value = input.getText().toString();
+			    createLiterature(value);
+			    updateBookAndBrochureSpinner();
+	        }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int whichButton) {
+		        dialog.cancel();
+		    }
+        });
+		return builder.create();
+	}
+	
+	private void createLiterature(String publication) {
+		ContentValues values = new ContentValues();
+		values.put(Literature.PUBLICATION, publication);
+		values.put(Literature.TYPE, mPlacementType);
+		
+		getContentResolver().insert(Literature.CONTENT_URI, values);
+		mBook = publication;
+	}
+
 	private void setupMagazineView() {
 		setContentView(R.layout.place_magazine);
 		
@@ -228,7 +278,7 @@ public class PlacementActivity extends Activity {
 	    
 	}
 	
-	private void setupBookView() {
+	private void setupBookAndBrochureView() {
 		setContentView(R.layout.place_book);
 		
 		mPublicationSpinner = (Spinner) findViewById(R.id.placement);
@@ -236,8 +286,14 @@ public class PlacementActivity extends Activity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				mMagazine = parent.getItemAtPosition(pos).toString();
-				saveSelectedLiterature();
+				String item = parent.getItemAtPosition(pos).toString();
+				if(item.equals("Other...")) {
+					showDialog(DIALOG_CREATE_ID);
+				} else {
+					mBook = item;
+					saveSelectedLiterature();
+				}
+				
 			}
 
 			@Override
@@ -249,67 +305,53 @@ public class PlacementActivity extends Activity {
 		});
 	}
 	
-	private void updateBookSpinner() {
-		Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature.TYPE + "=?", new String[] { ""+Literature.TYPE_BOOK }, null);
+	private void updateBookAndBrochureSpinner() {
+		Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature.TYPE + "=?", new String[] { ""+mPlacementType }, null);
 		if(c != null) {
 			int length = c.getCount() + 1;
-			String[] books = new String[length];
+			String[] publications = new String[length];
 			int index = 0;
+			int selectedIndex = -1;
 			if(c.getCount() > 0) {
 				c.moveToFirst();
+				String title = null;
 				while(!c.isAfterLast()) {
-					books[index] = c.getString(2); // 2 == PUBLICATION
+					title = c.getString(2);
+					publications[index] = title; // 2 == PUBLICATION
+					if(!TextUtils.isEmpty(mBook) && mBook.equals(title)) {
+						selectedIndex = index;
+					}
 					c.moveToNext(); 
 					index++;
 				}
 			}
-			books[index] = "Other...";
+			publications[index] = "Other...";
 			c.close();
 			c = null;
 			
-			ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, books);
+			ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, publications);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			
 			mPublicationSpinner.setAdapter(adapter);
-		}
-	}
-	
-	private void updateBrochureSpinner() {
-		Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature.TYPE + "=?", new String[] { ""+Literature.TYPE_BROCHURE }, null);
-		if(c != null) {
-			int length = c.getCount() + 1;
-			String[] brochures = new String[length];
-			int index = 0;
-			if(c.getCount() > 0) {
-				c.moveToFirst();
-				while(!c.isAfterLast()) {
-					brochures[index] = c.getString(2); // 2 == PUBLICATION
-					c.moveToNext(); 
-					index++;
-				}
+			
+			if(selectedIndex != -1) {
+				mPublicationSpinner.setSelection(selectedIndex);
 			}
-			brochures[index] = "Other...";
-			c.close();
-			c = null;
-			
-			ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, brochures);
-			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			
-			mPublicationSpinner.setAdapter(adapter);
 		}
-		
-		
 	}
 	
 	private void saveSelectedLiterature() {
 		String publication = null;
 		int newId = 0;
+		Cursor c = null;
+		String where = null;
+		String[] whereArgs = null;
 		if(mPlacementType == Literature.TYPE_MAGAZINE) {
 			//query for magazine of same issue
 			publication = mMagazine+" "+mMonth+"/"+mYear;
-			String where = Literature.TYPE +"=? and " + Literature.PUBLICATION + "=?";
-			String[] whereArgs = new String[] { ""+mPlacementType, publication };
-			Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, where, whereArgs, null);
+			where = Literature.TYPE +"=? and " + Literature.PUBLICATION + "=?";
+			whereArgs = new String[] { ""+mPlacementType, publication };
+			c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, where, whereArgs, null);
 			if(c != null) {
 				if(c.getCount() > 0) {
 					c.moveToFirst();
@@ -329,7 +371,20 @@ public class PlacementActivity extends Activity {
 			//store the Lit id for Placement use
 			mLitID = newId;
 		} else {
-			
+			//get id of selected book/brochure
+			where = Literature.TYPE +"=? and " + Literature.PUBLICATION + "=?";
+			whereArgs = new String[] { ""+mPlacementType, mBook };
+			c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, where, whereArgs, null);
+			if(c != null) {
+				if(c.getCount() > 0) {
+					c.moveToFirst();
+					newId = c.getInt(0);
+				}
+				c.close();
+				c = null;
+			}
+			//store Lit id for Placement use
+			mLitID = newId;
 		}
 	}
 

@@ -19,9 +19,11 @@
 	<string name="length">Time in Service</string>
 	<string name="date">Date</string>
 	<string name="confirm">Confirm</string>
+	<string name="cancel">Cancel</string>
 	<string name="address">Address</string>
 	<string name="name">Name</string>
 	<string name="placement">Placement</string>
+	<string name="create_placement">Create Placement</string>
 	<string name="watchtower">Watchtower</string>
 	<string name="awake">Awake!</string>
 	<string name="issue">Issue</string>

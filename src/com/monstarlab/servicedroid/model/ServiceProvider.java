@@ -54,6 +54,7 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACED_MAGAZINES = 11;
     private static final int PLACED_BROCHURES = 12;
     private static final int PLACED_BOOKS = 13;
+    private static final int LITERATURE_DETAILS = 14;
     
     private static final UriMatcher sUriMatcher;
     
@@ -72,6 +73,7 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/magazines", PLACED_MAGAZINES);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/brochures", PLACED_BROCHURES);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", LITERATURE_DETAILS);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -95,13 +97,14 @@ public class ServiceProvider extends ContentProvider {
     	sLiteratureProjectionMap.put(Literature._ID, Literature._ID);
     	sLiteratureProjectionMap.put(Literature.TYPE, Literature.TYPE);
     	sLiteratureProjectionMap.put(Literature.TITLE, Literature.TITLE);
-    	sLiteratureProjectionMap.put(Literature.PUBLICATION, Literature.PUBLICATION);
+    	sLiteratureProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
     	
     	sPlacementProjectionMap = new HashMap<String, String>();
     	sPlacementProjectionMap.put(Placements._ID, PLACEMENTS_TABLE + "." + Placements._ID);
     	sPlacementProjectionMap.put(Placements.DATE, PLACEMENTS_TABLE + "." + Placements.DATE);
     	sPlacementProjectionMap.put(Placements.CALL_ID, PLACEMENTS_TABLE + "." + Placements.CALL_ID);
     	sPlacementProjectionMap.put(Placements.LITERATURE_ID, PLACEMENTS_TABLE + "." + Placements.LITERATURE_ID);
+    	sPlacementProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -411,7 +414,7 @@ public class ServiceProvider extends ContentProvider {
 					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_MAGAZINE +")");
 			qb.setProjectionMap(sPlacementProjectionMap);
 			if(TextUtils.isEmpty(orderBy)) {
-				orderBy = LITERATURE_TABLE + "."+ Literature.DEFAULT_SORT_ORDER;
+				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
 			}
 			break;
 			
@@ -421,7 +424,7 @@ public class ServiceProvider extends ContentProvider {
 					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_BROCHURE +")");
 			qb.setProjectionMap(sPlacementProjectionMap);
 			if(TextUtils.isEmpty(orderBy)) {
-				orderBy = LITERATURE_TABLE + "."+ Literature.DEFAULT_SORT_ORDER;
+				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
 			}
 			break;
 			
@@ -431,7 +434,16 @@ public class ServiceProvider extends ContentProvider {
 					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_BOOK +")");
 			qb.setProjectionMap(sPlacementProjectionMap);
 			if(TextUtils.isEmpty(orderBy)) {
-				orderBy = LITERATURE_TABLE + "."+ Literature.DEFAULT_SORT_ORDER;
+				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
+			}
+			break;
+			
+		case LITERATURE_DETAILS:
+			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
+					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + ")");
+			qb.setProjectionMap(sPlacementProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
 			}
 			break;
 		default:

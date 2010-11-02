@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -17,10 +18,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
@@ -29,7 +34,7 @@ import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class RVShowActivity extends Activity {
+public class RVShowActivity extends Activity implements OnItemClickListener {
 	
 	private static final String TAG = "RVShowActivity";
 	
@@ -40,6 +45,7 @@ public class RVShowActivity extends Activity {
 	
 	
 	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.BIBLE_STUDY };
+	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE };
 	private static final int ID_COLUMN = 0;
 	private static final int NAME_COLUMN = 1;
 	private static final int ADDRESS_COLUMN = 2;
@@ -57,6 +63,10 @@ public class RVShowActivity extends Activity {
 	private Cursor mCursor;
 	private TimeUtil mTimeHelper;
 	private CheckBox mBibleStudyCheckbox;
+
+	private ListView mListView;
+
+	private Cursor mPlacementsCursor;
 
 	//private ListView mListView;
 	
@@ -79,6 +89,10 @@ public class RVShowActivity extends Activity {
 		
 		//mListView = (ListView) findViewById(R.id.rv_data);
 		//mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
+		mListView = (ListView) findViewById(R.id.placements_list);
+        mListView.setOnCreateContextMenuListener(this);
+        mListView.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_OVERLAY);
+        mListView.setOnItemClickListener(this);
 		
 		mBibleStudyCheckbox = (CheckBox) findViewById(R.id.is_bible_study);
 		mBibleStudyCheckbox.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +106,8 @@ public class RVShowActivity extends Activity {
 		mTimeHelper = new TimeUtil(this);
 		
 		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
+		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { mUri.getPathSegments().get(1) }, null);
+		
 	}
 	
 	@Override
@@ -117,7 +133,25 @@ public class RVShowActivity extends Activity {
 			mBibleStudyCheckbox.setChecked(isBibleStudy);
 		}
 		
-		
+		if(mPlacementsCursor != null) {
+			String[] from = new String[]{ Literature.PUBLICATION, Placements.DATE };
+			int[] to = new int[]{ R.id.name, R.id.date };
+			
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.placement_row, mPlacementsCursor, from, to) {
+				@Override
+	        	public void setViewText(TextView v, String text) {
+	        		if (v.getId() == R.id.date) {
+						text = mTimeHelper.normalizeDate(text);
+	        			v.setText(text);
+	        		} else {
+	        			super.setViewText(v, text);
+	        		}
+	        		
+	        	}
+			};
+			
+			mListView.setAdapter(adapter);
+		}
 	}
 	
 	@Override
@@ -311,6 +345,39 @@ public class RVShowActivity extends Activity {
 		}
 		
 		return date;
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		//menu.setHeaderTitle(title);
+		//menu.add(0, EDIT_ID, 0, R.string.edit);
+		//menu.add(0, DELETE_ID, 0, R.string.delete_time);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		/*switch(item.getItemId()) {
+		
+		case EDIT_ID:
+			editEntry(info.id);
+			return true;
+		
+		case DELETE_ID:
+			
+			deleteEntry(info.id);
+			return true;
+		}*/
+		
+		
+		return super.onContextItemSelected(item);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

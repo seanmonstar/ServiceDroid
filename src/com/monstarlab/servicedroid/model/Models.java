@@ -100,6 +100,7 @@ public final class Models {
 		
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements");
 		
+		public static final Uri DETAILS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/details");
 		public static final Uri MAGAZINES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/magazines");
 		public static final Uri BROCHURES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/brochures");
 		public static final Uri BOOKS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/books");

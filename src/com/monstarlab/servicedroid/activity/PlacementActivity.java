@@ -67,7 +67,7 @@ public class PlacementActivity extends Activity {
 		if (Intent.ACTION_EDIT.equals(action)) {
 			mState = STATE_EDIT;
 			mUri = intent.getData();
-			retrievePlacementDetails(mUri); //TODO - query from DB
+			retrievePlacementDetails(mUri); //TODO - this is way freaking messy...
 			
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
@@ -127,6 +127,10 @@ public class PlacementActivity extends Activity {
 				mPlacementType = c.getInt(1);
 				if(mPlacementType == Literature.TYPE_MAGAZINE) {
 					//set magazine, month, and year
+					String publication = c.getString(2);
+					mMagazine = publication.substring(0, publication.indexOf(" "));
+					mMonth =  Integer.parseInt(publication.substring(publication.indexOf(" ")+1, publication.indexOf("/")));
+					mYear = Integer.parseInt(publication.substring(publication.indexOf("/")+1));
 				} else {
 					//set book
 					mBook = c.getString(2);
@@ -230,14 +234,23 @@ public class PlacementActivity extends Activity {
 	private void setupMagazineView() {
 		setContentView(R.layout.place_magazine);
 		
+		final String watchtower = getString(R.string.watchtower);
+		final String awake = getString(R.string.awake);
+		
 		mPublicationSpinner = (Spinner) findViewById(R.id.magazine);
-		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, new String[] { getString(R.string.watchtower), getString(R.string.awake) });
+		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, new String[] { watchtower, awake });
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    mPublicationSpinner.setAdapter(adapter);
 	    
-	    mMagazine = getString(R.string.watchtower);
-	    mMonth = TimeUtil.getCurrentMonth();
-	    mYear = TimeUtil.getCurrentYear();
+	    if(mMagazine == null) {
+	    	mMagazine = watchtower;
+	    }
+	    if(mMonth == 0) {
+	    	mMonth = TimeUtil.getCurrentMonth();
+	    }
+	    if(mYear == 0) {
+	    	mYear = TimeUtil.getCurrentYear();
+	    }
 	    
 	    mPublicationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -254,6 +267,13 @@ public class PlacementActivity extends Activity {
 			}
 	    	
 		});
+	    
+	    if(mMagazine.equals(watchtower)) {
+	    	mPublicationSpinner.setSelection(0);
+	    } else {
+	    	mPublicationSpinner.setSelection(1);
+	    }
+	    
 	    
 	    mMonthSpinner = (Spinner) findViewById(R.id.month);
 	    adapter = ArrayAdapter.createFromResource(this, R.array.months_array, android.R.layout.simple_spinner_item);

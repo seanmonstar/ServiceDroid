@@ -200,12 +200,34 @@ public class RVShowActivity extends Activity {
 	}
 	
 	protected void makeBookPlacement() {
-		// TODO Auto-generated method stub
+		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
+		
+		if(mCursor != null) {
+			mCursor.moveToFirst();
+			i.putExtra(Calls._ID, mCursor.getInt(ID_COLUMN));
+		}
+		
+		i.putExtra("type", Literature.TYPE_BOOK);
+		
+		
+		
+		startActivity(i);
 		
 	}
 
 	protected void makeBrochurePlacement() {
-		// TODO Auto-generated method stub
+		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
+		
+		if(mCursor != null) {
+			mCursor.moveToFirst();
+			i.putExtra(Calls._ID, mCursor.getInt(ID_COLUMN));
+		}
+		
+		i.putExtra("type", Literature.TYPE_BROCHURE);
+		
+		
+		
+		startActivity(i);
 		
 	}
 

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -92,12 +93,9 @@ public class PlacementActivity extends Activity {
 		if (mPlacementType == Literature.TYPE_MAGAZINE) {
 			setupMagazineView();
 			
-		} else if (mPlacementType == Literature.TYPE_BROCHURE) {
-			setContentView(R.layout.place_book);
-		} else if (mPlacementType == Literature.TYPE_BOOK) {
-			setContentView(R.layout.place_book);
-		}
-		
+		} else  {
+			setupBookView();
+		} 
 		
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +122,7 @@ public class PlacementActivity extends Activity {
 			} else if (mPlacementType == Literature.TYPE_BROCHURE) {
 				
 			} else if (mPlacementType == Literature.TYPE_BOOK) {
-				
+				updateBookSpinner();
 			}
 			
 		}
@@ -230,6 +228,79 @@ public class PlacementActivity extends Activity {
 	    
 	}
 	
+	private void setupBookView() {
+		setContentView(R.layout.place_book);
+		
+		mPublicationSpinner = (Spinner) findViewById(R.id.placement);
+		mPublicationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+				mMagazine = parent.getItemAtPosition(pos).toString();
+				saveSelectedLiterature();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+	    	
+		});
+	}
+	
+	private void updateBookSpinner() {
+		Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature.TYPE + "=?", new String[] { ""+Literature.TYPE_BOOK }, null);
+		if(c != null) {
+			int length = c.getCount() + 1;
+			String[] books = new String[length];
+			int index = 0;
+			if(c.getCount() > 0) {
+				c.moveToFirst();
+				while(!c.isAfterLast()) {
+					books[index] = c.getString(2); // 2 == PUBLICATION
+					c.moveToNext(); 
+					index++;
+				}
+			}
+			books[index] = "Other...";
+			c.close();
+			c = null;
+			
+			ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, books);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			
+			mPublicationSpinner.setAdapter(adapter);
+		}
+	}
+	
+	private void updateBrochureSpinner() {
+		Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature.TYPE + "=?", new String[] { ""+Literature.TYPE_BROCHURE }, null);
+		if(c != null) {
+			int length = c.getCount() + 1;
+			String[] brochures = new String[length];
+			int index = 0;
+			if(c.getCount() > 0) {
+				c.moveToFirst();
+				while(!c.isAfterLast()) {
+					brochures[index] = c.getString(2); // 2 == PUBLICATION
+					c.moveToNext(); 
+					index++;
+				}
+			}
+			brochures[index] = "Other...";
+			c.close();
+			c = null;
+			
+			ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, brochures);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			
+			mPublicationSpinner.setAdapter(adapter);
+		}
+		
+		
+	}
+	
 	private void saveSelectedLiterature() {
 		String publication = null;
 		int newId = 0;
@@ -257,8 +328,6 @@ public class PlacementActivity extends Activity {
 			}
 			//store the Lit id for Placement use
 			mLitID = newId;
-			Log.i(TAG, "Literature Pub: "+publication);
-			Log.i(TAG, "Literature ID: "+mLitID);
 		} else {
 			
 		}

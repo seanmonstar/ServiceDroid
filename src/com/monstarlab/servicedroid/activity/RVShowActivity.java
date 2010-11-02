@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -54,6 +55,9 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private static final int STUDY_COLUMN = 5;
 
 	private static final int DIALOG_PLACEMENT_ID = 0;
+
+	private static final int EDIT_ID = 0;
+	private static final int DELETE_ID = 1;
 	
 	private Uri mUri;
 	private TextView mNameText;
@@ -106,7 +110,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 		mTimeHelper = new TimeUtil(this);
 		
 		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
-		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { mUri.getPathSegments().get(1) }, null);
+		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { mUri.getPathSegments().get(1) }, "placements.date DESC");
 		
 	}
 	
@@ -347,37 +351,54 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 		return date;
 	}
 	
+	private void editPlacement(long id) {
+		Uri uri = ContentUris.withAppendedId(Placements.CONTENT_URI, id);
+		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, PlacementActivity.class);
+        startActivity(i);
+	}
+	
+	private void deletePlacement(long id) {
+		Uri entryUri = ContentUris.withAppendedId(Placements.CONTENT_URI, id);
+		getContentResolver().delete(entryUri, null, null);
+		
+		mListView.invalidate();
+		((SimpleCursorAdapter)mListView.getAdapter()).notifyDataSetChanged();
+	}
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		//menu.setHeaderTitle(title);
-		//menu.add(0, EDIT_ID, 0, R.string.edit);
-		//menu.add(0, DELETE_ID, 0, R.string.delete_time);
+		menu.add(0, EDIT_ID, 0, R.string.edit);
+		menu.add(0, DELETE_ID, 0, R.string.delete_placement);
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		/*switch(item.getItemId()) {
+		switch(item.getItemId()) {
 		
 		case EDIT_ID:
-			editEntry(info.id);
+			editPlacement(info.id);
 			return true;
 		
 		case DELETE_ID:
 			
-			deleteEntry(info.id);
+			deletePlacement(info.id);
 			return true;
-		}*/
+		}
 		
 		
 		return super.onContextItemSelected(item);
 	}
 
+
+
+
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-		// TODO Auto-generated method stub
-		
+		editPlacement(id);
 	}
 
 }

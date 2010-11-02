@@ -10,6 +10,7 @@ import com.monstarlab.servicedroid.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,7 +67,7 @@ public class PlacementActivity extends Activity {
 		if (Intent.ACTION_EDIT.equals(action)) {
 			mState = STATE_EDIT;
 			mUri = intent.getData();
-			mPlacementType = 0; //TODO - query from DB
+			retrievePlacementDetails(mUri); //TODO - query from DB
 			
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
@@ -112,13 +113,36 @@ public class PlacementActivity extends Activity {
 			
 		});
 		
-		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
+		
 	}
 	
+	private void retrievePlacementDetails(Uri uri) {
+		long placementId = Long.parseLong(uri.getPathSegments().get(1));
+		
+		
+		Cursor c = getContentResolver().query(ContentUris.withAppendedId(Placements.DETAILS_CONTENT_URI, placementId), new String[] { Placements._ID, Literature.TYPE, Literature.PUBLICATION }, null, null, null);
+		if(c != null) {
+			if(c.getCount() > 0) {
+				c.moveToFirst();
+				mPlacementType = c.getInt(1);
+				if(mPlacementType == Literature.TYPE_MAGAZINE) {
+					//set magazine, month, and year
+				} else {
+					//set book
+					mBook = c.getString(2);
+				}
+			}			
+			c.close();
+			c = null;
+		}
+		
+		
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
 		if(mCursor != null) {
 			
 			if (mPlacementType == Literature.TYPE_MAGAZINE) {

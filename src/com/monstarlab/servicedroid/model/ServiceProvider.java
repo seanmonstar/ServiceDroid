@@ -54,7 +54,8 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACED_MAGAZINES = 11;
     private static final int PLACED_BROCHURES = 12;
     private static final int PLACED_BOOKS = 13;
-    private static final int LITERATURE_DETAILS = 14;
+    private static final int PLACEMENTS_DETAILS = 14;
+    private static final int PLACEMENTS_DETAILS_ID = 15;
     
     private static final UriMatcher sUriMatcher;
     
@@ -73,7 +74,8 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/magazines", PLACED_MAGAZINES);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/brochures", PLACED_BROCHURES);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
-    	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", LITERATURE_DETAILS);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", PLACEMENTS_DETAILS);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements/details/#", PLACEMENTS_DETAILS_ID);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -105,6 +107,7 @@ public class ServiceProvider extends ContentProvider {
     	sPlacementProjectionMap.put(Placements.CALL_ID, PLACEMENTS_TABLE + "." + Placements.CALL_ID);
     	sPlacementProjectionMap.put(Placements.LITERATURE_ID, PLACEMENTS_TABLE + "." + Placements.LITERATURE_ID);
     	sPlacementProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
+    	sPlacementProjectionMap.put(Literature.TYPE, LITERATURE_TABLE + "." + Literature.TYPE);
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -438,7 +441,10 @@ public class ServiceProvider extends ContentProvider {
 			}
 			break;
 			
-		case LITERATURE_DETAILS:
+		case PLACEMENTS_DETAILS_ID:
+			qb.appendWhere(PLACEMENTS_TABLE+"."+Placements._ID + "=" + uri.getPathSegments().get(2));
+			//falls through
+		case PLACEMENTS_DETAILS:
 			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
 					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + ")");
 			qb.setProjectionMap(sPlacementProjectionMap);

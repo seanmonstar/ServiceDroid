@@ -109,8 +109,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 		
 		mTimeHelper = new TimeUtil(this);
 		
-		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
-		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { mUri.getPathSegments().get(1) }, "placements.date DESC");
+		
 		
 	}
 	
@@ -118,8 +117,13 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	protected void onResume() {
 		super.onResume();
 		
-		//mListView.
+		refreshCallData();
+		refreshPlacementList();
 		
+	}
+	
+	private void refreshCallData() {
+		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
 		if(mCursor != null) {
 			mCursor.moveToFirst();
 			
@@ -136,6 +140,10 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 			mNotesText.setText(notes);
 			mBibleStudyCheckbox.setChecked(isBibleStudy);
 		}
+	}
+	
+	private void refreshPlacementList() {
+		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { mUri.getPathSegments().get(1) }, "placements.date DESC");
 		
 		if(mPlacementsCursor != null) {
 			String[] from = new String[]{ Literature.PUBLICATION, Placements.DATE };
@@ -361,8 +369,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 		Uri entryUri = ContentUris.withAppendedId(Placements.CONTENT_URI, id);
 		getContentResolver().delete(entryUri, null, null);
 		
-		mListView.invalidate();
-		((SimpleCursorAdapter)mListView.getAdapter()).notifyDataSetChanged();
+		refreshPlacementList();
 	}
 	
 	@Override

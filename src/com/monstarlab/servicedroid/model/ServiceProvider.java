@@ -27,7 +27,7 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servoid"; //TODO - change to R.app_name
-    private static final int DATABASE_VERSION = 14; //TODO - once DB is finalized, set back to 1.
+    private static final int DATABASE_VERSION = 15; //TODO - once DB is finalized, set back to 1.
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
     private static final String RETURN_VISITS_TABLE = "return_visits";
@@ -50,6 +50,9 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACEMENTS_ID = 8;
     private static final int LITERATURE = 9;
     private static final int LITERATURE_ID = 10;
+    private static final int PLACED_MAGAZINES = 11;
+    private static final int PLACED_BROCHURES = 12;
+    private static final int PLACED_BOOKS = 13;
     
     private static final UriMatcher sUriMatcher;
     
@@ -63,6 +66,11 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits/#", RETURN_VISITS_ID);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements", PLACEMENTS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/#", PLACEMENTS_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "literature", LITERATURE);
+    	sUriMatcher.addURI(Models.AUTHORITY, "literature/#", LITERATURE_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements/magazines", PLACED_MAGAZINES);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements/brochures", PLACED_BROCHURES);
+    	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -84,13 +92,15 @@ public class ServiceProvider extends ContentProvider {
     	
     	sLiteratureProjectionMap = new HashMap<String, String>();
     	sLiteratureProjectionMap.put(Literature._ID, Literature._ID);
+    	sLiteratureProjectionMap.put(Literature.TYPE, Literature.TYPE);
     	sLiteratureProjectionMap.put(Literature.TITLE, Literature.TITLE);
+    	sLiteratureProjectionMap.put(Literature.PUBLICATION, Literature.PUBLICATION);
     	
     	sPlacementProjectionMap = new HashMap<String, String>();
-    	sPlacementProjectionMap.put(Placements._ID, Placements._ID);
-    	sPlacementProjectionMap.put(Placements.DATE, Placements.DATE);
-    	sPlacementProjectionMap.put(Placements.CALL_ID, Placements.CALL_ID);
-    	sPlacementProjectionMap.put(Placements.LITERATURE_ID, Placements.LITERATURE_ID);
+    	sPlacementProjectionMap.put(Placements._ID, PLACEMENTS_TABLE + "." + Placements._ID);
+    	sPlacementProjectionMap.put(Placements.DATE, PLACEMENTS_TABLE + "." + Placements.DATE);
+    	sPlacementProjectionMap.put(Placements.CALL_ID, PLACEMENTS_TABLE + "." + Placements.CALL_ID);
+    	sPlacementProjectionMap.put(Placements.LITERATURE_ID, PLACEMENTS_TABLE + "." + Placements.LITERATURE_ID);
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -121,6 +131,8 @@ public class ServiceProvider extends ContentProvider {
 			
 			db.execSQL("create table " +  LITERATURE_TABLE + " (" 
 				+ Literature._ID + " integer primary key autoincrement,"
+				+ Literature.TYPE + " integer default 0,"
+				+ Literature.PUBLICATION + " varchar(256),"
 			    + Literature.TITLE + " varchar(256))");
 			
 			db.execSQL("create table " +  PLACEMENTS_TABLE + " (" 
@@ -182,6 +194,22 @@ public class ServiceProvider extends ContentProvider {
 			count = db.delete(RETURN_VISITS_TABLE, Calls._ID + "=" + rvId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
 			break;
 			
+		case PLACEMENTS:
+			count = db.delete(PLACEMENTS_TABLE, where, whereArgs);
+			break;
+		case PLACEMENTS_ID:
+			String placementId = uri.getPathSegments().get(1);
+			count = db.delete(PLACEMENTS_TABLE, Placements._ID + "=" + placementId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
+			break;
+			
+		case LITERATURE:
+			count = db.delete(LITERATURE_TABLE, where, whereArgs);
+			break;
+		case LITERATURE_ID:
+			String litId = uri.getPathSegments().get(1);
+			count = db.delete(LITERATURE_TABLE, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -206,6 +234,16 @@ public class ServiceProvider extends ContentProvider {
 			return ReturnVisits.CONTENT_TYPE;
 		case RETURN_VISITS_ID:
 			return ReturnVisits.CONTENT_ITEM_TYPE;
+			
+		case PLACEMENTS:
+			return Placements.CONTENT_TYPE;
+		case PLACEMENTS_ID:
+			return Placements.CONTENT_ITEM_TYPE;
+			
+		case LITERATURE:
+			return Literature.CONTENT_TYPE;
+		case LITERATURE_ID:
+			return Literature.CONTENT_ITEM_TYPE;
 			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -235,6 +273,18 @@ public class ServiceProvider extends ContentProvider {
 			tableName = RETURN_VISITS_TABLE;
 			nullColumn = ReturnVisits.DATE;
 			contentUri = ReturnVisits.CONTENT_URI;
+			break;
+			
+		case PLACEMENTS:
+			tableName = PLACEMENTS_TABLE;
+			nullColumn = Placements.LITERATURE_ID;
+			contentUri = Placements.CONTENT_URI;
+			break;
+			
+		case LITERATURE:
+			tableName = LITERATURE_TABLE;
+			nullColumn = Literature.TITLE;
+			contentUri = Literature.CONTENT_URI;
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI + "+uri);
@@ -304,6 +354,58 @@ public class ServiceProvider extends ContentProvider {
 				orderBy = ReturnVisits.DEFAULT_SORT_ORDER;
 			}
 			break;
+			
+		case PLACEMENTS_ID:
+			qb.appendWhere(Placements._ID + "=" + uri.getPathSegments().get(1));
+			//falls through
+		case PLACEMENTS:
+			qb.setTables(PLACEMENTS_TABLE);
+			qb.setProjectionMap(sPlacementProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = Placements.DEFAULT_SORT_ORDER;
+			}
+			break;
+			
+		case LITERATURE_ID:
+			qb.appendWhere(Literature._ID + "=" + uri.getPathSegments().get(1));
+			//falls through
+		case LITERATURE:
+			qb.setTables(LITERATURE_TABLE);
+			qb.setProjectionMap(sLiteratureProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = Literature.DEFAULT_SORT_ORDER;
+			}
+			break;
+			
+		case PLACED_MAGAZINES:
+			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
+					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND " 
+					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_MAGAZINE +")");
+			qb.setProjectionMap(sPlacementProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = LITERATURE_TABLE + "."+ Literature.DEFAULT_SORT_ORDER;
+			}
+			break;
+			
+		case PLACED_BROCHURES:
+			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
+					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND " 
+					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_BROCHURE +")");
+			qb.setProjectionMap(sPlacementProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = LITERATURE_TABLE + "."+ Literature.DEFAULT_SORT_ORDER;
+			}
+			break;
+			
+		case PLACED_BOOKS:
+			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
+					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND " 
+					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_BOOK +")");
+			qb.setProjectionMap(sPlacementProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = LITERATURE_TABLE + "."+ Literature.DEFAULT_SORT_ORDER;
+			}
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -340,7 +442,23 @@ public class ServiceProvider extends ContentProvider {
 			break;
 		case RETURN_VISITS_ID:
 			String rvId = uri.getPathSegments().get(1);
-			count = db.update(RETURN_VISITS_TABLE, values, Calls._ID + "=" + rvId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
+			count = db.update(RETURN_VISITS_TABLE, values, ReturnVisits._ID + "=" + rvId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
+			break;
+			
+		case PLACEMENTS:
+			count = db.update(PLACEMENTS_TABLE, values, where, whereArgs);
+			break;
+		case PLACEMENTS_ID:
+			String placementId = uri.getPathSegments().get(1);
+			count = db.update(PLACEMENTS_TABLE, values, Placements._ID + "=" + placementId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
+			break;
+			
+		case LITERATURE:
+			count = db.update(LITERATURE_TABLE, values, where, whereArgs);
+			break;
+		case LITERATURE_ID:
+			String litId = uri.getPathSegments().get(1);
+			count = db.update(LITERATURE_TABLE, values, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

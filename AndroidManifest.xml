@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".activity.RVEditActivity" android:label="@string/rv">
         </activity>
+        <activity android:name=".activity.PlacementActivity" android:label="@string/placement">
+        </activity>
         <activity android:name=".activity.StatisticsActivity" android:label="@string/stats">
         </activity>
         

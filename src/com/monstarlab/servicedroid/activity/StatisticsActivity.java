@@ -22,6 +22,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.util.TimeUtil;
@@ -42,6 +43,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private static String[] CallsProjection = new String[] { Calls._ID, Calls.BIBLE_STUDY };
 	private static String[] TimeProjection = new String[] { TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	private static String[] RVProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
+	private static String[] PlacementsProjection = new String[] { Placements._ID, Placements.DATE };
 	
 	private TextView mTimePeriodDisplay;
 	private TextView mHoursDisplay;
@@ -120,27 +122,46 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 
 
 	protected String getBooks() {
-		// TODO Auto-generated method stub
-		return "N/A";
+		Cursor c = getContentResolver().query(Placements.BOOKS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		int sum = 0;
+		if(c != null) {
+			sum = c.getCount();
+			c.close();
+			c = null;
+		}
+		return ""+sum;
 	}
 
 
 
 	protected String getBrochures() {
-		// TODO Auto-generated method stub
-		return "N/A";
+		Cursor c = getContentResolver().query(Placements.BROCHURES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		int sum = 0;
+		if(c != null) {
+			sum = c.getCount();
+			c.close();
+			c = null;
+		}
+		return ""+sum;
 	}
 
 
 
 	protected String getMagazines() {
-		// TODO Auto-generated method stub
-		return "N/A";
+		Cursor c = getContentResolver().query(Placements.MAGAZINES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		int sum = 0;
+		if(c != null) {
+			sum = c.getCount();
+			c.close();
+			c = null;
+		}
+		return ""+sum;
 	}
 
 
 
 	protected String getHoursSum() {
+		
 		Cursor c = getContentResolver().query(TimeEntries.CONTENT_URI, TimeProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {

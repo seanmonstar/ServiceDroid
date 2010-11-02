@@ -100,11 +100,15 @@ public final class Models {
 		
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements");
 		
+		public static final Uri MAGAZINES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/magazines");
+		public static final Uri BROCHURES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/brochures");
+		public static final Uri BOOKS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/books");
+		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.placement";
 		
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.placement";
 		
-		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+		public static final String DEFAULT_SORT_ORDER = "date ASC";
 		
 		/**
 		 * 	type: date
@@ -135,10 +139,24 @@ public final class Models {
 		
 		public static final String DEFAULT_SORT_ORDER = "_id ASC";
 		
+		public static final int TYPE_MAGAZINE = 0;
+		public static final int TYPE_BROCHURE = 1;
+		public static final int TYPE_BOOK = 2;
+		
 		/**
-		 * 	type: date
+		 * 	type: varchar
 		 */
 		public static final String TITLE = "title";
+		
+		/**
+		 * 	type: int
+		 */
+		public static final String TYPE = "type";
+		
+		/**
+		 * 	type: varchar
+		 */
+		public static final String PUBLICATION = "publication";
 		
 	}
 	

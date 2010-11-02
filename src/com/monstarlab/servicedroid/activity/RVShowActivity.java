@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.model.Models.Literature;
+import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
@@ -125,7 +127,7 @@ public class RVShowActivity extends Activity {
         
         menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
         menu.add(0, MENU_RETURN, 3, "Return").setIcon(android.R.drawable.ic_menu_myplaces);
-        menu.add(0, MENU_STUDY, 4, R.string.bible_study).setIcon(android.R.drawable.ic_menu_search);
+        //menu.add(0, MENU_STUDY, 4, R.string.bible_study).setIcon(android.R.drawable.ic_menu_search);
         return result;
     }
 	
@@ -208,7 +210,17 @@ public class RVShowActivity extends Activity {
 	}
 
 	protected void makeMagazinePlacement() {
-		Intent i = new Intent(Intent.ACTION_INSERT, getIntent().getData(), this, PlacementActivity.class);
+		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
+		
+		if(mCursor != null) {
+			mCursor.moveToFirst();
+			i.putExtra(Calls._ID, mCursor.getInt(ID_COLUMN));
+		}
+		
+		i.putExtra("type", Literature.TYPE_MAGAZINE);
+		
+		
+		
 		startActivity(i);
 		
 	}
@@ -265,11 +277,12 @@ public class RVShowActivity extends Activity {
 			mCursor.moveToFirst();
 			
 			Cursor c = getContentResolver().query(ReturnVisits.CONTENT_URI, new String[] { ReturnVisits.DATE }, "call_id = ?", new String[] { mCursor.getString(ID_COLUMN) }, "date desc");
-			if(c != null && c.getCount() > 0) {
-				c.moveToFirst();
-				
-				date = c.getString(0);
-				
+			if(c != null) {
+				if(c.getCount() > 0) {
+					c.moveToFirst();
+					
+					date = c.getString(0);
+				}
 				c.close();
 				c = null;
 			}

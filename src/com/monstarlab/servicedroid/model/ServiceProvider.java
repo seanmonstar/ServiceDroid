@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -27,7 +28,7 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servoid"; //TODO - change to R.app_name
-    private static final int DATABASE_VERSION = 15; //TODO - once DB is finalized, set back to 1.
+    private static final int DATABASE_VERSION = 16; //TODO - once DB is finalized, set back to 1.
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
     private static final String RETURN_VISITS_TABLE = "return_visits";
@@ -105,8 +106,11 @@ public class ServiceProvider extends ContentProvider {
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
-		public DatabaseHelper(Context context) {
+		protected Context mContext;
+    	
+    	public DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			mContext = context;
 		}
 
 		@Override
@@ -140,6 +144,30 @@ public class ServiceProvider extends ContentProvider {
 			    + Placements.DATE + " date default current_timestamp,"
 			    + Placements.CALL_ID + " integer references calls(id),"
 			    + Placements.LITERATURE_ID + " integer references literature(id))");
+			
+			//some default books
+			ContentValues values = new ContentValues();
+			values.put(Literature.TYPE, Literature.TYPE_BOOK);
+			values.put(Literature.PUBLICATION, mContext.getString(R.string.bible));
+			db.insert(LITERATURE_TABLE, Literature.TITLE, values);
+			
+			values = new ContentValues();
+			values.put(Literature.TYPE, Literature.TYPE_BOOK);
+			values.put(Literature.PUBLICATION, mContext.getString(R.string.bible_teach));
+			db.insert(LITERATURE_TABLE, Literature.TITLE, values);
+			
+			//some default brochures
+			
+			values = new ContentValues();
+			values.put(Literature.TYPE, Literature.TYPE_BROCHURE);
+			values.put(Literature.PUBLICATION, mContext.getString(R.string.require_brochure));
+			db.insert(LITERATURE_TABLE, Literature.TITLE, values);
+			
+			values = new ContentValues();
+			values.put(Literature.TYPE, Literature.TYPE_BROCHURE);
+			values.put(Literature.PUBLICATION, mContext.getString(R.string.comfort_brochure));
+			db.insert(LITERATURE_TABLE, Literature.TITLE, values);
+			
 			
 		}
 

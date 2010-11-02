@@ -106,6 +106,9 @@ public class TimeUtil {
 		return c.get(Calendar.YEAR);
 	}
 	
+	/*
+	 * returns Month (1-12)
+	 */
 	public static int getCurrentMonth() {
 		Calendar c = Calendar.getInstance();
 		return c.get(Calendar.MONTH) + 1;
@@ -114,5 +117,10 @@ public class TimeUtil {
 	public static int getCurrentDay() {
 		Calendar c = Calendar.getInstance();
 		return c.get(Calendar.DATE);
+	}
+	
+	public static long getCurrentTime() {
+		Calendar c = Calendar.getInstance();
+		return c.getTimeInMillis();
 	}
 }

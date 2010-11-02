@@ -28,6 +28,10 @@
         
         <provider android:name=".model.ServiceProvider" android:authorities="com.monstarlab.servicedroid">
         </provider>
+        
+        <service android:name=".service.ReminderService"></service>
+        
+        <receiver android:name=".receiver.NotificationReceiver"></receiver>
 
     </application>
     <uses-sdk android:minSdkVersion="3" />

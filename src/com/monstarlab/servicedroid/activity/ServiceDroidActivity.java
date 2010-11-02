@@ -1,6 +1,7 @@
 package com.monstarlab.servicedroid.activity;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.service.ReminderService;
 
 import android.app.Activity;
 import android.app.TabActivity;
@@ -23,6 +24,9 @@ public class ServiceDroidActivity extends TabActivity implements TabHost.OnTabCh
         setupTimeActivity();
         setupReturnVisitsActivity();
         setupStatisticsActivity();
+        
+        //setup reminders
+        setupReminderService();
     }
 
 	public void setupTimeActivity() {
@@ -56,5 +60,10 @@ public class ServiceDroidActivity extends TabActivity implements TabHost.OnTabCh
         if (activity != null) {
             activity.onWindowFocusChanged(true);
         }
+	}
+	
+	private void setupReminderService() {
+		Intent i = new Intent(this, ReminderService.class);
+		startService(i);
 	}
 }

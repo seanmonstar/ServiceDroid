@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -82,7 +83,10 @@ public class ReturnVisitsActivity extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//menu.setHeaderTitle(title);
+		
+		String name = ((TextView)((AdapterContextMenuInfo)menuInfo).targetView.findViewById(R.id.name)).getText().toString();
+		
+		menu.setHeaderTitle(name);
 		menu.add(0, EDIT_ID, 0, R.string.edit);
 		menu.add(0, RETURN_ID, 1, R.string.make_return);
         menu.add(0, DELETE_ID, 2, R.string.delete_call);

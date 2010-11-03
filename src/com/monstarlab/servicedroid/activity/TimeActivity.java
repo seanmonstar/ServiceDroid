@@ -185,7 +185,10 @@ public class TimeActivity extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//menu.setHeaderTitle(title);
+		
+		String title = ((TextView)((AdapterContextMenuInfo)menuInfo).targetView.findViewById(R.id.length)).getText().toString();
+		
+		menu.setHeaderTitle(title);
 		menu.add(0, EDIT_ID, 0, R.string.edit);
 		menu.add(0, DELETE_ID, 0, R.string.delete_time);
 	}

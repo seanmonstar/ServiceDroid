@@ -1,5 +1,8 @@
 package com.monstarlab.servicedroid.activity;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -9,6 +12,7 @@ import com.monstarlab.servicedroid.util.TimeUtil;
 import com.monstarlab.servicedroid.R;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -23,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -39,6 +44,7 @@ public class PlacementActivity extends Activity {
 	
 	private static final String[] YEARS = new String[] { "2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000" };
 	private static final int DIALOG_CREATE_ID = 0;
+	private static final int DIALOG_DATE_ID = 1;
 	
 	private int mState;
 	private Uri mUri;
@@ -56,10 +62,17 @@ public class PlacementActivity extends Activity {
 	private int mLitID;
 	private int mMonth;
 	private int mYear;
+	private int mPlaceYear;
+	private int mPlaceMonth;
+	private int mPlaceDay;
+	private TimeUtil mTimeHelper;
+	private Button mDateBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		mTimeHelper = new TimeUtil(this);
 		
 		//load in the values, if editting
 		final Intent intent = getIntent();
@@ -103,6 +116,8 @@ public class PlacementActivity extends Activity {
 			setupBookAndBrochureView();
 		} 
 		
+		setupDateButton();
+		
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
 
@@ -116,6 +131,19 @@ public class PlacementActivity extends Activity {
 		
 	}
 	
+	private void setupDateButton() {
+		mDateBtn = (Button) findViewById(R.id.date);
+		
+		mDateBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				showDialog(DIALOG_DATE_ID);
+			}
+			
+		});
+	}
+
 	private void retrievePlacementDetails(Uri uri) {
 		long placementId = Long.parseLong(uri.getPathSegments().get(1));
 		
@@ -149,6 +177,23 @@ public class PlacementActivity extends Activity {
 		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
 		if(mCursor != null) {
 			
+			//grab date
+			if(mCursor.getCount() > 0) {
+				mCursor.moveToFirst();
+				String date = mCursor.getString(3);
+				try {
+					Date d = mTimeHelper.parseDateText(date);
+					mPlaceYear = d.getYear() + 1900;
+					mPlaceMonth = d.getMonth();
+					mPlaceDay = d.getDate();
+				} catch (ParseException e) {
+					mPlaceYear = TimeUtil.getCurrentYear();
+					mPlaceMonth = TimeUtil.getCurrentMonth() - 1;
+					mPlaceDay = TimeUtil.getCurrentDay();
+				}
+				updateDateButton();
+			}
+			
 			if (mPlacementType == Literature.TYPE_MAGAZINE) {
 				
 				
@@ -159,6 +204,18 @@ public class PlacementActivity extends Activity {
 		}
 	}
 	
+	private void updateDateButton() {
+		if(mCursor != null) {
+			if(mCursor.getCount() > 0) {
+				mCursor.moveToFirst();
+				String date = buildDateString();
+				mDateBtn.setText(mTimeHelper.normalizeDate(date));
+			}
+		}
+		
+		
+	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -191,12 +248,30 @@ public class PlacementActivity extends Activity {
 	    case DIALOG_CREATE_ID:
 	    	dialog = makeCreateLiteratureDialog();
 	        break;
+	    case DIALOG_DATE_ID:
+	    	dialog = makeDateDialog();
+	    	break;
 	    default:
 	        dialog = null;
 	    }
 		return dialog;
 	}
 	
+	private Dialog makeDateDialog() {
+		return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() { //TODO - dont make a new listener each time...
+			
+			@Override
+			public void onDateSet(DatePicker view, int year, int month, int day) {
+				mPlaceYear = year;
+				mPlaceMonth = month;
+				mPlaceDay = day;
+				savePlaceDate();
+				
+			}
+
+		}, mPlaceYear, mPlaceMonth, mPlaceDay);
+	}
+
 	private Dialog makeCreateLiteratureDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -382,6 +457,19 @@ public class PlacementActivity extends Activity {
 				mPublicationSpinner.setSelection(selectedIndex);
 			}
 		}
+	}
+	
+	private String buildDateString() {
+		return ""+mPlaceYear + "-" + TimeUtil.pad(mPlaceMonth + 1) + "-" + TimeUtil.pad(mPlaceDay);
+	}
+	
+	private void savePlaceDate() {
+		ContentValues values = new ContentValues();
+		String date = buildDateString();
+		
+		values.put(Placements.DATE, date);
+		getContentResolver().update(mUri, values, null, null);
+		updateDateButton();
 	}
 	
 	private void saveSelectedLiterature() {

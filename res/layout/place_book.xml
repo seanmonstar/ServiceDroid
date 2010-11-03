@@ -20,6 +20,20 @@
         android:layout_height="wrap_content"
         android:prompt="@string/placement"
     />
+    
+    <TextView
+    		android:text="@string/date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:padding="7dip"
+        />
+        
+  <Button android:id="@+id/date" 
+	    android:text="@string/date"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
   
   <Button android:id="@+id/confirm" 
 	    android:text="@string/confirm"

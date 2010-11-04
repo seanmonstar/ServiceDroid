@@ -64,10 +64,34 @@ public final class Models {
 		 */
 		public static final String DATE = "date";
 		
+	}
+	
+	public static final class BibleStudies implements BaseColumns {
+
+		private BibleStudies() {}
+		
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/biblestudies");
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.biblestudy";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.biblestudy";
+		
+		public static final String DEFAULT_SORT_ORDER = "date_start ASC";
+		
 		/**
-		 * 	type: boolean
+		 * 	type: date
 		 */
-		public static final String BIBLE_STUDY = "bible_study"; // TODO- rename to is_bible_study
+		public static final String DATE_START = "date_start";
+		
+		/**
+		 * 	type: date
+		 */
+		public static final String DATE_END = "date_end";
+		
+		/**
+		 * 	type: varchar(128)
+		 */
+		public static final String CALL_ID = "call_id";
 	}
 	
 	public static final class ReturnVisits implements BaseColumns {

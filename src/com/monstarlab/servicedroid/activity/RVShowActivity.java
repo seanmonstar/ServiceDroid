@@ -29,6 +29,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -45,19 +46,22 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private static final int MENU_STUDY = Menu.FIRST + 3;
 	
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.BIBLE_STUDY };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE };
+	private static final String[] BIBLE_STUDY_PROJECTION = new String[] { BibleStudies._ID, BibleStudies.DATE_START, BibleStudies.DATE_END, BibleStudies.CALL_ID };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE };
 	private static final int ID_COLUMN = 0;
 	private static final int NAME_COLUMN = 1;
 	private static final int ADDRESS_COLUMN = 2;
 	private static final int NOTES_COLUMN = 3; 
 	private static final int DATE_COLUMN = 4;
-	private static final int STUDY_COLUMN = 5;
 
 	private static final int DIALOG_PLACEMENT_ID = 0;
+	private static final int DIALOG_BIBLESTUDYDELETE_ID = 1;
 
 	private static final int EDIT_ID = 0;
 	private static final int DELETE_ID = 1;
+
+	
 	
 	private Uri mUri;
 	private TextView mNameText;
@@ -130,7 +134,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 			String name = mCursor.getString(NAME_COLUMN);
 			String address = mCursor.getString(ADDRESS_COLUMN);
 			String notes = mCursor.getString(NOTES_COLUMN);
-			boolean isBibleStudy = ( mCursor.getInt(STUDY_COLUMN) != 0 );
+			boolean isBibleStudy = isBibleStudy();
 			
 			updateLastVisited();
 			
@@ -140,6 +144,31 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 			mNotesText.setText(notes);
 			mBibleStudyCheckbox.setChecked(isBibleStudy);
 		}
+	}
+	
+	private boolean isBibleStudy() {
+		boolean isStudy = false;
+		
+		if(mUri != null) {
+			Cursor c = getCurrentBibleStudyCursor();
+			if(c.getCount() > 0) {
+				//if we got results, then there is a bible study
+				isStudy = true;
+			}
+			c.close();
+			c = null;
+		}
+		
+		return isStudy;
+	}
+	
+	private Cursor getCurrentBibleStudyCursor() {
+		String callId = mUri.getPathSegments().get(1);
+		
+		// isBibleStudy if Bible Study exists and hasn't ended yet
+		String where = BibleStudies.CALL_ID + "=? and " + BibleStudies.DATE_END + " isnull";
+		String[] whereArgs = new String[] { callId };
+		return getContentResolver().query(BibleStudies.CONTENT_URI, BIBLE_STUDY_PROJECTION, where, whereArgs, null);
 	}
 	
 	private void refreshPlacementList() {
@@ -184,12 +213,39 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	    case DIALOG_PLACEMENT_ID:
 	    	dialog = makePlacementDialog();
 	        break;
+	    case DIALOG_BIBLESTUDYDELETE_ID:
+	    	dialog = makeBibleStudyDeleteDialog();
+	    	break;
 	    default:
 	        dialog = null;
 	    }
 	    return dialog;
 	}
 	
+	private Dialog makeBibleStudyDeleteDialog() {
+		final CharSequence[] items = { getString(R.string.magazine), getString(R.string.brochure), getString(R.string.book) };
+		final int MAGAZINE = 0;
+		final int BROCHURE = 1;
+		final int BOOK = 2;
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		//builder.setTitle(getString(R.string.placement));
+		builder.setMessage(getString(R.string.bible_study_prompt))
+	       .setCancelable(false)
+	       .setPositiveButton(getString(R.string.bible_study_prompt_finish), new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               finishBibleStudy(); 
+	           }
+	       })
+	       .setNegativeButton(getString(R.string.bible_study_prompt_delete), new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	                deleteBibleStudy();
+	           }
+	       });
+		return builder.create();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -295,16 +351,77 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	
 	protected void updateStudyStatus(boolean isStudy) {
 		if(mUri != null) {
-			ContentValues values = new ContentValues();
-			values.put(Calls.BIBLE_STUDY, isStudy);
-			getContentResolver().update(mUri, values, null, null);
+			String callId = mUri.getPathSegments().get(1);
+			
+			if(isStudy) {
+				Cursor c = getCurrentBibleStudyCursor();
+				ContentValues values = new ContentValues();
+				if(c.getCount() == 0) {
+					//create a new record
+					values.put(BibleStudies.CALL_ID, callId);
+					getContentResolver().insert(BibleStudies.CONTENT_URI, values);
+				}
+				c.close();
+				c = null;
+				
+				showStudyToast(isStudy);
+			} else {
+				
+				//ask user to delete whole record, or just end study
+				showDialog(DIALOG_BIBLESTUDYDELETE_ID);
+				
+			}
 			
 			
-			String name = mCursor.getString(NAME_COLUMN);
-			String status = isStudy ? "now" : "no longer";
-			String text = name + " is " + status + " a bible study.";
-			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+			
+			
+			
+			
+			
 		}
+	}
+	
+	private void showStudyToast(boolean isStudy) {
+		String name = mCursor.getString(NAME_COLUMN);
+		String status = isStudy ? "now" : "no longer";
+		String text = name + " is " + status + " a bible study.";
+		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+	}
+	
+	private void finishBibleStudy() {
+		//put an end date on current record, if it exists
+		Cursor c = getCurrentBibleStudyCursor();
+		ContentValues values = new ContentValues();
+		
+		String endTime = TimeUtil.getCurrentTimeSQLText();
+		if(c.getCount() > 0) {
+			c.moveToFirst();
+			int bsID = c.getInt(0);
+			Uri bsUri = ContentUris.withAppendedId(BibleStudies.CONTENT_URI, bsID);
+			
+			values.put(BibleStudies.DATE_END, endTime);
+			getContentResolver().update(bsUri, values, null, null);
+		}
+		
+		c.close();
+		c = null;
+		showStudyToast(false);
+	}
+	
+	private void deleteBibleStudy() {
+		//remove the bibly study completely
+		Cursor c = getCurrentBibleStudyCursor();
+		
+		if(c.getCount() > 0) {
+			c.moveToFirst();
+			int bsID = c.getInt(0);
+			Uri bsUri = ContentUris.withAppendedId(BibleStudies.CONTENT_URI, bsID);
+			getContentResolver().delete(bsUri, null, null);
+		}
+		
+		c.close();
+		c = null;
+		showStudyToast(false);
 	}
 
 	protected void returnOnCall() {

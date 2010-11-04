@@ -41,6 +41,9 @@
 	<string name="comfort_brochure">When Someone You Love Dies</string>
 	<string name="bible_study">Bible Study</string>
 	<string name="bible_studies">Bible Studies</string>
+	<string name="bible_study_prompt">Do you wish to mark it as ended, or delete all traces of this study?</string>
+	<string name="bible_study_prompt_delete">Delete</string>
+	<string name="bible_study_prompt_finish">It Ended</string>
 	<string name="notes">Notes</string>
 	<string name="send">Send</string>
 	<string name="monthly">Monthly</string>

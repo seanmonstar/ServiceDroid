@@ -9,19 +9,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
@@ -40,7 +38,8 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	//private TimeUtil mTimeHelper;
 	
-	private static String[] CallsProjection = new String[] { Calls._ID, Calls.BIBLE_STUDY };
+	//private static String[] CallsProjection = new String[] { Calls._ID, Calls.BIBLE_STUDY };
+	private static String[] BibleStudiesProjection = new String[] { BibleStudies._ID };
 	private static String[] TimeProjection = new String[] { TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	private static String[] RVProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
 	private static String[] PlacementsProjection = new String[] { Placements._ID, Placements.DATE };
@@ -55,7 +54,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	private int mCurrentMonth = TimeUtil.getCurrentMonth();
 	private int mCurrentYear = TimeUtil.getCurrentYear();
-	private int mTimeSpan = MENU_MONTH;
+	//private int mTimeSpan = MENU_MONTH;
 	
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -108,7 +107,15 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	}
 	
 	protected String getBibleStudies() {
-		Cursor c = getContentResolver().query(Calls.CONTENT_URI, CallsProjection, Calls.BIBLE_STUDY + "=1", null, null);
+		//all Bible Studies started before next month, and not ended before this month
+		String where = BibleStudies.DATE_START + "<? and (" + BibleStudies.DATE_END+" isnull or "+BibleStudies.DATE_END + ">?)";
+		
+		String[] args = getTimePeriodArgs(mCurrentYear, mCurrentMonth);
+		String thisMonth = args[0];
+		String nextMonth = args[1];
+		
+		String[] whereArgs = new String[] { nextMonth, thisMonth };
+		Cursor c = getContentResolver().query(BibleStudies.CONTENT_URI, BibleStudiesProjection, where, whereArgs, null);
 		int sum = 0;
 		if(c != null) {
 			c.moveToFirst();
@@ -210,7 +217,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	}
 	
 	protected String getTimePeriodWhere(String dateField) {
-		return dateField + " between ? and ?"; // "dateField between YYYY-MM-01 and date('YYYY-MM-01','+1 month','-1 day');"
+		return "("+dateField + " between ? and ?)"; // "dateField between YYYY-MM-01 and date('YYYY-MM-01','+1 month','-1 day');"
 	}
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
@@ -225,9 +232,9 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		return args;
 	}
 	
-	protected void setTimeSpan(int span) {
+	/*protected void setTimeSpan(int span) {
 		mTimeSpan = span;
-	}
+	}*/
 	
 	
 	@Override
@@ -243,12 +250,12 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	public boolean onOptionsItemSelected(MenuItem item) {		
 		switch(item.getItemId()) {
 		
-		case MENU_MONTH:
+		/*case MENU_MONTH:
 			setTimeSpan(MENU_MONTH);
 			break;
 		case MENU_YEAR:
 			setTimeSpan(MENU_YEAR);
-			break;
+			break;*/
 		
 		case MENU_EMAIL:
 			sendEmail();

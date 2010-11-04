@@ -119,6 +119,42 @@ public class TimeUtil {
 		return c.get(Calendar.DATE);
 	}
 	
+	public static Date getCurrentDate() {
+		Calendar c = Calendar.getInstance();
+		return c.getTime();
+	}
+	
+	public static int getCurrentHour() {
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.HOUR_OF_DAY);
+	}
+	
+	public static int getCurrentMinute() {
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.MINUTE);
+	}
+	
+	public static int getCurrentSecond() {
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.SECOND);
+	}
+	
+	public static String getCurrentTimeSQLText() {
+		return new StringBuilder()
+			.append(getCurrentYear())
+			.append("-")
+			.append(pad(getCurrentMonth()))
+			.append("-")
+			.append(pad(getCurrentDay()))
+			.append(" ")
+			.append(pad(getCurrentHour()))
+			.append(":")
+			.append(pad(getCurrentMinute()))
+			.append(":")
+			.append(pad(getCurrentSecond()))
+			.toString();
+	}
+	
 	public static long getCurrentTime() {
 		Calendar c = Calendar.getInstance();
 		return c.getTimeInMillis();

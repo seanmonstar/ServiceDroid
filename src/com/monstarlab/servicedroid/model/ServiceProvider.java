@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -28,9 +29,10 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servoid"; //TODO - change to R.app_name
-    private static final int DATABASE_VERSION = 16; //TODO - once DB is finalized, set back to 1.
+    private static final int DATABASE_VERSION = 17; //TODO - once DB is finalized, set back to 1.
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
+    private static final String BIBLE_STUDIES_TABLE = "bible_studies";
     private static final String RETURN_VISITS_TABLE = "return_visits";
     private static final String LITERATURE_TABLE = "literature";
     private static final String PLACEMENTS_TABLE = "placements";
@@ -38,6 +40,7 @@ public class ServiceProvider extends ContentProvider {
     private static HashMap<String, String> sTimeProjectionMap;
     private static HashMap<String, String> sCallProjectionMap;
     private static HashMap<String, String> sRVProjectionMap;
+    private static HashMap<String, String> sBibleStudyProjectionMap;
     private static HashMap<String, String> sLiteratureProjectionMap;
     private static HashMap<String, String> sPlacementProjectionMap;
     
@@ -56,6 +59,8 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACED_BOOKS = 13;
     private static final int PLACEMENTS_DETAILS = 14;
     private static final int PLACEMENTS_DETAILS_ID = 15;
+    private static final int BIBLE_STUDIES = 16;
+    private static final int BIBLE_STUDIES_ID = 17;
     
     private static final UriMatcher sUriMatcher;
     
@@ -76,6 +81,8 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", PLACEMENTS_DETAILS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details/#", PLACEMENTS_DETAILS_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "biblestudies", BIBLE_STUDIES);
+    	sUriMatcher.addURI(Models.AUTHORITY, "biblestudies/#", BIBLE_STUDIES_ID);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -88,7 +95,6 @@ public class ServiceProvider extends ContentProvider {
     	sCallProjectionMap.put(Calls.ADDRESS, Calls.ADDRESS);
     	sCallProjectionMap.put(Calls.NOTES, Calls.NOTES);
     	sCallProjectionMap.put(Calls.DATE, Calls.DATE);
-    	sCallProjectionMap.put(Calls.BIBLE_STUDY, Calls.BIBLE_STUDY);
     	
     	sRVProjectionMap = new HashMap<String, String>();
     	sRVProjectionMap.put(ReturnVisits._ID, ReturnVisits._ID);
@@ -108,6 +114,12 @@ public class ServiceProvider extends ContentProvider {
     	sPlacementProjectionMap.put(Placements.LITERATURE_ID, PLACEMENTS_TABLE + "." + Placements.LITERATURE_ID);
     	sPlacementProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
     	sPlacementProjectionMap.put(Literature.TYPE, LITERATURE_TABLE + "." + Literature.TYPE);
+    	
+    	sBibleStudyProjectionMap = new HashMap<String, String>();
+    	sBibleStudyProjectionMap.put(BibleStudies._ID, BibleStudies._ID);
+    	sBibleStudyProjectionMap.put(BibleStudies.DATE_START, BibleStudies.DATE_START);
+    	sBibleStudyProjectionMap.put(BibleStudies.DATE_END, BibleStudies.DATE_END);
+    	sBibleStudyProjectionMap.put(BibleStudies.CALL_ID, BibleStudies.CALL_ID);
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -130,9 +142,14 @@ public class ServiceProvider extends ContentProvider {
 				+ Calls._ID + " integer primary key autoincrement,"
 			    + Calls.NAME + " varchar(128),"
 			    + Calls.ADDRESS + " varchar(128),"
-			    + Calls.BIBLE_STUDY + " boolean default false,"
 			    + Calls.DATE + " date default current_timestamp,"
 			    + Calls.NOTES + " text );");
+			
+			db.execSQL("create table " +  BIBLE_STUDIES_TABLE + " (" 
+					+ BibleStudies._ID + " integer primary key autoincrement,"
+				    + BibleStudies.DATE_START + " date default current_timestamp,"
+				    + BibleStudies.DATE_END + " date,"
+				    + BibleStudies.CALL_ID + " integer references calls(id) );");
 			
 			db.execSQL("create table " +  RETURN_VISITS_TABLE + " (" 
 				+ ReturnVisits._ID + " integer primary key autoincrement,"
@@ -179,6 +196,8 @@ public class ServiceProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			// TODO - this need to be commented out and replaced with proper SQL statesments as needed
+			
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS " + TIME_ENTRIES_TABLE);
@@ -186,6 +205,7 @@ public class ServiceProvider extends ContentProvider {
             db.execSQL("DROP TABLE IF EXISTS " + RETURN_VISITS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + PLACEMENTS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + LITERATURE_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS " + BIBLE_STUDIES_TABLE);
             onCreate(db);
 			
 		}
@@ -244,6 +264,14 @@ public class ServiceProvider extends ContentProvider {
 			count = db.delete(LITERATURE_TABLE, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
 			break;
 			
+		case BIBLE_STUDIES:
+			count = db.delete(BIBLE_STUDIES_TABLE, where, whereArgs);
+			break;
+		case BIBLE_STUDIES_ID:
+			String bsId = uri.getPathSegments().get(1);
+			count = db.delete(BIBLE_STUDIES_TABLE, BibleStudies._ID + "=" + bsId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -278,6 +306,11 @@ public class ServiceProvider extends ContentProvider {
 			return Literature.CONTENT_TYPE;
 		case LITERATURE_ID:
 			return Literature.CONTENT_ITEM_TYPE;
+			
+		case BIBLE_STUDIES:
+			return BibleStudies.CONTENT_TYPE;
+		case BIBLE_STUDIES_ID:
+			return BibleStudies.CONTENT_ITEM_TYPE;
 			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -320,6 +353,12 @@ public class ServiceProvider extends ContentProvider {
 			nullColumn = Literature.TITLE;
 			contentUri = Literature.CONTENT_URI;
 			break;
+			
+		case BIBLE_STUDIES:
+			tableName = BIBLE_STUDIES_TABLE;
+			nullColumn = BibleStudies.DATE_END;
+			contentUri = BibleStudies.CONTENT_URI;
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI + "+uri);
 		}
@@ -353,6 +392,8 @@ public class ServiceProvider extends ContentProvider {
 		//setup for various tables
 		
 		String orderBy = null;
+		String groupBy = null;
+		
 		if(!TextUtils.isEmpty(sortOrder)) {
 			orderBy = sortOrder;
 		}
@@ -411,6 +452,19 @@ public class ServiceProvider extends ContentProvider {
 			}
 			break;
 			
+		case BIBLE_STUDIES_ID:
+			qb.appendWhere(BibleStudies._ID + "=" + uri.getPathSegments().get(1));
+			//falls through
+		case BIBLE_STUDIES:
+			qb.setTables(BIBLE_STUDIES_TABLE);
+			qb.setProjectionMap(sBibleStudyProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = BibleStudies.DEFAULT_SORT_ORDER;
+			}
+			
+			groupBy = BibleStudies.CALL_ID;
+			break;
+			
 		case PLACED_MAGAZINES:
 			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
 					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND " 
@@ -458,7 +512,7 @@ public class ServiceProvider extends ContentProvider {
 		
 		//standard query stuff
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
-		Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
+		Cursor c = qb.query(db, projection, selection, selectionArgs, groupBy, null, orderBy);
 		
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 		return c;
@@ -505,6 +559,14 @@ public class ServiceProvider extends ContentProvider {
 		case LITERATURE_ID:
 			String litId = uri.getPathSegments().get(1);
 			count = db.update(LITERATURE_TABLE, values, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
+			break;
+			
+		case BIBLE_STUDIES:
+			count = db.update(BIBLE_STUDIES_TABLE, values, where, whereArgs);
+			break;
+		case BIBLE_STUDIES_ID:
+			String bsId = uri.getPathSegments().get(1);
+			count = db.update(BIBLE_STUDIES_TABLE, values, BibleStudies._ID + "=" + bsId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

@@ -5,14 +5,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -38,10 +35,10 @@ public class TimeActivity extends ListActivity {
 	private static final int EDIT_ID = Menu.FIRST + 3;
 	private static final int DELETE_ID = Menu.FIRST + 4;
 	
-	private static final int ACTIVITY_CREATE=0;
-    private static final int ACTIVITY_EDIT=1;
+	//private static final int ACTIVITY_CREATE=0;
+    //private static final int ACTIVITY_EDIT=1;
     
-    private static final String TIMER = "Timer";
+    //private static final String TIMER = "Timer";
     
     private static final int SHOW_TIMER_NOTIFICATION = 1;
     
@@ -50,10 +47,10 @@ public class TimeActivity extends ListActivity {
     
 	private TimeUtil mTimeHelper;
 	private Cursor mCursor;
-	private Boolean mTiming = false;
-	private Long mTimerStart;
-	private Handler mTimer = new Handler();
-	private TextView mTimerView;
+	//private Boolean mTiming = false;
+	//private Long mTimerStart;
+	//private Handler mTimer = new Handler();
+	//private TextView mTimerView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,13 +62,13 @@ public class TimeActivity extends ListActivity {
 			intent.setData(TimeEntries.CONTENT_URI);
 		}
 		
-		//try to recover the Timer
+		/*//try to recover the Timer
 		if(savedInstanceState != null) {
 			mTimerStart = savedInstanceState.getLong(TIMER);
 			if(mTimerStart != null) {
 				mTiming = true;
 			}
-		}
+		}*/
 		
 		setView();
 		
@@ -171,12 +168,12 @@ public class TimeActivity extends ListActivity {
 			//this.startActivity(new Intent(Intent.ACTION_INSERT, this.getIntent().getData()));
 			createEntry();
 			return true;
-		case START_ID:
+		/*case START_ID:
 			startTimer();
 			return true;
 		case STOP_ID:
 			stopTimer();
-			return true;
+			return true;*/
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -233,15 +230,15 @@ public class TimeActivity extends ListActivity {
 		getContentResolver().delete(entryUri, null, null);
 	}
 	
-	@Override
+	/*@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if(mTimerStart != null) {
 			outState.putLong(TIMER, mTimerStart);
 		}
-	}
+	}*/
 	
-	private void startTimer() {
+	/*private void startTimer() {
 		mTiming = true;
 		mTimerStart = SystemClock.uptimeMillis();
 		setView();
@@ -263,20 +260,20 @@ public class TimeActivity extends ListActivity {
 		getContentResolver().insert(getIntent().getData(), values);
 		setView();
 		fillData();
-	}
+	}*/
 	
 	private void setView() {
-		if(mTiming) {
+		/*if(mTiming) {
 			setContentView(R.layout.time_timer);
 			
 			mTimerView = (TextView)findViewById(R.id.timer);
 			
 			mTimer.removeCallbacks(mTimerUpdateTask);
 			mTimer.postDelayed(mTimerUpdateTask, 100);
-		} else {
+		} else {*/
 			setContentView(R.layout.time);
-			mTimer.removeCallbacks(mTimerUpdateTask);
-		}
+			//mTimer.removeCallbacks(mTimerUpdateTask);
+		//}
 	}
 	
 	protected void showTimerNotification() {
@@ -302,7 +299,7 @@ public class TimeActivity extends ListActivity {
 		
 	}
 	
-	private Runnable mTimerUpdateTask = new Runnable() {
+	/*private Runnable mTimerUpdateTask = new Runnable() {
 
 		@Override
 		public void run() {
@@ -317,5 +314,5 @@ public class TimeActivity extends ListActivity {
 			mTimer.postAtTime(this, current + (1000 * 15));
 		}
 		
-	};
+	};*/
 }

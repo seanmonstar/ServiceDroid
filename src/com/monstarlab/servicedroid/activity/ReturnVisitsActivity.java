@@ -142,8 +142,6 @@ public class ReturnVisitsActivity extends ListActivity {
 		values.put(ReturnVisits.CALL_ID, id);
 		getContentResolver().insert(ReturnVisits.CONTENT_URI, values);
 		
-		//TODO - show Toast notification
-		
 		String name = getCallName(id);
 		String text = "You made a return visit on " + name;
 		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();

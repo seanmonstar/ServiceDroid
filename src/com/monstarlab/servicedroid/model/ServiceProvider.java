@@ -28,8 +28,8 @@ public class ServiceProvider extends ContentProvider {
 	
 	private static final String TAG = "ServiceProvider";
 	
-	private static final String DATABASE_NAME = "servoid"; //TODO - change to R.app_name
-    private static final int DATABASE_VERSION = 17; //TODO - once DB is finalized, set back to 1.
+	private static final String DATABASE_NAME = "servicedroid";
+    private static final int DATABASE_VERSION = 1;
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
     private static final String BIBLE_STUDIES_TABLE = "bible_studies";
@@ -198,15 +198,14 @@ public class ServiceProvider extends ContentProvider {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			// TODO - this need to be commented out and replaced with proper SQL statesments as needed
 			
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                    + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS " + TIME_ENTRIES_TABLE);
+			Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
+            /*db.execSQL("DROP TABLE IF EXISTS " + TIME_ENTRIES_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CALLS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + RETURN_VISITS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + PLACEMENTS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + LITERATURE_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + BIBLE_STUDIES_TABLE);
-            onCreate(db);
+            onCreate(db);*/
 			
 		}
     	

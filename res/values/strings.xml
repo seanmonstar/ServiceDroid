@@ -2,6 +2,9 @@
 <resources>
     <string name="hello">Hello World, Servoid!</string>
     <string name="app_name">ServiceDroid</string>
+    <string name="whats_new">What's New!</string>
+    <string name="tips">Tips</string>
+    <string name="ok">Cool!</string>
 	<string name="time">Time</string>
     <string name="rv">Return Visits</string>
     <string name="stats">Stats</string>

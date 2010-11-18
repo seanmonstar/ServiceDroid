@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -31,7 +33,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	private static final int RETURN_ID  = Menu.FIRST + 2;
 	private static final int DELETE_ID = Menu.FIRST + 3;
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY };
 	
 	
 	@Override
@@ -54,10 +56,21 @@ public class ReturnVisitsActivity extends ListActivity {
 	protected void fillData() {
 		Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null, null);
 		
-		String[] from = new String[]{ Calls.NAME, Calls.ADDRESS };
-		int[] to = new int[]{ R.id.name, R.id.address };
+		String[] from = new String[]{ Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY };
+		int[] to = new int[]{ R.id.name, R.id.address, R.id.icon };
 		
-		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, c, from, to);
+		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, c, from, to) {
+			
+			@Override
+			public void setViewImage(ImageView v, String value) {
+				if(Integer.parseInt(value) > 0) {
+					v.setVisibility(ImageView.VISIBLE);
+				} else {
+					v.setVisibility(ImageView.GONE);
+				}
+			}
+			
+		};
 		
 		setListAdapter(rvs);
 	}

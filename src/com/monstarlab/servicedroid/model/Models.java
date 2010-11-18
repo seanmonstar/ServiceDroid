@@ -64,6 +64,16 @@ public final class Models {
 		 */
 		public static final String DATE = "date";
 		
+		/**
+		 * 	type: JOIN
+		 */
+		public static final String IS_STUDY = "is_study";
+		
+		/**
+		 * 	type: JOIN
+		 */
+		public static final String LAST_VISITED = "last_visited";
+		
 	}
 	
 	public static final class BibleStudies implements BaseColumns {

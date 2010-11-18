@@ -27,11 +27,18 @@ public class ReturnVisitsActivity extends ListActivity {
 	private static final String TAG = "ReturnVisitsActivity";
 	
 	private static final int MENU_ADD = Menu.FIRST;
-	private static final int EDIT_ID  = Menu.FIRST + 1;
-	private static final int RETURN_ID  = Menu.FIRST + 2;
-	private static final int DELETE_ID = Menu.FIRST + 3;
+	private static final int MENU_SORT_ALPHA = Menu.FIRST + 1;
+	private static final int MENU_SORT_TIME = Menu.FIRST + 2;
+	private static final int EDIT_ID  = Menu.FIRST + 3;
+	private static final int RETURN_ID  = Menu.FIRST + 4;
+	private static final int DELETE_ID = Menu.FIRST + 5;
 	
 	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS };
+	
+	private static final int SORT_ALPHA = 0;
+	private static final int SORT_TIME = 1;
+
+	private int mSortState;
 	
 	
 	@Override
@@ -45,6 +52,8 @@ public class ReturnVisitsActivity extends ListActivity {
         
         this.setContentView(R.layout.calls);
         
+        //initial sort state will be alphabetically
+        mSortState = SORT_ALPHA;
         
         fillData();
         registerForContextMenu(getListView());
@@ -52,7 +61,14 @@ public class ReturnVisitsActivity extends ListActivity {
 	
 
 	protected void fillData() {
-		Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null, null);
+		String sortBy = null;
+		if(mSortState == SORT_ALPHA) {
+			sortBy = Calls.NAME;
+		} else if (mSortState == SORT_TIME) {
+			sortBy = Calls.DATE;
+		}
+		
+		Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
 		
 		String[] from = new String[]{ Calls.NAME, Calls.ADDRESS };
 		int[] to = new int[]{ R.id.name, R.id.address };
@@ -70,10 +86,37 @@ public class ReturnVisitsActivity extends ListActivity {
     }
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		
+		//menu depends on if how data is sorted
+		if(mSortState == SORT_ALPHA) {
+			menu.removeItem(MENU_SORT_ALPHA);
+			if(menu.findItem(MENU_SORT_TIME) == null) {
+				menu.add(0, MENU_SORT_TIME, 2, R.string.sort).setIcon(android.R.drawable.ic_menu_recent_history);
+			}
+		} else if(mSortState == SORT_TIME){
+			menu.removeItem(MENU_SORT_TIME);
+			if(menu.findItem(MENU_SORT_ALPHA) == null) {
+				menu.add(0, MENU_SORT_ALPHA, 2, R.string.sort).setIcon(android.R.drawable.ic_menu_sort_alphabetically);
+			}
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_ADD:
 			createCall();
+			break;
+		case MENU_SORT_ALPHA:
+			mSortState = SORT_ALPHA;
+			fillData();
+			break;
+		case MENU_SORT_TIME:
+			mSortState = SORT_TIME;
+			fillData();
 			break;
 		}
 		

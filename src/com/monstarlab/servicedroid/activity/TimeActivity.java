@@ -23,6 +23,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
+import com.monstarlab.servicedroid.service.TimerService;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class TimeActivity extends ListActivity {
@@ -62,16 +63,7 @@ public class TimeActivity extends ListActivity {
 			intent.setData(TimeEntries.CONTENT_URI);
 		}
 		
-		/*//try to recover the Timer
-		if(savedInstanceState != null) {
-			mTimerStart = savedInstanceState.getLong(TIMER);
-			if(mTimerStart != null) {
-				mTiming = true;
-			}
-		}*/
-		
 		setView();
-		
 		
 		mTimeHelper = new TimeUtil(this);
         
@@ -240,12 +232,15 @@ public class TimeActivity extends ListActivity {
 	
 	private void startTimer() {
 		mTiming = true;
-		showTimerNotification();
+		Intent i = new Intent(this, TimerService.class);
+		startService(i);
 	}
 	
 	private void stopTimer() {
 		if(!mTiming) return;
-		removeTimerNotification();
+		mTiming = false;
+		Intent i = new Intent(this, TimerService.class);
+		stopService(i);
 		
 		/*long timerEnd = SystemClock.uptimeMillis();
 		long diff = timerEnd - mTimerStart;

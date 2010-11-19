@@ -5,7 +5,7 @@ ServiceDroid is an Android application built to assist Jehovah's Witnesses doing
 
 Features
 -------
-_Version 0.1.0a_
+_Version 1.0_
 
 * Insert time manually
 * See stats for the month
@@ -21,17 +21,18 @@ Planned
 _For Version 1.1_
 
 * Start a timer and automatic insert when timer stopped.
-* Time start/stop __Widget__
+* Sort RVs alphabetically, by last visited
+* See Bible Study status in list of Calls
 
 _For Version 1.2_
 
 * View directions to an RV
 * View map of all RVs
-* Sort RVs alphabetically, by last visited, or by distance
+* Sort calls by distance
 
 _Future Versions_
 
-* SMS (Text message) your stats?
+* Back up your data to your Google account
 
 
 Copyright

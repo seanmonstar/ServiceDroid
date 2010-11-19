@@ -23,6 +23,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
+import com.monstarlab.servicedroid.service.TimerService;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class TimeActivity extends ListActivity {
@@ -47,7 +48,7 @@ public class TimeActivity extends ListActivity {
     
 	private TimeUtil mTimeHelper;
 	private Cursor mCursor;
-	//private Boolean mTiming = false;
+	private Boolean mTiming = false;
 	//private Long mTimerStart;
 	//private Handler mTimer = new Handler();
 	//private TextView mTimerView;
@@ -62,16 +63,7 @@ public class TimeActivity extends ListActivity {
 			intent.setData(TimeEntries.CONTENT_URI);
 		}
 		
-		/*//try to recover the Timer
-		if(savedInstanceState != null) {
-			mTimerStart = savedInstanceState.getLong(TIMER);
-			if(mTimerStart != null) {
-				mTiming = true;
-			}
-		}*/
-		
 		setView();
-		
 		
 		mTimeHelper = new TimeUtil(this);
         
@@ -147,7 +139,7 @@ public class TimeActivity extends ListActivity {
 		super.onPrepareOptionsMenu(menu);
 		
 		//menu depends on if user has start Service Timer
-		/*if(mTiming) {
+		if(mTiming) {
 			menu.removeItem(START_ID);
 			if(menu.findItem(STOP_ID) == null) {
 				menu.add(0, STOP_ID, 2, R.string.stop_time).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -157,7 +149,7 @@ public class TimeActivity extends ListActivity {
 			if(menu.findItem(START_ID) == null) {
 				menu.add(0, START_ID, 2, R.string.start_time).setIcon(android.R.drawable.ic_menu_recent_history);
 			}
-		}*/
+		}
 		return true;
 	}
 	
@@ -168,12 +160,12 @@ public class TimeActivity extends ListActivity {
 			//this.startActivity(new Intent(Intent.ACTION_INSERT, this.getIntent().getData()));
 			createEntry();
 			return true;
-		/*case START_ID:
+		case START_ID:
 			startTimer();
 			return true;
 		case STOP_ID:
 			stopTimer();
-			return true;*/
+			return true;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -238,42 +230,31 @@ public class TimeActivity extends ListActivity {
 		}
 	}*/
 	
-	/*private void startTimer() {
+	private void startTimer() {
 		mTiming = true;
-		mTimerStart = SystemClock.uptimeMillis();
-		setView();
-		showTimerNotification();
+		Intent i = new Intent(this, TimerService.class);
+		startService(i);
 	}
 	
 	private void stopTimer() {
 		if(!mTiming) return;
-		removeTimerNotification();
+		mTiming = false;
+		Intent i = new Intent(this, TimerService.class);
+		stopService(i);
 		
-		long timerEnd = SystemClock.uptimeMillis();
+		/*long timerEnd = SystemClock.uptimeMillis();
 		long diff = timerEnd - mTimerStart;
 		mTiming = false;
 		mTimerStart = null;
 		
-		//mTimeAdapter.create((int)diff / 1000);
 		ContentValues values = new ContentValues();
 		values.put(TimeEntries.LENGTH, (int) diff / 1000);
 		getContentResolver().insert(getIntent().getData(), values);
-		setView();
-		fillData();
-	}*/
+		fillData();*/
+	}
 	
 	private void setView() {
-		/*if(mTiming) {
-			setContentView(R.layout.time_timer);
-			
-			mTimerView = (TextView)findViewById(R.id.timer);
-			
-			mTimer.removeCallbacks(mTimerUpdateTask);
-			mTimer.postDelayed(mTimerUpdateTask, 100);
-		} else {*/
-			setContentView(R.layout.time);
-			//mTimer.removeCallbacks(mTimerUpdateTask);
-		//}
+		setContentView(R.layout.time);
 	}
 	
 	protected void showTimerNotification() {

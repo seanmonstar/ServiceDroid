@@ -291,30 +291,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		return sb.toString();
 	}
-	
-	protected void scheduleReminder() {
-		//((AlarmManager)getSystemService(Context.ALARM_SERVICE)).
-		showReminder();
-	}
-	
-	protected void showReminder() {
-		int icon = R.drawable.icon;    // icon from resources
-		CharSequence tickerText = "Send in Service Time";              // ticker-text
-		long when = System.currentTimeMillis();         // notification time
-		Context context = getApplicationContext();      // application Context
-		CharSequence contentTitle = "ServiceDroid";  // expanded message title
-		CharSequence contentText = "Your service time is due!";      // expanded message text
 
-		Intent notificationIntent = new Intent(this, StatisticsActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-		// the next two lines initialize the Notification, using the configurations above
-		Notification notification = new Notification(icon, tickerText, when);
-		notification.defaults |= Notification.DEFAULT_SOUND;
-		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-		
-		((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE)).notify(REPORT_TIME_NOTIFICATION, notification);
-	}
 	
 	class MyGestureDetector extends SimpleOnGestureListener {
 	    @Override

@@ -34,7 +34,7 @@ import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
-import com.monstarlab.servicedroid.util.HelpDialog;
+import com.monstarlab.servicedroid.util.Changelog;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class RVShowActivity extends Activity implements OnItemClickListener {
@@ -113,8 +113,6 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 		});
 		
 		mTimeHelper = new TimeUtil(this);
-		
-		HelpDialog.showFirstTime(this, HelpDialog.PLACEMENTS);
 		
 	}
 	

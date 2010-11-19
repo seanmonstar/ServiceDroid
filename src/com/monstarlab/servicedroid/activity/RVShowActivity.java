@@ -95,9 +95,10 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 		mLastVisitText = (TextView) findViewById(R.id.lastVisit);
 		mNotesText = (TextView) findViewById(R.id.notes);
 		
-		//mListView = (ListView) findViewById(R.id.rv_data);
-		//mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
+
+		
 		mListView = (ListView) findViewById(R.id.placements_list);
+		mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
         mListView.setOnCreateContextMenuListener(this);
         mListView.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_OVERLAY);
         mListView.setOnItemClickListener(this);

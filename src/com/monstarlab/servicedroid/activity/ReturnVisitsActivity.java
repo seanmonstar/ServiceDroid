@@ -35,7 +35,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	private static final int RETURN_ID  = Menu.FIRST + 4;
 	private static final int DELETE_ID = Menu.FIRST + 5;
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY, Calls.LAST_VISITED };
 	
 	private static final int SORT_ALPHA = 0;
 	private static final int SORT_TIME = 1;
@@ -67,7 +67,7 @@ public class ReturnVisitsActivity extends ListActivity {
 		if(mSortState == SORT_ALPHA) {
 			sortBy = Calls.NAME;
 		} else if (mSortState == SORT_TIME) {
-			sortBy = Calls.DATE;
+			sortBy = Calls.LAST_VISITED;
 		}
 		
 		Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);

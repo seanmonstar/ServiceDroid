@@ -224,10 +224,6 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	}
 	
 	private Dialog makeBibleStudyDeleteDialog() {
-		final CharSequence[] items = { getString(R.string.magazine), getString(R.string.brochure), getString(R.string.book) };
-		final int MAGAZINE = 0;
-		final int BROCHURE = 1;
-		final int BOOK = 2;
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		

@@ -16,8 +16,8 @@
 	<string name="delete_call">Delete Call</string>
 	<string name="delete_placement">Remove Placement</string>
 	<string name="make_return">Returned On</string>
-	<string name="no_time">No service entered for this month.</string>
-	<string name="no_calls">No calls recorded.</string>
+	<string name="no_time">Press MENU to record time for this month.</string>
+	<string name="no_calls">Press MENU to record a new Call.</string>
 	<string name="length">Time in Service</string>
 	<string name="date">Date</string>
 	<string name="confirm">Confirm</string>

@@ -1,10 +1,17 @@
 package com.monstarlab.servicedroid.activity;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,8 +41,6 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private static final int MENU_YEAR = Menu.FIRST + 1;
 	private static final int MENU_EMAIL = Menu.FIRST + 2;
 	
-	private static final int REPORT_TIME_NOTIFICATION = 1;
-	
 	//private TimeUtil mTimeHelper;
 	
 	//private static String[] CallsProjection = new String[] { Calls._ID, Calls.BIBLE_STUDY };
@@ -53,13 +58,16 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private TextView mBibleStudiesDisplay;
 	
 	private int mCurrentMonth = TimeUtil.getCurrentMonth();
-	private int mCurrentYear = TimeUtil.getCurrentYear();
+	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
 	//private int mTimeSpan = MENU_MONTH;
 	
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+	private static final int DIALOG_ROUND_ID = 1;
+	
     private GestureDetector gestureDetector;
 	
 	@Override
@@ -80,9 +88,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	    gestureDetector = new GestureDetector(new MyGestureDetector());
 	    TableLayout table = (TableLayout) findViewById(R.id.statstable);
 	    table.setOnTouchListener(this);
-	    
-	    //setup reminder...
-	    //scheduleReminder();
+
     }
 	
 	
@@ -98,7 +104,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 
 	protected void fillData() {
 		mTimePeriodDisplay.setText("" + mCurrentMonth + "/" + mCurrentYear);
-		mHoursDisplay.setText(getHoursSum());
+		mHoursDisplay.setText(getHours());
 		mRvsDisplay.setText(getRVs());
 		mMagsDisplay.setText(getMagazines());
 		mBrochuresDisplay.setText(getBrochures());
@@ -167,7 +173,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 
 
 
-	protected String getHoursSum() {
+	protected int getHoursSum() {
 		
 		Cursor c = getContentResolver().query(TimeEntries.CONTENT_URI, TimeProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
@@ -180,7 +186,11 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 			c.close();
 			c = null;
 		}
-		return TimeUtil.toTimeString(sum);
+		return sum;
+	}
+	
+	protected String getHours() {
+		return TimeUtil.toTimeString(getHoursSum());
 	}
 	
 	protected String getRVs() {
@@ -226,7 +236,6 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		args[0] = year + "-" + TimeUtil.pad(month) + "-01";
 		
 		//end of month
-		//TODO - possibly fix date?
 		args[1] = year + "-" + TimeUtil.pad(month+1) + "-01";
 		
 		return args;
@@ -258,11 +267,107 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 			break;*/
 		
 		case MENU_EMAIL:
-			sendEmail();
+			setupSendEmail();
 		
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog;
+	    switch(id) {
+	    case DIALOG_ROUND_ID:
+	    	dialog = makeRoundTimeDialog();
+	        break;
+	    default:
+	        dialog = null;
+	    }
+	    return dialog;
+	}
+	
+	protected Dialog makeRoundTimeDialog() {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		builder.setTitle(getHours());
+		builder.setMessage(getString(R.string.round_time_prompt))
+	       .setCancelable(false)
+	       .setPositiveButton(getString(R.string.round_time_prompt_round), new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	        	   roundUpTime();
+	        	   sendEmail();
+	           }
+	       })
+	       .setNegativeButton(getString(R.string.round_time_prompt_carry), new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	                carryOverTime();
+	                sendEmail();
+	           }
+	       });
+		return builder.create();
+	}
+	
+	protected void roundUpTime() {
+		//add another time entry of 60 - mins, on last day of month
+		int minutes = TimeUtil.getMins(getHoursSum());
+		Calendar cal = Calendar.getInstance();
+		cal.set(mCurrentYear, mCurrentMonth, 1);
+		cal.add(Calendar.DATE, -1);
+		
+		Date lastDayOfMonth = cal.getTime();
+		
+		ContentValues values = new ContentValues();
+		values.put(TimeEntries.LENGTH, TimeUtil.toTimeInt(0, 60 - minutes));
+		values.put(TimeEntries.DATE, TimeUtil.getSQLTextFromDate(lastDayOfMonth));
+		
+		getContentResolver().insert(TimeEntries.CONTENT_URI, values);
+		
+	}
+
+	protected void carryOverTime() {
+		//place time entry of `mins` in next month
+		int minutes = TimeUtil.getMins(getHoursSum());
+		Calendar cal = Calendar.getInstance();
+		cal.set(mCurrentYear, mCurrentMonth - 1, 1);
+		cal.add(Calendar.MONTH, 1);
+		
+		Date nextMonth = cal.getTime();
+		
+		ContentValues values = new ContentValues();
+		values.put(TimeEntries.LENGTH, TimeUtil.toTimeInt(0, minutes));
+		values.put(TimeEntries.DATE, TimeUtil.getSQLTextFromDate(nextMonth));
+		
+		getContentResolver().insert(TimeEntries.CONTENT_URI, values);
+
+		//somehow remove those mins from this month
+		// Collect all time entries, and peel off minutes until we get to 0 extra mins, and save the Entries back
+		int minutesLeft = minutes;
+		Cursor cursor = getContentResolver().query(TimeEntries.CONTENT_URI, TimeProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), TimeEntries.LENGTH +" desc");
+		if(cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			int curTime = 0;
+			while(!cursor.isAfterLast() && minutesLeft > 0) {
+				curTime = cursor.getInt(2);
+				int tempMinutesLeft = minutesLeft;
+			
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		cursor = null;
+	}
+
+	protected void setupSendEmail() {
+		
+		if(shouldRoundTime()) {
+			//offer to round or carry over
+			showDialog(DIALOG_ROUND_ID);
+		} else {
+			sendEmail();
+		}
+
 	}
 	
 	protected void sendEmail() {
@@ -275,12 +380,29 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		startActivity(Intent.createChooser(i, "Send by..."));
 	}
 	
+	protected boolean shouldRoundTime() {
+		int seconds = getHoursSum();
+		int hours = TimeUtil.getHours(seconds);
+		int minutes = TimeUtil.getMins(seconds);
+		
+		//make sure Hours greater than 1. don't want to bother someone if they're submitting under an hour
+		//since the Society points out that infirm publishers can still report as small as 15 minutes.
+		//asking them to round or carry over every time woudl be discouraging...
+		if(minutes > 0 && hours > 1) {
+			return true;
+		}
+		
+		return false;
+	}
+
+
+
 	protected String getStatsTextForTimePeriod() {
 		StringBuilder sb = new StringBuilder();
 		
 		//TODO - use strings.xml to allow for internationalization
 		sb.append("Here is my Service Record for " + mCurrentMonth + "/" + mCurrentYear + "\n\n");
-		sb.append("Hours: " + getHoursSum() + "\n");
+		sb.append("Hours: " + getHours() + "\n");
 		sb.append("Magazines: " + getMagazines() + "\n");
 		sb.append("Brochures: " + getBrochures() + "\n");
 		sb.append("Books: " + getBooks() + "\n");

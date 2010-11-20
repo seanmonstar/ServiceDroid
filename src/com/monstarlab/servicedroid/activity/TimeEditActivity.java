@@ -176,7 +176,7 @@ public class TimeEditActivity extends Activity {
 			.append("-")
 			.append(pad(mDateText.getMonth() + 1))
 			.append("-")
-			.append(mDateText.getDayOfMonth())
+			.append(pad(mDateText.getDayOfMonth()))
 			.toString();
 	}
 	

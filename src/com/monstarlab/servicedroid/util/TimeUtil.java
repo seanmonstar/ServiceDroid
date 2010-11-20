@@ -159,4 +159,14 @@ public class TimeUtil {
 		Calendar c = Calendar.getInstance();
 		return c.getTimeInMillis();
 	}
+	
+	public static String getSQLTextFromDate(Date d) {
+		return new StringBuilder()
+			.append(d.getYear() + 1900)
+			.append("-")
+			.append(pad(d.getMonth() + 1))
+			.append("-")
+			.append(pad(d.getDate()))
+			.toString();
+	}
 }

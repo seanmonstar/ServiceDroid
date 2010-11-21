@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -231,12 +232,21 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	}
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, month - 1, 1);
 		String[] args = new String[2];
+
 		//beginning of month
-		args[0] = year + "-" + TimeUtil.pad(month) + "-01";
+		Date startOfMonth = cal.getTime();
+		args[0] = TimeUtil.getSQLTextFromDate(startOfMonth);
+		
+		
+		cal.add(Calendar.MONTH, 1);
+		cal.add(Calendar.DATE, -1);
+		Date endOfMonth = cal.getTime();
 		
 		//end of month
-		args[1] = year + "-" + TimeUtil.pad(month+1) + "-01";
+		args[1] = TimeUtil.getSQLTextFromDate(endOfMonth);
 		
 		return args;
 	}
@@ -293,7 +303,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		builder.setTitle(getHours());
 		builder.setMessage(getString(R.string.round_time_prompt))
-	       .setCancelable(false)
+	       .setCancelable(true)
 	       .setPositiveButton(getString(R.string.round_time_prompt_round), new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   roundUpTime();
@@ -349,8 +359,25 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 			cursor.moveToFirst();
 			int curTime = 0;
 			while(!cursor.isAfterLast() && minutesLeft > 0) {
-				curTime = cursor.getInt(2);
-				int tempMinutesLeft = minutesLeft;
+				curTime = cursor.getInt(2) / TimeUtil.MIN;
+				if(curTime >= minutesLeft) {
+					curTime -= minutesLeft;
+					minutesLeft = 0;
+				} else {
+					minutesLeft -= curTime;
+					curTime = 0;
+				}
+				
+				//update the time entry if curTime > 0, else remove the entry
+				Uri curUri = ContentUris.withAppendedId(TimeEntries.CONTENT_URI, cursor.getInt(0));
+				if(curTime > 0) {
+					ContentValues upValues = new ContentValues();
+					upValues.put(TimeEntries.LENGTH, TimeUtil.toTimeInt(0, curTime));
+					getContentResolver().update(curUri, upValues, null, null);
+				} else {
+					getContentResolver().delete(curUri, null, null);
+				}
+				
 			
 				cursor.moveToNext();
 			}

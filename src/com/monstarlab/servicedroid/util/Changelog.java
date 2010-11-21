@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
@@ -13,18 +14,19 @@ import android.webkit.WebView;
 
 public class Changelog {
 	
-	private static final String LAST_VERSION = "lastVersion";
-	
-	private static final int STATUS_NEW = 1;
-	private static final int STATUS_UPDATED = 2;
+	//private static final int STATUS_NEW = 1;
+	//private static final int STATUS_UPDATED = 2;
 	
 	
 	private static final int V_1_0 = 1;
 	private static final int V_1_1 = 2;
+	
+	private static final int CURRENT_VERSION = V_1_1;
 
 	private static final String PREFS_NAME = "Changelog";
+	private static final String PREFS_CHANGELOG_VERSION = "lastSeenChangelogVersion";
 
-	public static void showFirstTime(Context c) {
+	public static void showFirstTime(final Context c) {
 		if (hasSeenMessage(c)) {
 			// do nothing
 		} else {
@@ -35,14 +37,14 @@ public class Changelog {
 			
 			builder.setTitle(title);
 			builder.setView(webView);
+			builder.setCancelable(false);
 	
 	        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
-	                //TODO - mark message as shown
+	                markMessageSeen(c);
 	            }
 	        });
-	        
 	        String message = getMessage(c);
 	        if(TextUtils.isEmpty(message)) {
 	        	return;
@@ -75,14 +77,15 @@ public class Changelog {
 	}
 	
 	private static boolean hasSeenMessage(Context c) {
-		int versionCode = getVersion(c);
-		
-		if(versionCode > 0) {
-			SharedPreferences settings = c.getSharedPreferences(PREFS_NAME, 0);
-		    return settings.getBoolean("hasSeenChangelogVersion" + versionCode, false);
-		} else {
-			return true; // failed getting versionCode, show nothing
-		}
+		SharedPreferences settings = c.getSharedPreferences(PREFS_NAME, 0);
+		return settings.getInt(PREFS_CHANGELOG_VERSION, 0) >= CURRENT_VERSION;
+	}
+	
+	private static void markMessageSeen(Context c) {
+		SharedPreferences settings = c.getSharedPreferences(PREFS_NAME, 0);
+		Editor editor=settings.edit();
+        editor.putInt(PREFS_CHANGELOG_VERSION, CURRENT_VERSION);
+        editor.commit();
 	}
 	
 	private static String getMessage(Context c) {

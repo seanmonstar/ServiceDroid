@@ -1,5 +1,8 @@
 package com.monstarlab.servicedroid.activity;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -109,13 +112,21 @@ public class TimeActivity extends ListActivity {
 	}
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, month - 1, 1);
 		String[] args = new String[2];
+
 		//beginning of month
-		args[0] = year + "-" + TimeUtil.pad(month) + "-01";
+		Date startOfMonth = cal.getTime();
+		args[0] = TimeUtil.getSQLTextFromDate(startOfMonth);
+		
+		
+		cal.add(Calendar.MONTH, 1);
+		cal.add(Calendar.DATE, -1);
+		Date endOfMonth = cal.getTime();
 		
 		//end of month
-		//TODO - possibly fix date?
-		args[1] = year + "-" + TimeUtil.pad(month+1) + "-01";
+		args[1] = TimeUtil.getSQLTextFromDate(endOfMonth);
 		
 		return args;
 	}

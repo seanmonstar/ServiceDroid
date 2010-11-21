@@ -65,7 +65,9 @@ public class TimeUtil {
 		
 		int mins = getMins(time);
 		if(mins > 0) {
-			out.append(" ");
+			if(hours > 0) {
+				out.append(" ");
+			}
 			out.append(mins);
 			if(mins > 1) {
 				out.append("mins");

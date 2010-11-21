@@ -25,6 +25,8 @@ public class TimerService extends Service {
 	private long mRunTime = 0L;
 	
 	private Notification mNotification;
+	
+	public static boolean isRunning = false;
 
 	/*@Override
 	public void onStart(Intent intent, int startId) {
@@ -36,6 +38,7 @@ public class TimerService extends Service {
 	}
 	
 	public void onCreate() {
+		isRunning = true;
 		mTimeHelper = new TimeUtil(this);
 		
 		//show a notification
@@ -52,6 +55,7 @@ public class TimerService extends Service {
 		((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SHOW_TIMER_NOTIFICATION);
 		
 		saveTime();
+		isRunning = false;
 	}
 	
 	private void createNotification() {

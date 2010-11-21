@@ -66,6 +66,8 @@ public class TimeActivity extends ListActivity {
 			intent.setData(TimeEntries.CONTENT_URI);
 		}
 		
+		mTiming = TimerService.isRunning;
+		
 		setView();
 		
 		mTimeHelper = new TimeUtil(this);

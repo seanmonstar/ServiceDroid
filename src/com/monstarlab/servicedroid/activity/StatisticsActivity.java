@@ -221,7 +221,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	protected void moveForwardOneMonth() {
 		mCurrentMonth++;
-		if(mCurrentMonth >= 12) {
+		if(mCurrentMonth > 12) {
 			mCurrentMonth = 1;
 			mCurrentYear++;
 		}

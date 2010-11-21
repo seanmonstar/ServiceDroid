@@ -30,4 +30,14 @@
             android:gravity="center_vertical|left"
             android:textAppearance="?android:attr/textAppearanceLarge"
         />
+        
+        <ImageView
+	        android:id="@+id/icon"
+	        android:layout_width="wrap_content"             
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/book"
+	        android:layout_toLeftOf="@+id/address"
+	        android:paddingTop="20dip"
+	        android:visibility="visible"
+	    />
     </RelativeLayout>

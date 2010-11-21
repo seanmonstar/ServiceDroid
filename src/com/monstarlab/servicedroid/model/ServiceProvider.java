@@ -90,11 +90,13 @@ public class ServiceProvider extends ContentProvider {
     	sTimeProjectionMap.put(TimeEntries.DATE, TimeEntries.DATE);
     	
     	sCallProjectionMap = new HashMap<String, String>();
-    	sCallProjectionMap.put(Calls._ID, Calls._ID);
-    	sCallProjectionMap.put(Calls.NAME, Calls.NAME);
-    	sCallProjectionMap.put(Calls.ADDRESS, Calls.ADDRESS);
-    	sCallProjectionMap.put(Calls.NOTES, Calls.NOTES);
-    	sCallProjectionMap.put(Calls.DATE, Calls.DATE);
+    	sCallProjectionMap.put(Calls._ID, CALLS_TABLE + "." + Calls._ID);
+    	sCallProjectionMap.put(Calls.NAME, CALLS_TABLE + "." + Calls.NAME);
+    	sCallProjectionMap.put(Calls.ADDRESS, CALLS_TABLE + "." + Calls.ADDRESS);
+    	sCallProjectionMap.put(Calls.NOTES, CALLS_TABLE + "." + Calls.NOTES);
+    	sCallProjectionMap.put(Calls.DATE, CALLS_TABLE + "." + Calls.DATE);
+    	sCallProjectionMap.put(Calls.IS_STUDY, "((select count(bible_studies._id) from bible_studies where bible_studies.call_id = calls._id and bible_studies.date_end isnull) <> 0) as 'is_study'");
+    	sCallProjectionMap.put(Calls.LAST_VISITED, "coalesce((select return_visits.date from return_visits where return_visits.call_id = calls._id order by return_visits.date desc limit 1),calls.date) as 'last_visited'");
     	
     	sRVProjectionMap = new HashMap<String, String>();
     	sRVProjectionMap.put(ReturnVisits._ID, ReturnVisits._ID);

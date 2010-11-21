@@ -14,12 +14,13 @@
 	<string name="start_time">Start Time</string>
 	<string name="stop_time">Stop Time</string>
 	<string name="edit">Edit</string>
+	<string name="sort">Sort</string>
 	<string name="delete_time">Delete Time</string>
 	<string name="delete_call">Delete Call</string>
 	<string name="delete_placement">Remove Placement</string>
 	<string name="make_return">Returned On</string>
-	<string name="no_time">No service entered for this month.</string>
-	<string name="no_calls">No calls recorded.</string>
+	<string name="no_time">Press MENU to record time for this month.</string>
+	<string name="no_calls">Press MENU to record a new Call.</string>
 	<string name="length">Time in Service</string>
 	<string name="date">Date</string>
 	<string name="confirm">Confirm</string>
@@ -28,6 +29,7 @@
 	<string name="name">Name</string>
 	<string name="placement">Placement</string>
 	<string name="create_placement">Create Placement</string>
+	<string name="no_placements">Press MENU to record a placement.</string>
 	<string name="watchtower">Watchtower</string>
 	<string name="awake">Awake!</string>
 	<string name="issue">Issue</string>
@@ -47,6 +49,9 @@
 	<string name="bible_study_prompt">Do you wish to mark it as ended, or delete all traces of this study?</string>
 	<string name="bible_study_prompt_delete">Delete</string>
 	<string name="bible_study_prompt_finish">It Ended</string>
+	<string name="round_time_prompt">Would you like to round your time up, or carry over the extra minutes to the next month?</string>
+	<string name="round_time_prompt_round">Round Up</string>
+	<string name="round_time_prompt_carry">Carry Over</string>
 	<string name="notes">Notes</string>
 	<string name="send">Send</string>
 	<string name="monthly">Monthly</string>

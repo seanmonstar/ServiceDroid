@@ -92,7 +92,7 @@ public class Changelog {
 		StringBuilder message = new StringBuilder();
 		
 		String[] features = new String[] { 
-			"Start a timer from the Time view when you enter service.",
+			"Start a timer from the Time view when you begin service.",
 			"Switch between alphabetic sorting and since last visited sorting of calls.",
 			"The list of calls shows who is a Bible Study.",
 			"Offers to Round Up or Carry Over extra minutes when sending in service report."

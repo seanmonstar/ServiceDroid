@@ -129,20 +129,25 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private void refreshCallData() {
 		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
 		if(mCursor != null) {
-			mCursor.moveToFirst();
+			if(mCursor.getCount() == 1) {
 			
-			String name = mCursor.getString(NAME_COLUMN);
-			String address = mCursor.getString(ADDRESS_COLUMN);
-			String notes = mCursor.getString(NOTES_COLUMN);
-			boolean isBibleStudy = isBibleStudy();
-			
-			updateLastVisited();
-			
-			
-			mNameText.setText(name);
-			mAddressText.setText(address);
-			mNotesText.setText(notes);
-			mBibleStudyCheckbox.setChecked(isBibleStudy);
+				mCursor.moveToFirst();
+				
+				String name = mCursor.getString(NAME_COLUMN);
+				String address = mCursor.getString(ADDRESS_COLUMN);
+				String notes = mCursor.getString(NOTES_COLUMN);
+				boolean isBibleStudy = isBibleStudy();
+				
+				updateLastVisited();
+				
+				
+				mNameText.setText(name);
+				mAddressText.setText(address);
+				mNotesText.setText(notes);
+				mBibleStudyCheckbox.setChecked(isBibleStudy);
+			} else {
+				finish();
+			}
 		}
 	}
 	

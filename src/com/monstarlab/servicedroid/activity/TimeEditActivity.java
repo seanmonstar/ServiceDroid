@@ -53,7 +53,9 @@ public class TimeEditActivity extends Activity {
 			mUri = intent.getData();
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
-			mUri = getContentResolver().insert(intent.getData(), null);
+			ContentValues v = new ContentValues();
+			v.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
+			mUri = getContentResolver().insert(intent.getData(), v);
 			
 			if(mUri == null) {
 				Log.e(TAG, "Failed to insert a blank row into " + getIntent().getData());

@@ -102,6 +102,7 @@ public class TimerService extends Service {
 		if(mRunTime >= 60) {
 			ContentValues values = new ContentValues();
 			values.put(TimeEntries.LENGTH, mRunTime);
+			values.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
 			getContentResolver().insert(TimeEntries.CONTENT_URI, values);
 		}
 		

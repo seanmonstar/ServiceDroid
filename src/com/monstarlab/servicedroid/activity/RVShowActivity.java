@@ -47,7 +47,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private static final int MENU_STUDY = Menu.FIRST + 3;
 	
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE };
 	private static final String[] BIBLE_STUDY_PROJECTION = new String[] { BibleStudies._ID, BibleStudies.DATE_START, BibleStudies.DATE_END, BibleStudies.CALL_ID };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE };
 	private static final int ID_COLUMN = 0;
@@ -55,6 +55,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private static final int ADDRESS_COLUMN = 2;
 	private static final int NOTES_COLUMN = 3; 
 	private static final int DATE_COLUMN = 4;
+	private static final int TYPE_COLUMN = 5;
 
 	private static final int DIALOG_PLACEMENT_ID = 0;
 	private static final int DIALOG_BIBLESTUDYDELETE_ID = 1;
@@ -76,6 +77,8 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private ListView mListView;
 
 	private Cursor mPlacementsCursor;
+	
+	private int mCallType = Calls.TYPE_ADDED;
 
 	//private ListView mListView;
 	
@@ -136,15 +139,34 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 				String name = mCursor.getString(NAME_COLUMN);
 				String address = mCursor.getString(ADDRESS_COLUMN);
 				String notes = mCursor.getString(NOTES_COLUMN);
+				mCallType = mCursor.getInt(TYPE_COLUMN);
 				boolean isBibleStudy = isBibleStudy();
 				
-				updateLastVisited();
+				//user created Calls show all data
+				//system created Calls might behave differently
+				switch(mCallType) {
+				
+				case Calls.TYPE_ANONYMOUS:
+					mNameText.setText(name);
+					mBibleStudyCheckbox.setVisibility(View.GONE);
+					mAddressText.setVisibility(View.GONE);
+					mNotesText.setVisibility(View.GONE);
+					mLastVisitText.setVisibility(View.GONE);
+					break;
+				default:
+					mNameText.setText(name);
+					mAddressText.setText(address);
+					mNotesText.setText(notes);
+					mBibleStudyCheckbox.setChecked(isBibleStudy);
+					updateLastVisited();
+					break;
+				
+				}
 				
 				
-				mNameText.setText(name);
-				mAddressText.setText(address);
-				mNotesText.setText(notes);
-				mBibleStudyCheckbox.setChecked(isBibleStudy);
+				
+				
+				
 			} else {
 				finish();
 			}
@@ -203,11 +225,15 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
+        
+        
         menu.add(0, MENU_EDIT, 1, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
         
-        menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
+        
         menu.add(0, MENU_RETURN, 3, "Return").setIcon(android.R.drawable.ic_menu_myplaces);
-        //menu.add(0, MENU_STUDY, 4, R.string.bible_study).setIcon(android.R.drawable.ic_menu_search);
+        
+        menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
+        
         return result;
     }
 	

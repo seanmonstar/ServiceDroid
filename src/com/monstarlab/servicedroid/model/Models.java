@@ -65,6 +65,18 @@ public final class Models {
 		public static final String DATE = "date";
 		
 		/**
+		 * 	type: int
+		 */
+		public static final String TYPE = "type";
+		
+		/**
+		 * 	type: Enum
+		 */
+		public static final int TYPE_ADDED = 1;
+		public static final int TYPE_ANONYMOUS = 2;
+		public static final int TYPE_TRANSFERED = 3;
+		
+		/**
 		 * 	type: JOIN
 		 */
 		public static final String IS_STUDY = "is_study";

@@ -278,12 +278,15 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		case MENU_EMAIL:
 			setupSendEmail();
-		
+			break;
+			
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog;

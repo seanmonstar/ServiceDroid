@@ -29,7 +29,8 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servicedroid";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
+    
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
     private static final String BIBLE_STUDIES_TABLE = "bible_studies";
@@ -95,6 +96,7 @@ public class ServiceProvider extends ContentProvider {
     	sCallProjectionMap.put(Calls.ADDRESS, CALLS_TABLE + "." + Calls.ADDRESS);
     	sCallProjectionMap.put(Calls.NOTES, CALLS_TABLE + "." + Calls.NOTES);
     	sCallProjectionMap.put(Calls.DATE, CALLS_TABLE + "." + Calls.DATE);
+    	sCallProjectionMap.put(Calls.TYPE, CALLS_TABLE + "." + Calls.TYPE);
     	sCallProjectionMap.put(Calls.IS_STUDY, "((select count(bible_studies._id) from bible_studies where bible_studies.call_id = calls._id and bible_studies.date_end isnull) <> 0) as 'is_study'");
     	sCallProjectionMap.put(Calls.LAST_VISITED, "coalesce((select return_visits.date from return_visits where return_visits.call_id = calls._id order by return_visits.date desc limit 1),calls.date) as 'last_visited'");
     	
@@ -145,7 +147,8 @@ public class ServiceProvider extends ContentProvider {
 			    + Calls.NAME + " varchar(128),"
 			    + Calls.ADDRESS + " varchar(128),"
 			    + Calls.DATE + " date default current_timestamp,"
-			    + Calls.NOTES + " text );");
+			    + Calls.NOTES + " text,"
+			    + Calls.TYPE + " integer default 1 );");
 			
 			db.execSQL("create table " +  BIBLE_STUDIES_TABLE + " (" 
 					+ BibleStudies._ID + " integer primary key autoincrement,"
@@ -198,16 +201,25 @@ public class ServiceProvider extends ContentProvider {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO - this need to be commented out and replaced with proper SQL statesments as needed
 			
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
-            /*db.execSQL("DROP TABLE IF EXISTS " + TIME_ENTRIES_TABLE);
-            db.execSQL("DROP TABLE IF EXISTS " + CALLS_TABLE);
-            db.execSQL("DROP TABLE IF EXISTS " + RETURN_VISITS_TABLE);
-            db.execSQL("DROP TABLE IF EXISTS " + PLACEMENTS_TABLE);
-            db.execSQL("DROP TABLE IF EXISTS " + LITERATURE_TABLE);
-            db.execSQL("DROP TABLE IF EXISTS " + BIBLE_STUDIES_TABLE);
-            onCreate(db);*/
+			Log.d(TAG, "Upgrading database from version " + oldVersion);
+            
+			switch (oldVersion) {
+			
+			case 1:
+				//do nothing
+				break;
+			
+			case 2:
+				db.execSQL("alter table " + CALLS_TABLE + " add column " + Calls.TYPE + " integer default 1");
+				break;
+				
+			default:
+				Log.e(TAG, "Failed updating database to new version: no upgrade SQL exists.");
+				break;
+			
+			}
+			
 			
 		}
     	

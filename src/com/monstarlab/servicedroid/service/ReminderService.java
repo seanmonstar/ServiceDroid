@@ -1,6 +1,7 @@
 package com.monstarlab.servicedroid.service;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.monstarlab.servicedroid.receiver.NotificationReceiver;
@@ -49,28 +50,15 @@ public class ReminderService extends Service {
 	}
 	
 	private long getFirstDayOfMonth() {
-		int month = TimeUtil.getCurrentMonth();
-		int day = TimeUtil.getCurrentDay();
-		int year = TimeUtil.getCurrentYear();
+		long time = 0L;
 		
-		if(day > 1) {
-			month++;
-			day = 1;
-		}
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.DATE, 1); //beginning of month
+		c.add(Calendar.MONTH, 1); //next month
+		c.set(Calendar.HOUR_OF_DAY, 12); //at 12 noon?
+		c.set(Calendar.MINUTE, 0);
 		
-		if(month > 12) {
-			month = 1;
-			year++;
-		}
-		
-		Date d = null;
-		long time = 0;
-		try {
-			d = mTimeHelper.parseDateText(""+year+"-"+TimeUtil.pad(month)+"-"+TimeUtil.pad(day));
-			time = d.getTime();
-		} catch (ParseException ex) {
-			time = TimeUtil.getCurrentTime();
-		}
+		time = c.getTimeInMillis();
 		
 		return time;
 	}

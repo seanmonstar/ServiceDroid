@@ -95,6 +95,10 @@ public class ReturnVisitsActivity extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
         menu.add(0, MENU_ADD, 1, "Add Call").setIcon(android.R.drawable.ic_menu_add);
+        
+        //adding Anonymous Placements depends on Cursor
+        
+        
         return result;
     }
 	

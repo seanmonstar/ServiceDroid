@@ -17,13 +17,13 @@
 			android:label="@string/time">
 		</activity>
 		<activity android:name=".activity.ReturnVisitsActivity"
-			android:label="@string/rv">
+			android:label="@string/callbook">
 		</activity>
 		<activity android:name=".activity.RVShowActivity"
-			android:label="@string/rv">
+			android:label="@string/callbook">
 		</activity>
 		<activity android:name=".activity.RVEditActivity"
-			android:label="@string/rv">
+			android:label="@string/callbook">
 		</activity>
 		<activity android:name=".activity.PlacementActivity"
 			android:label="@string/placement">

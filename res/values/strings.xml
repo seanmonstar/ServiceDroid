@@ -6,7 +6,7 @@
     <string name="tips">Tips</string>
     <string name="ok">Cool!</string>
 	<string name="time">Time</string>
-    <string name="rv">Return Visits</string>
+    <string name="callbook">Call Book</string>
     <string name="stats">Stats</string>
     <string name="hours">Hours</string>
 	<string name="time_button">View Time</string>
@@ -39,7 +39,7 @@
 	<string name="books">Books</string>
 	<string name="bible">Bible</string>
 	<string name="bible_teach">What Does the Bible Really Teach?</string>
-	<string name="rvs">RVs</string>
+	<string name="rvs">Return Visits</string>
 	<string name="brochure">Brochure</string>
 	<string name="brochures">Brochures</string>
 	<string name="require_brochure">What Does God Require of Us?</string>

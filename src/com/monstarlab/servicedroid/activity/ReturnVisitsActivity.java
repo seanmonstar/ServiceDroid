@@ -23,6 +23,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
+import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class ReturnVisitsActivity extends ListActivity {
 	
@@ -31,16 +32,22 @@ public class ReturnVisitsActivity extends ListActivity {
 	private static final int MENU_ADD = Menu.FIRST;
 	private static final int MENU_SORT_ALPHA = Menu.FIRST + 1;
 	private static final int MENU_SORT_TIME = Menu.FIRST + 2;
-	private static final int EDIT_ID  = Menu.FIRST + 3;
-	private static final int RETURN_ID  = Menu.FIRST + 4;
-	private static final int DELETE_ID = Menu.FIRST + 5;
+	private static final int MENU_ADD_ANON_PLACEMENTS = Menu.FIRST + 3;
+
+	private static final int EDIT_ID  = Menu.FIRST + 4;
+	private static final int RETURN_ID  = Menu.FIRST + 5;
+	private static final int DELETE_ID = Menu.FIRST + 6;
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY, Calls.LAST_VISITED };
+	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY, Calls.LAST_VISITED, Calls.TYPE };
 	
 	private static final int SORT_ALPHA = 0;
 	private static final int SORT_TIME = 1;
 
 	private int mSortState;
+
+	private boolean mIsAnonCall = false;
+
+	private Cursor mCursor;
 	
 	
 	@Override
@@ -70,12 +77,12 @@ public class ReturnVisitsActivity extends ListActivity {
 			sortBy = Calls.LAST_VISITED;
 		}
 		
-		Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
+		mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
 		
 		String[] from = new String[]{ Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY };
 		int[] to = new int[]{ R.id.name, R.id.address, R.id.icon };
 		
-		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, c, from, to) {
+		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, mCursor, from, to) {
 			
 			@Override
 			public void setViewImage(ImageView v, String value) {
@@ -89,15 +96,14 @@ public class ReturnVisitsActivity extends ListActivity {
 		};
 		
 		setListAdapter(rvs);
+		
+		getAnonCall();
 	}
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
         menu.add(0, MENU_ADD, 1, "Add Call").setIcon(android.R.drawable.ic_menu_add);
-        
-        //adding Anonymous Placements depends on Cursor
-        
         
         return result;
     }
@@ -118,6 +124,16 @@ public class ReturnVisitsActivity extends ListActivity {
 				menu.add(0, MENU_SORT_ALPHA, 2, R.string.sort).setIcon(android.R.drawable.ic_menu_sort_alphabetically);
 			}
 		}
+		
+		//adding Anonymous Placements depends on Cursor
+        if(mIsAnonCall) {
+        	menu.removeItem(MENU_ADD_ANON_PLACEMENTS);
+        } else {
+        	if(menu.findItem(MENU_ADD_ANON_PLACEMENTS) == null) {
+        		menu.add(0, MENU_ADD_ANON_PLACEMENTS, 3, R.string.anon_placement).setIcon(android.R.drawable.ic_menu_add);
+        	}
+        }
+		
 		return true;
 	}
 	
@@ -135,21 +151,63 @@ public class ReturnVisitsActivity extends ListActivity {
 			mSortState = SORT_TIME;
 			fillData();
 			break;
+		case MENU_ADD_ANON_PLACEMENTS:
+			createAnonCall();
+			break;
 		}
 		
 		return super.onOptionsItemSelected(item);
 	}
+
+	protected void createAnonCall() {
+		if(!mIsAnonCall) {
+			ContentValues values = new ContentValues();
+			values.put(Calls.NAME, getString(R.string.anon_placement));
+			values.put(Calls.TYPE, Calls.TYPE_ANONYMOUS);
+			values.put(Calls.DATE, TimeUtil.getCurrentTimeSQLText());
+			getContentResolver().insert(getIntent().getData(), values);
+			
+			getAnonCall();
+		}
+	}
 	
+	protected void getAnonCall() {
+		mIsAnonCall = false;
+		Cursor c = getContentResolver().query(getIntent().getData(), PROJECTION, Calls.TYPE + "=?", new String[] { ""+Calls.TYPE_ANONYMOUS }, null);
+		
+		if(c.getCount() > 0) {
+			mIsAnonCall = true;
+		}
+		
+		c.close();
+		c = null;
+	}
+
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		
-		String name = ((TextView)((AdapterContextMenuInfo)menuInfo).targetView.findViewById(R.id.name)).getText().toString();
+		AdapterContextMenuInfo info = ((AdapterContextMenuInfo)menuInfo);
+		Log.d(TAG, "Menu position id is " + info.position);
+		mCursor.moveToPosition(info.position);
+		
+		
+		String name = mCursor.getString(1);
+		int type = mCursor.getInt(5);
 		
 		menu.setHeaderTitle(name);
-		menu.add(0, EDIT_ID, 0, R.string.edit);
-		menu.add(0, RETURN_ID, 1, R.string.make_return);
-        menu.add(0, DELETE_ID, 2, R.string.delete_call);
+		
+		switch(type) {
+		
+		default:
+			menu.add(0, RETURN_ID, 1, R.string.make_return);
+			//falls through
+			
+		case Calls.TYPE_ANONYMOUS:
+			menu.add(0, EDIT_ID, 0, R.string.edit);
+			menu.add(0, DELETE_ID, 2, R.string.delete_call);
+		}
 	}
 	
 	@Override
@@ -183,6 +241,8 @@ public class ReturnVisitsActivity extends ListActivity {
 	protected void deleteCall(long id) {
 		Uri callUri = ContentUris.withAppendedId(getIntent().getData(), id);
 		getContentResolver().delete(callUri, null, null);
+		
+		getAnonCall();
 	}
 	
 	protected void editCall(long id) {

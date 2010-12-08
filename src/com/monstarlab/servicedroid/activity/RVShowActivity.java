@@ -226,13 +226,22 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
         
+        switch(mCallType) {
+
+        default:
+        	menu.add(0, MENU_EDIT, 1, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
+            menu.add(0, MENU_RETURN, 3, "Return").setIcon(android.R.drawable.ic_menu_myplaces);
+            //falls through
+            
+        case Calls.TYPE_ANONYMOUS:
+        	menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
+        	//menu.add(0, MENU_DELETE, 4, R.string.delete).setIcon(android.R.drawable.ic_menu_delete);
+        	break;
         
-        menu.add(0, MENU_EDIT, 1, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
+        }
         
         
-        menu.add(0, MENU_RETURN, 3, "Return").setIcon(android.R.drawable.ic_menu_myplaces);
         
-        menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
         
         return result;
     }

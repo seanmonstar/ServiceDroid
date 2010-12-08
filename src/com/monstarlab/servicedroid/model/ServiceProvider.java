@@ -207,10 +207,6 @@ public class ServiceProvider extends ContentProvider {
 			switch (oldVersion) {
 			
 			case 1:
-				//do nothing
-				break;
-			
-			case 2:
 				db.execSQL("alter table " + CALLS_TABLE + " add column " + Calls.TYPE + " integer default 1");
 				break;
 				

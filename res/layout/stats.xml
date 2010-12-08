@@ -44,7 +44,7 @@
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/rv" android:padding="5dip" android:gravity="center_vertical|left" />
+			<TextView android:text="@string/rvs" android:padding="5dip" android:gravity="center_vertical|left" />
 			<TextView android:id="@+id/rvs" android:padding="5dip" android:gravity="center_vertical|right" />
 		</TableRow>
 		

@@ -29,13 +29,15 @@ Planned
 
 _For Version 1.2_
 
+* Anonymous Placements
 * View directions to an RV
-* View map of all RVs
-* Sort calls by distance
+* Translated to Spanish
 
 _Future Versions_
 
 * Back up your data to your Google account
+* View map of all RVs
+* Sort calls by distance
 
 
 Copyright

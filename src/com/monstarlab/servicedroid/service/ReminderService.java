@@ -1,17 +1,12 @@
 package com.monstarlab.servicedroid.service;
 
-import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
-
 import com.monstarlab.servicedroid.receiver.NotificationReceiver;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -28,6 +23,7 @@ public class ReminderService extends Service {
 	    return 2; // START_NOT_STICKY
 	}
 	
+	@Override
 	public void onCreate() {
 		mTimeHelper = new TimeUtil(this);
 		scheduleReminderNotification();

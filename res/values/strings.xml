@@ -2,7 +2,7 @@
 <resources>
     <string name="hello">Hello World, Servoid!</string>
     <string name="app_name">ServiceDroid</string>
-    <string name="whats_new">What's New!</string>
+    <string name="whats_new">What\'s New!</string>
     <string name="tips">Tips</string>
     <string name="ok">Cool!</string>
 	<string name="time">Time</string>
@@ -13,20 +13,30 @@
 	<string name="add_time">Add Time</string>
 	<string name="start_time">Start Time</string>
 	<string name="stop_time">Stop Time</string>
+	<string name="timer_active">Service Timer Active</string>
+	<string name="time_in_service">Time in service: %s</string>
+	<string name="hrs">hrs</string>
+	<string name="hr">hr</string>
+	<string name="mins">mins</string>
+	<string name="min">min</string>
 	<string name="edit">Edit</string>
 	<string name="sort">Sort</string>
+	<string name="add_call">Add Call</string>
 	<string name="delete_time">Delete Time</string>
 	<string name="delete_call">Delete Call</string>
 	<string name="delete_placement">Remove Placement</string>
 	<string name="make_return">Returned On</string>
 	<string name="no_time">Press MENU to record time for this month.</string>
 	<string name="no_calls">Press MENU to record a new Call.</string>
+	<string name="return_visit_success">You made a return visit on %s.</string>
+	<string name="last_visited">Last Visited: %s</string>
 	<string name="length">Time in Service</string>
 	<string name="date">Date</string>
 	<string name="confirm">Confirm</string>
 	<string name="cancel">Cancel</string>
 	<string name="address">Address</string>
 	<string name="name">Name</string>
+	<string name="directions">Directions</string>
 	<string name="placement">Placement</string>
 	<string name="anon_placement">Anonymous</string>
 	<string name="create_placement">Create Placement</string>
@@ -47,6 +57,8 @@
 	<string name="comfort_brochure">When Someone You Love Dies</string>
 	<string name="bible_study">Bible Study</string>
 	<string name="bible_studies">Bible Studies</string>
+	<string name="is_bible_study">%s is now a bible study.</string>
+	<string name="isnt_bible_study">%s is no longer a bible study.</string>
 	<string name="bible_study_prompt">Do you wish to mark it as ended, or delete all traces of this study?</string>
 	<string name="bible_study_prompt_delete">Delete</string>
 	<string name="bible_study_prompt_finish">It Ended</string>
@@ -55,10 +67,14 @@
 	<string name="round_time_prompt_carry">Carry Over</string>
 	<string name="notes">Notes</string>
 	<string name="send">Send</string>
+	<string name="send_by">Send by...</string>
 	<string name="monthly">Monthly</string>
 	<string name="month">Month</string>
 	<string name="year">Year</string>
 	<string name="service_year">Service Year</string>
+	<string name="service_time_for">Service Year for %s</string>
+	<string name="send_reminder">Send in your Service Time</string>
+	<string name="time_due">Your time is due!</string>
 	<string-array name="months_array">
         <item>January</item>
         <item>February</item>

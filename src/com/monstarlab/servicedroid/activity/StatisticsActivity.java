@@ -6,12 +6,8 @@ import java.util.Date;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -60,7 +56,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	private int mCurrentMonth = TimeUtil.getCurrentMonth();
 	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
-	//private int mTimeSpan = MENU_MONTH;
+	private int mTimeSpan = MENU_MONTH;
 	
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -104,13 +100,21 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 
 
 	protected void fillData() {
-		mTimePeriodDisplay.setText("" + mCurrentMonth + "/" + mCurrentYear);
+		mTimePeriodDisplay.setText(getTimePeriodText());
 		mHoursDisplay.setText(getHours());
 		mRvsDisplay.setText(getRVs());
 		mMagsDisplay.setText(getMagazines());
 		mBrochuresDisplay.setText(getBrochures());
 		mBooksDisplay.setText(getBooks());
 		mBibleStudiesDisplay.setText(getBibleStudies());
+	}
+	
+	protected String getTimePeriodText() {
+		if(mTimeSpan == MENU_MONTH) {
+			return "" + mCurrentMonth + "/" + mCurrentYear;
+		} else {
+			return getString(R.string.service_year) + " " + mCurrentYear;
+		}
 	}
 	
 	protected String getBibleStudies() {
@@ -207,74 +211,109 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		return numOfRVs;
 	}
 	
-	protected void setTimePeriod() {
-		
-	}
-	
-	protected void moveBackwardOneMonth() {
-		mCurrentMonth--;
-		if(mCurrentMonth <= 0) {
-			mCurrentMonth = 12;
+	protected void moveTimePeriodBackward() {
+		if(mTimeSpan == MENU_MONTH) {
+			mCurrentMonth--;
+			if(mCurrentMonth <= 0) {
+				mCurrentMonth = 12;
+				mCurrentYear--;
+			}
+		} else {
 			mCurrentYear--;
 		}
 	}
 	
-	protected void moveForwardOneMonth() {
-		mCurrentMonth++;
-		if(mCurrentMonth > 12) {
-			mCurrentMonth = 1;
+	protected void moveTimePeriodForward() {
+		if(mTimeSpan == MENU_MONTH) {
+			mCurrentMonth++;
+			if(mCurrentMonth > 12) {
+				mCurrentMonth = 1;
+				mCurrentYear++;
+			}
+		} else {
 			mCurrentYear++;
 		}
 	}
 	
 	protected String getTimePeriodWhere(String dateField) {
-		return "("+dateField + " between ? and ?)"; // "dateField between YYYY-MM-01 and date('YYYY-MM-01','+1 month','-1 day');"
+		return "("+dateField + " between ? and ?)";
 	}
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
+		if(mTimeSpan == MENU_YEAR) {
+			month = 9; // service year is from Sept (9) - Aug (8)
+		}
+		
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month - 1, 1);
 		String[] args = new String[2];
 
 		//beginning of month
-		Date startOfMonth = cal.getTime();
-		args[0] = TimeUtil.getSQLTextFromDate(startOfMonth);
+		Date start = cal.getTime();
+		args[0] = TimeUtil.getSQLTextFromDate(start);
 		
+		if(mTimeSpan == MENU_MONTH) {
+			cal.add(Calendar.MONTH, 1);
+			cal.add(Calendar.DATE, -1);
+		} else {
+			cal.add(Calendar.YEAR, 1);
+			cal.add(Calendar.DATE, -1);
+		}
 		
-		cal.add(Calendar.MONTH, 1);
-		cal.add(Calendar.DATE, -1);
-		Date endOfMonth = cal.getTime();
+		Date end = cal.getTime();
 		
 		//end of month
-		args[1] = TimeUtil.getSQLTextFromDate(endOfMonth);
+		args[1] = TimeUtil.getSQLTextFromDate(end);
 		
 		return args;
 	}
 	
-	/*protected void setTimeSpan(int span) {
+	protected void setTimeSpan(int span) {
 		mTimeSpan = span;
-	}*/
+		fillData();
+	}
 	
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-		//menu.add(0, MENU_MONTH, 1, R.string.monthly).setIcon(android.R.drawable.ic_menu_month);
-		//menu.add(0, MENU_YEAR, 1, R.string.service_year).setIcon(android.R.drawable.ic_menu_my_calendar);
-		menu.add(0, MENU_EMAIL, 1, R.string.send).setIcon(android.R.drawable.ic_menu_send);
+		boolean result = super.onCreateOptionsMenu(menu);		
+		menu.add(0, MENU_EMAIL, 2, R.string.send).setIcon(android.R.drawable.ic_menu_send);
 		return result;
     }
 	
+	
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		boolean result = super.onPrepareOptionsMenu(menu);
+		
+		if(mTimeSpan == MENU_MONTH) {
+			menu.removeItem(MENU_MONTH);
+			if(menu.findItem(MENU_YEAR) == null) {
+				menu.add(0, MENU_YEAR, 1, R.string.service_year).setIcon(android.R.drawable.ic_menu_my_calendar);
+			}
+		} else {
+			menu.removeItem(MENU_YEAR);
+			if(menu.findItem(MENU_MONTH) == null) {
+				menu.add(0, MENU_MONTH, 1, R.string.monthly).setIcon(android.R.drawable.ic_menu_month);
+			}
+		}
+		
+		return result;
+	}
+
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {		
 		switch(item.getItemId()) {
 		
-		/*case MENU_MONTH:
+		case MENU_MONTH:
 			setTimeSpan(MENU_MONTH);
 			break;
 		case MENU_YEAR:
 			setTimeSpan(MENU_YEAR);
-			break;*/
+			break;
 		
 		case MENU_EMAIL:
 			setupSendEmail();
@@ -405,9 +444,9 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		//i.setType("text/plain"); //use this line for testing in the emulator  
 		i.setType("message/rfc822"); //for device
 		i.putExtra(Intent.EXTRA_EMAIL, new String[] {});  
-		i.putExtra(Intent.EXTRA_SUBJECT, "Service Time for " + mCurrentMonth + "/" + mCurrentYear);  
+		i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.service_time_for, mCurrentMonth + "/" + mCurrentYear));  
 		i.putExtra(Intent.EXTRA_TEXT, getStatsTextForTimePeriod());
-		startActivity(Intent.createChooser(i, "Send by..."));
+		startActivity(Intent.createChooser(i, getString(R.string.send_by)));
 	}
 	
 	protected boolean shouldRoundTime() {
@@ -430,16 +469,13 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	protected String getStatsTextForTimePeriod() {
 		StringBuilder sb = new StringBuilder();
 		
-		//TODO - use strings.xml to allow for internationalization
-		sb.append("Here is my Service Record for " + mCurrentMonth + "/" + mCurrentYear + "\n\n");
-		sb.append("Hours: " + getHours() + "\n");
-		sb.append("Magazines: " + getMagazines() + "\n");
-		sb.append("Brochures: " + getBrochures() + "\n");
-		sb.append("Books: " + getBooks() + "\n");
-		sb.append("Return Visits: " + getRVs() + "\n");
-		sb.append("Bible Studies: " + getBibleStudies() + "\n");
-		
-		
+		sb.append(getString(R.string.service_time_for, getTimePeriodText() + "\n\n"));
+		sb.append(getString(R.string.hours) + ": " + getHoursSum() + "\n");
+		sb.append(getString(R.string.magazines) + ": " + getMagazines() + "\n");
+		sb.append(getString(R.string.brochures) + ": " + getBrochures() + "\n");
+		sb.append(getString(R.string.books) + ": " + getBooks() + "\n");
+		sb.append(getString(R.string.rvs) + ": " + getRVs() + "\n");
+		sb.append(getString(R.string.bible_studies) + ": " + getBibleStudies() + "\n");	
 		
 		return sb.toString();
 	}
@@ -454,11 +490,11 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	            // right to left swipe
 	            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 	            	//left
-	            	moveForwardOneMonth();
+	            	moveTimePeriodForward();
 	            	fillData();
 	            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 	                //right
-	            	moveBackwardOneMonth();
+	            	moveTimePeriodBackward();
 	            	fillData();
 	            }
 	        } catch (Exception e) {

@@ -33,10 +33,10 @@ public class ReturnVisitsActivity extends ListActivity {
 	private static final int MENU_SORT_ALPHA = Menu.FIRST + 1;
 	private static final int MENU_SORT_TIME = Menu.FIRST + 2;
 	private static final int MENU_ADD_ANON_PLACEMENTS = Menu.FIRST + 3;
-
 	private static final int EDIT_ID  = Menu.FIRST + 4;
 	private static final int RETURN_ID  = Menu.FIRST + 5;
-	private static final int DELETE_ID = Menu.FIRST + 6;
+	private static final int DIRECTIONS_ID  = Menu.FIRST + 6;
+	private static final int DELETE_ID = Menu.FIRST + 7;
 	
 	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY, Calls.LAST_VISITED, Calls.TYPE };
 	
@@ -46,9 +46,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	private int mSortState;
 
 	private boolean mIsAnonCall = false;
-
-	private Cursor mCursor;
-	
+	private Cursor mListCursor;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,19 +75,19 @@ public class ReturnVisitsActivity extends ListActivity {
 			sortBy = Calls.LAST_VISITED;
 		}
 		
-		mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
+		mListCursor = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
 		
 		String[] from = new String[]{ Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY };
 		int[] to = new int[]{ R.id.name, R.id.address, R.id.icon };
 		
-		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, mCursor, from, to) {
+		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, mListCursor, from, to) {
 			
 			@Override
 			public void setViewImage(ImageView v, String value) {
 				if(Integer.parseInt(value) > 0) {
-					v.setVisibility(ImageView.VISIBLE);
+					v.setVisibility(View.VISIBLE);
 				} else {
-					v.setVisibility(ImageView.GONE);
+					v.setVisibility(View.GONE);
 				}
 			}
 			
@@ -103,8 +101,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        menu.add(0, MENU_ADD, 1, "Add Call").setIcon(android.R.drawable.ic_menu_add);
-        
+        menu.add(0, MENU_ADD, 1, R.string.add_call).setIcon(android.R.drawable.ic_menu_add);
         return result;
     }
 	
@@ -190,11 +187,11 @@ public class ReturnVisitsActivity extends ListActivity {
 		
 		AdapterContextMenuInfo info = ((AdapterContextMenuInfo)menuInfo);
 		Log.d(TAG, "Menu position id is " + info.position);
-		mCursor.moveToPosition(info.position);
+		mListCursor.moveToPosition(info.position);
 		
 		
-		String name = mCursor.getString(1);
-		int type = mCursor.getInt(5);
+		String name = mListCursor.getString(1);
+		int type = mListCursor.getInt(5);
 		
 		menu.setHeaderTitle(name);
 		
@@ -202,12 +199,14 @@ public class ReturnVisitsActivity extends ListActivity {
 		
 		default:
 			menu.add(0, RETURN_ID, 1, R.string.make_return);
+			menu.add(0, DIRECTIONS_ID, 3, R.string.directions);
 			//falls through
 			
 		case Calls.TYPE_ANONYMOUS:
 			menu.add(0, EDIT_ID, 0, R.string.edit);
 			menu.add(0, DELETE_ID, 2, R.string.delete_call);
 		}
+		
 	}
 	
 	@Override
@@ -221,6 +220,11 @@ public class ReturnVisitsActivity extends ListActivity {
 		case RETURN_ID:
 			returnOnCall(info.id);
 			return true;
+			
+		case DIRECTIONS_ID:
+			getDirections(info.position);
+			return true;
+			
 		case DELETE_ID:
 			deleteCall(info.id);
 			
@@ -236,6 +240,20 @@ public class ReturnVisitsActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		//super.onListItemClick(l, v, position, id);
 		editCall(id);
+	}
+	
+	protected void getDirections(int index) {
+		if(mListCursor != null) {
+			if(mListCursor.getCount() > 0) {
+				
+				mListCursor.moveToPosition(index);
+				String addr = mListCursor.getString(2);
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?daddr="+addr));
+				startActivity(i);
+			}
+		}
+		
+		
 	}
 	
 	protected void deleteCall(long id) {
@@ -263,7 +281,7 @@ public class ReturnVisitsActivity extends ListActivity {
 		getContentResolver().insert(ReturnVisits.CONTENT_URI, values);
 		
 		String name = getCallName(id);
-		String text = "You made a return visit on " + name;
+		String text = getString(R.string.return_visit_success, name);
 		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 	}
 	

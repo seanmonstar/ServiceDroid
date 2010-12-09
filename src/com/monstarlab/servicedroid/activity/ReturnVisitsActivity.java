@@ -32,7 +32,8 @@ public class ReturnVisitsActivity extends ListActivity {
 	private static final int MENU_SORT_TIME = Menu.FIRST + 2;
 	private static final int EDIT_ID  = Menu.FIRST + 3;
 	private static final int RETURN_ID  = Menu.FIRST + 4;
-	private static final int DELETE_ID = Menu.FIRST + 5;
+	private static final int DIRECTIONS_ID  = Menu.FIRST + 5;
+	private static final int DELETE_ID = Menu.FIRST + 6;
 	
 	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY, Calls.LAST_VISITED };
 	
@@ -40,6 +41,8 @@ public class ReturnVisitsActivity extends ListActivity {
 	private static final int SORT_TIME = 1;
 
 	private int mSortState;
+
+	private Cursor mListCursor;
 	
 	
 	@Override
@@ -69,12 +72,12 @@ public class ReturnVisitsActivity extends ListActivity {
 			sortBy = Calls.LAST_VISITED;
 		}
 		
-		Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
+		mListCursor = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
 		
 		String[] from = new String[]{ Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY };
 		int[] to = new int[]{ R.id.name, R.id.address, R.id.icon };
 		
-		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, c, from, to) {
+		SimpleCursorAdapter rvs = new SimpleCursorAdapter(this, R.layout.call_row, mListCursor, from, to) {
 			
 			@Override
 			public void setViewImage(ImageView v, String value) {
@@ -144,7 +147,8 @@ public class ReturnVisitsActivity extends ListActivity {
 		menu.setHeaderTitle(name);
 		menu.add(0, EDIT_ID, 0, R.string.edit);
 		menu.add(0, RETURN_ID, 1, R.string.make_return);
-        menu.add(0, DELETE_ID, 2, R.string.delete_call);
+		menu.add(0, DIRECTIONS_ID, 2, R.string.directions);
+        menu.add(0, DELETE_ID, 3, R.string.delete_call);
 	}
 	
 	@Override
@@ -158,6 +162,11 @@ public class ReturnVisitsActivity extends ListActivity {
 		case RETURN_ID:
 			returnOnCall(info.id);
 			return true;
+			
+		case DIRECTIONS_ID:
+			getDirections(info.position);
+			return true;
+			
 		case DELETE_ID:
 			deleteCall(info.id);
 			
@@ -173,6 +182,20 @@ public class ReturnVisitsActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		//super.onListItemClick(l, v, position, id);
 		editCall(id);
+	}
+	
+	protected void getDirections(int index) {
+		if(mListCursor != null) {
+			if(mListCursor.getCount() > 0) {
+				
+				mListCursor.moveToPosition(index);
+				String addr = mListCursor.getString(2);
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?daddr="+addr));
+				startActivity(i);
+			}
+		}
+		
+		
 	}
 	
 	protected void deleteCall(long id) {

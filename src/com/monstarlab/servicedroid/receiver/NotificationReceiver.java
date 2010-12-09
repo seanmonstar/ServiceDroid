@@ -31,14 +31,14 @@ public class NotificationReceiver extends BroadcastReceiver {
 	private void showReminder(Context context) {
 		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		
-		CharSequence tickerText = "Send in your Service Time"; //TODO - pull from R.string;
+		CharSequence tickerText = context.getString(R.string.send_reminder); //TODO - pull from R.string;
 		long when = TimeUtil.getCurrentTime();
 		
 		Notification notification = new Notification(R.drawable.icon, tickerText, when);
 		Intent intent = new Intent(context, StatisticsActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 		
-		CharSequence contentText = "Your time is due!";
+		CharSequence contentText = context.getString(R.string.time_due);
 		
 		notification.setLatestEventInfo(context, tickerText, contentText, pendingIntent);
 		

@@ -61,7 +61,7 @@ public class TimerService extends Service {
 	
 	private void createNotification() {
 		int icon = R.drawable.icon;    // icon from resources
-		CharSequence tickerText = "Service Timer Active";              // ticker-text
+		CharSequence tickerText = getString(R.string.timer_active);              // ticker-text
 		long when = System.currentTimeMillis();         // notification time
 		
 		mNotification = new Notification(icon, tickerText, when);
@@ -69,8 +69,9 @@ public class TimerService extends Service {
 	
 	private void showTimerNotification() {
 		
-		CharSequence contentText = "Time in service: " + TimeUtil.toTimeString((int) mRunTime);      // expanded message text
-		CharSequence contentTitle = "ServiceDroid";  // expanded message title
+		CharSequence contentText = getString(R.string.time_in_service, TimeUtil.toTimeString((int) mRunTime));      // expanded message text
+		CharSequence contentTitle = getString(R.string.app_name);  // expanded message title
+
 		Intent notificationIntent = new Intent(this, TimeActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 

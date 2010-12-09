@@ -93,7 +93,7 @@ public class ReturnVisitsActivity extends ListActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        menu.add(0, MENU_ADD, 1, "Add Call").setIcon(android.R.drawable.ic_menu_add);
+        menu.add(0, MENU_ADD, 1, R.string.add_call).setIcon(android.R.drawable.ic_menu_add);
         return result;
     }
 	
@@ -198,7 +198,7 @@ public class ReturnVisitsActivity extends ListActivity {
 		getContentResolver().insert(ReturnVisits.CONTENT_URI, values);
 		
 		String name = getCallName(id);
-		String text = "You made a return visit on " + name;
+		String text = getString(R.string.return_visit_success, name);
 		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 	}
 	

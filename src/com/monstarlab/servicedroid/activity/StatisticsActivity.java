@@ -398,9 +398,9 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		//i.setType("text/plain"); //use this line for testing in the emulator  
 		i.setType("message/rfc822"); //for device
 		i.putExtra(Intent.EXTRA_EMAIL, new String[] {});  
-		i.putExtra(Intent.EXTRA_SUBJECT, "Service Time for " + mCurrentMonth + "/" + mCurrentYear);  
+		i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.service_time_for, mCurrentMonth + "/" + mCurrentYear));  
 		i.putExtra(Intent.EXTRA_TEXT, getStatsTextForTimePeriod());
-		startActivity(Intent.createChooser(i, "Send by..."));
+		startActivity(Intent.createChooser(i, getString(R.string.send_by)));
 	}
 	
 	protected boolean shouldRoundTime() {
@@ -423,16 +423,13 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	protected String getStatsTextForTimePeriod() {
 		StringBuilder sb = new StringBuilder();
 		
-		//TODO - use strings.xml to allow for internationalization
-		sb.append("Here is my Service Record for " + mCurrentMonth + "/" + mCurrentYear + "\n\n");
-		sb.append("Hours: " + getHours() + "\n");
-		sb.append("Magazines: " + getMagazines() + "\n");
-		sb.append("Brochures: " + getBrochures() + "\n");
-		sb.append("Books: " + getBooks() + "\n");
-		sb.append("Return Visits: " + getRVs() + "\n");
-		sb.append("Bible Studies: " + getBibleStudies() + "\n");
-		
-		
+		sb.append(getString(R.string.service_time_for, mCurrentMonth + "/" + mCurrentYear + "\n\n"));
+		sb.append(getString(R.string.hours) + ": " + getHoursSum() + "\n");
+		sb.append(getString(R.string.magazines) + ": " + getMagazines() + "\n");
+		sb.append(getString(R.string.brochures) + ": " + getBrochures() + "\n");
+		sb.append(getString(R.string.books) + ": " + getBooks() + "\n");
+		sb.append(getString(R.string.rvs) + ": " + getRVs() + "\n");
+		sb.append(getString(R.string.bible_studies) + ": " + getBibleStudies() + "\n");	
 		
 		return sb.toString();
 	}

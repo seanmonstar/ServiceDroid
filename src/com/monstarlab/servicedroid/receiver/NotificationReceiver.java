@@ -29,7 +29,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 	}
 
 	private void showReminder(Context context) {
-		NotificationManager nm = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		CharSequence tickerText = "Send in your Service Time"; //TODO - pull from R.string;
 		long when = TimeUtil.getCurrentTime();

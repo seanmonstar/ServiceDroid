@@ -1,7 +1,6 @@
 package com.monstarlab.servicedroid.activity;
 
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;

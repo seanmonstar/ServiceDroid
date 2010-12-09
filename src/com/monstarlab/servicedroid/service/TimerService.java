@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 
 public class TimerService extends Service {
 
@@ -37,6 +36,7 @@ public class TimerService extends Service {
 	    return 1; // START_STICKY
 	}
 	
+	@Override
 	public void onCreate() {
 		isRunning = true;
 		mTimeHelper = new TimeUtil(this);
@@ -50,6 +50,7 @@ public class TimerService extends Service {
 		//update timer with time
 	}
 	
+	@Override
 	public void onDestroy() {
 		removeTimer();
 		((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE)).cancel(SHOW_TIMER_NOTIFICATION);
@@ -68,7 +69,7 @@ public class TimerService extends Service {
 	
 	private void showTimerNotification() {
 		
-		CharSequence contentText = "Time in service: " + mTimeHelper.toTimeString((int) mRunTime);      // expanded message text
+		CharSequence contentText = "Time in service: " + TimeUtil.toTimeString((int) mRunTime);      // expanded message text
 		CharSequence contentTitle = "ServiceDroid";  // expanded message title
 		Intent notificationIntent = new Intent(this, TimeActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);

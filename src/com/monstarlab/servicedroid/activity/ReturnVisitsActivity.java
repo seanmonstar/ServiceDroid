@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -80,9 +79,9 @@ public class ReturnVisitsActivity extends ListActivity {
 			@Override
 			public void setViewImage(ImageView v, String value) {
 				if(Integer.parseInt(value) > 0) {
-					v.setVisibility(ImageView.VISIBLE);
+					v.setVisibility(View.VISIBLE);
 				} else {
-					v.setVisibility(ImageView.GONE);
+					v.setVisibility(View.GONE);
 				}
 			}
 			

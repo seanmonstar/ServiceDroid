@@ -10,15 +10,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -34,7 +30,6 @@ import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
-import com.monstarlab.servicedroid.util.Changelog;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class RVShowActivity extends Activity implements OnItemClickListener {
@@ -47,7 +42,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private static final int MENU_STUDY = Menu.FIRST + 3;
 	
 	
-	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE };
+	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE };
 	private static final String[] BIBLE_STUDY_PROJECTION = new String[] { BibleStudies._ID, BibleStudies.DATE_START, BibleStudies.DATE_END, BibleStudies.CALL_ID };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE };
 	private static final int ID_COLUMN = 0;
@@ -69,7 +64,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private TextView mAddressText;
 	private TextView mLastVisitText;
 	private TextView mNotesText;
-	private Cursor mCursor;
+	private Cursor mCallCursor;
 	private TimeUtil mTimeHelper;
 	private CheckBox mBibleStudyCheckbox;
 
@@ -99,9 +94,9 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 
 		
 		mListView = (ListView) findViewById(R.id.placements_list);
-		mListView.setEmptyView((TextView) findViewById(android.R.id.empty));
+		mListView.setEmptyView(findViewById(android.R.id.empty));
         mListView.setOnCreateContextMenuListener(this);
-        mListView.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_OVERLAY);
+        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         mListView.setOnItemClickListener(this);
 		
 		mBibleStudyCheckbox = (CheckBox) findViewById(R.id.is_bible_study);
@@ -127,15 +122,15 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	}
 	
 	private void refreshCallData() {
-		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
-		if(mCursor != null) {
-			if(mCursor.getCount() == 1) {
+		mCallCursor = managedQuery(mUri, CALLS_PROJECTION, null, null, null);
+		if(mCallCursor != null) {
+			if(mCallCursor.getCount() == 1) {
 			
-				mCursor.moveToFirst();
+				mCallCursor.moveToFirst();
 				
-				String name = mCursor.getString(NAME_COLUMN);
-				String address = mCursor.getString(ADDRESS_COLUMN);
-				String notes = mCursor.getString(NOTES_COLUMN);
+				String name = mCallCursor.getString(NAME_COLUMN);
+				String address = mCallCursor.getString(ADDRESS_COLUMN);
+				String notes = mCallCursor.getString(NOTES_COLUMN);
 				boolean isBibleStudy = isBibleStudy();
 				
 				updateLastVisited();
@@ -305,9 +300,10 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	protected void makeBookPlacement() {
 		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
 		
-		if(mCursor != null) {
-			mCursor.moveToFirst();
-			i.putExtra(Calls._ID, mCursor.getInt(ID_COLUMN));
+		if(mCallCursor != null) {
+			mCallCursor.moveToFirst();
+			//adding Call ID so we know what Call to associate the placement with
+			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
 		}
 		
 		i.putExtra("type", Literature.TYPE_BOOK);
@@ -321,9 +317,10 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	protected void makeBrochurePlacement() {
 		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
 		
-		if(mCursor != null) {
-			mCursor.moveToFirst();
-			i.putExtra(Calls._ID, mCursor.getInt(ID_COLUMN));
+		if(mCallCursor != null) {
+			mCallCursor.moveToFirst();
+			//adding Call ID so we know what Call to associate the placement with
+			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
 		}
 		
 		i.putExtra("type", Literature.TYPE_BROCHURE);
@@ -337,9 +334,10 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	protected void makeMagazinePlacement() {
 		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
 		
-		if(mCursor != null) {
-			mCursor.moveToFirst();
-			i.putExtra(Calls._ID, mCursor.getInt(ID_COLUMN));
+		if(mCallCursor != null) {
+			mCallCursor.moveToFirst();
+			//adding Call ID so we know what Call to associate the placement with
+			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
 		}
 		
 		i.putExtra("type", Literature.TYPE_MAGAZINE);
@@ -383,7 +381,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	}
 	
 	private void showStudyToast(boolean isStudy) {
-		String name = mCursor.getString(NAME_COLUMN);
+		String name = mCallCursor.getString(NAME_COLUMN);
 		String status = isStudy ? "now" : "no longer";
 		String text = name + " is " + status + " a bible study.";
 		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
@@ -426,15 +424,15 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	}
 
 	protected void returnOnCall() {
-		if(mCursor != null) {
-			mCursor.moveToFirst();
+		if(mCallCursor != null) {
+			mCallCursor.moveToFirst();
 		
 			ContentValues values = new ContentValues();
-			values.put(ReturnVisits.CALL_ID, mCursor.getInt(ID_COLUMN));
+			values.put(ReturnVisits.CALL_ID, mCallCursor.getInt(ID_COLUMN));
 			getContentResolver().insert(ReturnVisits.CONTENT_URI, values);
 			
 			
-			String name = mCursor.getString(NAME_COLUMN);
+			String name = mCallCursor.getString(NAME_COLUMN);
 			String text = "You made a return visit on " + name;
 			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 			updateLastVisited();
@@ -442,15 +440,15 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	}
 	
 	protected void updateLastVisited() {
-		if(mCursor != null) {
+		if(mCallCursor != null) {
 			//check the most recent Return Visit			
 			String lastVisit = getLatestReturn();
 			
 			//if there has been no return visit
 			if(lastVisit == null) {
 				//show the date the Call was first found home
-				mCursor.moveToFirst();
-				lastVisit = mCursor.getString(DATE_COLUMN);
+				mCallCursor.moveToFirst();
+				lastVisit = mCallCursor.getString(DATE_COLUMN);
 			}
 			
 			mLastVisitText.setText("Last Visited: " + mTimeHelper.normalizeDate(lastVisit));
@@ -459,10 +457,10 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	
 	protected String getLatestReturn() {
 		String date = null;
-		if(mCursor != null) {
-			mCursor.moveToFirst();
+		if(mCallCursor != null) {
+			mCallCursor.moveToFirst();
 			
-			Cursor c = getContentResolver().query(ReturnVisits.CONTENT_URI, new String[] { ReturnVisits.DATE }, "call_id = ?", new String[] { mCursor.getString(ID_COLUMN) }, "date desc");
+			Cursor c = getContentResolver().query(ReturnVisits.CONTENT_URI, new String[] { ReturnVisits.DATE }, "call_id = ?", new String[] { mCallCursor.getString(ID_COLUMN) }, "date desc");
 			if(c != null) {
 				if(c.getCount() > 0) {
 					c.moveToFirst();

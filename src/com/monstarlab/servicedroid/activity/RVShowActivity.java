@@ -39,7 +39,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	private static final int MENU_EDIT = Menu.FIRST;
 	private static final int MENU_PLACEMENT = Menu.FIRST + 1;
 	private static final int MENU_RETURN = Menu.FIRST + 2;
-	private static final int MENU_STUDY = Menu.FIRST + 3;
+	private static final int MENU_DIRECTIONS = Menu.FIRST + 3;
 	
 	
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE };
@@ -202,7 +202,8 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
         
         menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
         menu.add(0, MENU_RETURN, 3, R.string.make_return).setIcon(android.R.drawable.ic_menu_myplaces);
-        //menu.add(0, MENU_STUDY, 4, R.string.bible_study).setIcon(android.R.drawable.ic_menu_search);
+        menu.add(0, MENU_DIRECTIONS, 4, R.string.directions).setIcon(android.R.drawable.ic_menu_directions);
+
         return result;
     }
 	
@@ -254,12 +255,18 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 		case MENU_RETURN:
 			returnOnCall();
 			break;
-		case MENU_STUDY:
-			
+		case MENU_DIRECTIONS:
+			getDirections();
 			break;
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+
+	protected void getDirections() {
+		Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?daddr="+mAddressText.getText().toString()));
+		startActivity(i);
+		
 	}
 
 	protected void editCall() {

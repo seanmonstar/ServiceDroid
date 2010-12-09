@@ -24,6 +24,7 @@
 	<string name="cancel">Cancel</string>
 	<string name="address">Address</string>
 	<string name="name">Name</string>
+	<string name="directions">Directions</string>
 	<string name="placement">Placement</string>
 	<string name="create_placement">Create Placement</string>
 	<string name="no_placements">Press MENU to record a placement.</string>

@@ -63,7 +63,7 @@ public class TimeActivity extends ListActivity {
 			intent.setData(TimeEntries.CONTENT_URI);
 		}
 		
-		setView();
+		setContentView(R.layout.time);
 		
 		mTimeHelper = new TimeUtil(this);
         
@@ -222,14 +222,6 @@ public class TimeActivity extends ListActivity {
 		getContentResolver().delete(entryUri, null, null);
 	}
 	
-	/*@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if(mTimerStart != null) {
-			outState.putLong(TIMER, mTimerStart);
-		}
-	}*/
-	
 	private void startTimer() {
 		mTiming = true;
 		Intent i = new Intent(this, TimerService.class);
@@ -241,59 +233,6 @@ public class TimeActivity extends ListActivity {
 		mTiming = false;
 		Intent i = new Intent(this, TimerService.class);
 		stopService(i);
-		
-		/*long timerEnd = SystemClock.uptimeMillis();
-		long diff = timerEnd - mTimerStart;
-		mTiming = false;
-		mTimerStart = null;
-		
-		ContentValues values = new ContentValues();
-		values.put(TimeEntries.LENGTH, (int) diff / 1000);
-		getContentResolver().insert(getIntent().getData(), values);
-		fillData();*/
 	}
-	
-	private void setView() {
-		setContentView(R.layout.time);
-	}
-	
-	protected void showTimerNotification() {
-		int icon = R.drawable.icon;    // icon from resources
-		CharSequence tickerText = "Service Timer Active";              // ticker-text
-		long when = System.currentTimeMillis();         // notification time
-		Context context = getApplicationContext();      // application Context
-		CharSequence contentTitle = "ServiceDroid";  // expanded message title
-		CharSequence contentText = "Time in service: n/a";      // expanded message text
 
-		Intent notificationIntent = new Intent(this, TimeActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-		// the next two lines initialize the Notification, using the configurations above
-		Notification notification = new Notification(icon, tickerText, when);
-		
-		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-		
-		((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE)).notify(SHOW_TIMER_NOTIFICATION, notification);
-	}
-	
-	protected void removeTimerNotification() {
-		
-	}
-	
-	/*private Runnable mTimerUpdateTask = new Runnable() {
-
-		@Override
-		public void run() {
-			final long start = mTimerStart;
-		    long current = SystemClock.uptimeMillis();
-			long millis =  current - start;
-		    
-			
-		    String text = TimeUtil.toTimeString((int) millis / 1000);
-			mTimerView.setText(text);
-			
-			mTimer.postAtTime(this, current + (1000 * 15));
-		}
-		
-	};*/
 }

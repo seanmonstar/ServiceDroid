@@ -202,7 +202,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
         menu.add(0, MENU_EDIT, 1, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
         
         menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
-        menu.add(0, MENU_RETURN, 3, "Return").setIcon(android.R.drawable.ic_menu_myplaces);
+        menu.add(0, MENU_RETURN, 3, R.string.make_return).setIcon(android.R.drawable.ic_menu_myplaces);
         //menu.add(0, MENU_STUDY, 4, R.string.bible_study).setIcon(android.R.drawable.ic_menu_search);
         return result;
     }
@@ -384,8 +384,14 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	
 	private void showStudyToast(boolean isStudy) {
 		String name = mCursor.getString(NAME_COLUMN);
-		String status = isStudy ? "now" : "no longer";
-		String text = name + " is " + status + " a bible study.";
+		//String status = isStudy ? "now" : "no longer";
+		String text;
+		if(isStudy) {
+			text = getString(R.string.is_bible_study, name);
+		} else {
+			text = getString(R.string.isnt_bible_study, name);
+		}
+		
 		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 	}
 	
@@ -435,7 +441,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 			
 			
 			String name = mCursor.getString(NAME_COLUMN);
-			String text = "You made a return visit on " + name;
+			String text = getString(R.string.return_visit_success, name);
 			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 			updateLastVisited();
 		}
@@ -452,8 +458,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 				mCursor.moveToFirst();
 				lastVisit = mCursor.getString(DATE_COLUMN);
 			}
-			
-			mLastVisitText.setText("Last Visited: " + mTimeHelper.normalizeDate(lastVisit));
+			mLastVisitText.setText(getString(R.string.last_visited, mTimeHelper.normalizeDate(lastVisit)));
 		}
 	}
 	

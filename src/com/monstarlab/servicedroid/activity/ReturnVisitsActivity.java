@@ -199,12 +199,12 @@ public class ReturnVisitsActivity extends ListActivity {
 		
 		default:
 			menu.add(0, RETURN_ID, 1, R.string.make_return);
-			menu.add(0, DIRECTIONS_ID, 3, R.string.directions);
+			menu.add(0, DIRECTIONS_ID, 2, R.string.directions);
 			//falls through
 			
 		case Calls.TYPE_ANONYMOUS:
 			menu.add(0, EDIT_ID, 0, R.string.edit);
-			menu.add(0, DELETE_ID, 2, R.string.delete_call);
+			menu.add(0, DELETE_ID, 3, R.string.delete_call);
 		}
 		
 	}

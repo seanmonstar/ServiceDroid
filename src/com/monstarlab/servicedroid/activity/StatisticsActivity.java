@@ -58,6 +58,8 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
 	private int mTimeSpan = MENU_MONTH;
 	
+	private static int SERVICE_YEAR_START = 9;
+	
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -241,7 +243,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
 		if(mTimeSpan == MENU_YEAR) {
-			month = 9; // service year is from Sept (9) - Aug (8)
+			month = SERVICE_YEAR_START; // service year is from Sept (9) - Aug (8)
 		}
 		
 		Calendar cal = Calendar.getInstance();
@@ -270,6 +272,18 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	protected void setTimeSpan(int span) {
 		mTimeSpan = span;
+		
+		//we need to make sure to move the Year around to show the correct service year
+		if(span == MENU_YEAR) {
+			if(mCurrentMonth < SERVICE_YEAR_START) {
+				mCurrentYear--;
+			}
+		} else {
+			if(mCurrentMonth < SERVICE_YEAR_START) {
+				mCurrentYear++;
+			}
+		}
+		
 		fillData();
 	}
 	

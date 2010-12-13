@@ -6,6 +6,12 @@ ServiceDroid is an Android application built to assist Jehovah's Witnesses doing
 Features
 -------
 
+_Version 1.2_
+
+* Anonymous Placements
+* Get directions to an RV
+* View Service Year stats
+
 _Version 1.1_
 
 * Start a timer and automatic insert when timer stopped.
@@ -26,16 +32,17 @@ _Version 1.0_
 Planned
 -------
 
+_For Version 1.3_
 
-_For Version 1.2_
+* Back up your data to your Google account
+* Edit Return Visit details
+* Change the month of the Time view
+* Translate values into Spanish
 
-* Anonymous Placements
-* View directions to an RV
-* Translated to Spanish
 
 _Future Versions_
 
-* Back up your data to your Google account
+
 * View map of all RVs
 * Sort calls by distance
 
@@ -43,4 +50,4 @@ _Future Versions_
 Copyright
 ---------
 
-MIT License. Copyright 2010 [Sean McArthur](http://seanmonstar.com).
+MIT License. Copyright 2010-2011 [Sean McArthur](http://seanmonstar.com).

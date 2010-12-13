@@ -18,10 +18,11 @@ public class Changelog {
 	//private static final int STATUS_UPDATED = 2;
 	
 	
-	private static final int V_1_0 = 1;
-	private static final int V_1_1 = 2;
+	//private static final int V_1_0 = 1;
+	//private static final int V_1_1 = 2;
+	private static final int V_1_2 = 3;
 	
-	private static final int CURRENT_VERSION = V_1_1;
+	private static final int CURRENT_VERSION = V_1_2;
 
 	private static final String PREFS_NAME = "Changelog";
 	private static final String PREFS_CHANGELOG_VERSION = "lastSeenChangelogVersion";
@@ -63,7 +64,7 @@ public class Changelog {
 	    return lastVersion == -1 ? STATUS_NEW : STATUS_UPDATED;
 	}*/
 	
-	private static int getVersion(Context c) {
+	/*private static int getVersion(Context c) {
 		int versionCode = 0;
 		try {
 			//current version
@@ -74,7 +75,7 @@ public class Changelog {
 		}
 		
 		return versionCode;
-	}
+	}*/
 	
 	private static boolean hasSeenMessage(Context c) {
 		SharedPreferences settings = c.getSharedPreferences(PREFS_NAME, 0);
@@ -92,14 +93,13 @@ public class Changelog {
 		StringBuilder message = new StringBuilder();
 		
 		String[] features = new String[] { 
-			"Start a timer from the Time view when you begin service.",
-			"Switch between alphabetic sorting and since last visited sorting of calls.",
-			"The list of calls shows who is a Bible Study.",
-			"Offers to Round Up or Carry Over extra minutes when sending in service report."
+			"Anonymous Placements support has been added to the Call Book.",
+			"Get directions to a Call.",
+			"Change the stats from monthly to the whole Service Year."
 		}; 
 		message.append("<html><body>");
 		
-		message.append("<b>v1.1</b>");
+		message.append("<b>v1.2</b>");
 		message.append("<ul>");
 		for(int i = 0; i < features.length; i++) {
 			message.append("<li>" + features[i] + "</li>");

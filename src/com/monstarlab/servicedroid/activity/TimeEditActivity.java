@@ -26,6 +26,8 @@ public class TimeEditActivity extends Activity {
 	private static final int STATE_EDIT = 0;
 	private static final int STATE_INSERT = 1;
 	
+	private boolean mIsCancelled;
+	
 	private DatePicker mDateText;
 	private TimePicker mLengthText;
 	private Long mRowId;
@@ -72,17 +74,13 @@ public class TimeEditActivity extends Activity {
 		
 		setContentView(R.layout.time_edit);
 		
+		mTimeHelper = new TimeUtil(this);
+		
 		mDateText = (DatePicker) findViewById(R.id.date);
 		mLengthText = (TimePicker) findViewById(R.id.length);
 		mLengthText.setIs24HourView(true);
-		
+
 		Button confirmButton = (Button) findViewById(R.id.confirm);
-		
-		mTimeHelper = new TimeUtil(this);
-		
-		
-		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
-		
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -92,6 +90,20 @@ public class TimeEditActivity extends Activity {
 			}
 			
 		});
+		
+		Button cancelButton = (Button) findViewById(R.id.cancel);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			
+			
+
+			@Override
+			public void onClick(View v) {
+				mIsCancelled = true;
+				finish();
+			}
+		});
+		
+		mCursor = managedQuery(mUri, PROJECTION, null, null, null);
 	}
 	
 	@Override
@@ -148,7 +160,7 @@ public class TimeEditActivity extends Activity {
 			String date = getDate();
 			
 			//when finishing, if no time was spent, just ditch the time period. its useless anyways
-			if(isFinishing() && length == 0) {
+			if(isFinishing() && (length == 0 || mIsCancelled)) {
 				setResult(RESULT_CANCELED);
 				deleteEntry();
 			

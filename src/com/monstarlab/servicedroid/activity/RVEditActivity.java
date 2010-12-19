@@ -28,6 +28,7 @@ public class RVEditActivity extends Activity {
 	private Long mRowId;
 	private Uri mUri;
 	private int mState;
+	private boolean mIsCancelled;
 
 	private Cursor mCursor;
 	
@@ -81,6 +82,17 @@ public class RVEditActivity extends Activity {
 			}
 			
 		});
+		
+		Button cancelButton = (Button) findViewById(R.id.cancel);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mIsCancelled = true;
+				finish();
+				
+			}
+		});
 	}
 	
 	@Override
@@ -115,7 +127,10 @@ public class RVEditActivity extends Activity {
 			String notes = mNotesText.getText().toString();
 			
 			//when finishing, if no Name, its useless anyways
-			if(isFinishing() && TextUtils.isEmpty(name)) {
+			//or if we're canceling, then DELETE
+			//TODO: offer a prompt to check to make sure they want to delete call?
+			//does Android do that else where? check Android UI guidelines...
+			if(isFinishing() && (TextUtils.isEmpty(name) || mIsCancelled)) {
 				setResult(RESULT_CANCELED);
 				deleteRV();
 			

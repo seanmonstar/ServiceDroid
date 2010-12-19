@@ -48,7 +48,7 @@ public class PlacementActivity extends Activity {
 	private Uri mUri;
 	private Cursor mCursor;
 	private int mPlacementType;
-	
+	private boolean mIsCancelled;
 	
 	private Spinner mPublicationSpinner;
 	private Spinner mMonthSpinner;
@@ -63,6 +63,7 @@ public class PlacementActivity extends Activity {
 	private int mPlaceYear;
 	private int mPlaceMonth;
 	private int mPlaceDay;
+	
 	private TimeUtil mTimeHelper;
 	private Button mDateBtn;
 
@@ -126,7 +127,14 @@ public class PlacementActivity extends Activity {
 			
 		});
 		
-		
+		Button cancel = (Button) findViewById(R.id.cancel);
+		cancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mIsCancelled = true;
+				finish();
+			}
+		});
 	}
 	
 	private void setupDateButton() {
@@ -226,7 +234,7 @@ public class PlacementActivity extends Activity {
 			
 			
 			//when finishing, if no publication was picked, just ditch the whole thing. its useless anyways
-			if(isFinishing() && publication == 0) {
+			if(isFinishing() && (publication == 0 || mIsCancelled)) {
 				setResult(RESULT_CANCELED);
 				deleteEntry();
 			

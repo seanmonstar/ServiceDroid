@@ -126,16 +126,16 @@ public class RVEditActivity extends Activity {
 			String address = mAddressText.getText().toString();
 			String notes = mNotesText.getText().toString();
 			
-			//when finishing, if no Name, its useless anyways
-			//or if we're canceling, then DELETE
-			//TODO: offer a prompt to check to make sure they want to delete call?
-			//does Android do that else where? check Android UI guidelines...
-			if(isFinishing() && (TextUtils.isEmpty(name) || mIsCancelled)) {
+			
+			if(isFinishing() && TextUtils.isEmpty(name)) {
+				//when finishing, if no Name, its useless anyways
 				setResult(RESULT_CANCELED);
 				deleteRV();
-			
-			//save the current changes to the Provider
+			} else if (isFinishing() && mIsCancelled) {
+				//if we cancelled, just dont save the changes
+				setResult(RESULT_CANCELED);
 			} else {
+				//save the current changes to the Provider
 				ContentValues values = new ContentValues();
 				values.put(Calls.NAME, name);
 				values.put(Calls.ADDRESS, address);

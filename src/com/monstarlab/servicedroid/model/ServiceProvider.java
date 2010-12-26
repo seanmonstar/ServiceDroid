@@ -286,6 +286,9 @@ public class ServiceProvider extends ContentProvider {
 		}
 		
 		getContext().getContentResolver().notifyChange(uri, null);
+		
+		//TODO: schedule backup
+		
 		return count;
 	}
 
@@ -387,6 +390,8 @@ public class ServiceProvider extends ContentProvider {
 			//insert worked
 			Uri insertedUri = ContentUris.withAppendedId(contentUri, rowId);
 			getContext().getContentResolver().notifyChange(insertedUri, null);
+			
+			//TODO: schedule backup
 			return insertedUri;
 		}
 		
@@ -582,6 +587,9 @@ public class ServiceProvider extends ContentProvider {
 		}
 		
 		getContext().getContentResolver().notifyChange(uri, null);
+		
+		//TODO: schedule backup
+		
 		return count;
 	}
 

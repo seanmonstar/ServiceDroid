@@ -42,6 +42,6 @@
 		<receiver android:name=".receiver.NotificationReceiver"></receiver>
 
 	</application>
-	<uses-sdk android:minSdkVersion="3" />
+	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="8" />
 
 </manifest> 

@@ -35,10 +35,21 @@
 		android:autoText="true" 
 		android:gravity="top" 
 		android:inputType="text|textMultiLine|textCapSentences|textAutoComplete|textAutoCorrect"/>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="60dip"
+  android:orientation="horizontal">
 		
 	<Button android:id="@+id/confirm" 
 	    android:text="@string/confirm"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
+
+	<Button android:layout_height="wrap_content" android:layout_width="wrap_content" 
+	android:text="@string/cancel" android:id="@+id/cancel" 
+	/>
+</LinearLayout>
 
 </LinearLayout>

@@ -30,7 +30,7 @@ public class TimeEditActivity extends Activity {
 	
 	private DatePicker mDateText;
 	private TimePicker mLengthText;
-	//private Long mRowId;
+	private Long mRowId;
 	
 	private TimeUtil mTimeHelper;
 	private int mState;

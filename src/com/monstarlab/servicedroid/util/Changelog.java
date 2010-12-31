@@ -12,10 +12,13 @@ import android.webkit.WebView;
 
 public class Changelog {
 	
+	//private static final int STATUS_NEW = 1;
+	//private static final int STATUS_UPDATED = 2;
+	
+	
 	//private static final int V_1_0 = 1;
 	//private static final int V_1_1 = 2;
 	private static final int V_1_2 = 3;
-	//private static final int V_1_2_1 = 4; //just bug fixes, no changelog needed
 	
 	private static final int CURRENT_VERSION = V_1_2;
 

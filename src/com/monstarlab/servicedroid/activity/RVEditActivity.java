@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.util.LocationUtil;
 
 public class RVEditActivity extends Activity {
 
@@ -25,12 +26,14 @@ public class RVEditActivity extends Activity {
 	private EditText mNameText;
 	private EditText mAddressText;
 	private EditText mNotesText;
-	//private Long mRowId;
+	private Long mRowId;
 	private Uri mUri;
 	private int mState;
 	private boolean mIsCancelled;
 
 	private Cursor mCursor;
+
+	private LocationUtil location;
 	
 	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES };
 	private static final int NAME_COLUMN = 1;
@@ -40,6 +43,8 @@ public class RVEditActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		location = new LocationUtil(this);
 		
 		//load in the values, if editting
 		final Intent intent = getIntent();
@@ -140,6 +145,11 @@ public class RVEditActivity extends Activity {
 				values.put(Calls.NAME, name);
 				values.put(Calls.ADDRESS, address);
 				values.put(Calls.NOTES, notes);
+				
+				String loc = location.getLatLong(address);
+				if (loc != null){
+					values.put(Calls.LOCATION, loc);
+				}
 				
 				getContentResolver().update(mUri, values, null, null);
 			}

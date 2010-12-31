@@ -2,6 +2,7 @@ package com.monstarlab.servicedroid.service;
 
 import java.util.Calendar;
 import com.monstarlab.servicedroid.receiver.NotificationReceiver;
+import com.monstarlab.servicedroid.util.TimeUtil;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,6 +12,7 @@ import android.os.IBinder;
 
 public class ReminderService extends Service {
 	
+	private TimeUtil mTimeHelper;
 	
 	/*@Override
 	public void onStart(Intent intent, int startId) {
@@ -23,6 +25,7 @@ public class ReminderService extends Service {
 	
 	@Override
 	public void onCreate() {
+		mTimeHelper = new TimeUtil(this);
 		scheduleReminderNotification();
 		
 	}

@@ -484,7 +484,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(getString(R.string.service_time_for, getTimePeriodText() + "\n\n"));
-		sb.append(getString(R.string.hours) + ": " + getHours() + "\n");
+		sb.append(getString(R.string.hours) + ": " + getHoursSum() + "\n");
 		sb.append(getString(R.string.magazines) + ": " + getMagazines() + "\n");
 		sb.append(getString(R.string.brochures) + ": " + getBrochures() + "\n");
 		sb.append(getString(R.string.books) + ": " + getBooks() + "\n");

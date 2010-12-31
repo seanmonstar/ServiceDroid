@@ -83,7 +83,7 @@ public class RVEditActivity extends Activity {
 			
 		});
 		
-		Button cancelButton = (Button) findViewById(R.id.cancel);
+		/*Button cancelButton = (Button) findViewById(R.id.cancel);
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -92,7 +92,7 @@ public class RVEditActivity extends Activity {
 				finish();
 				
 			}
-		});
+		});*/
 	}
 	
 	@Override

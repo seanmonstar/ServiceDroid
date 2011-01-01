@@ -70,6 +70,13 @@ public final class Models {
 		public static final String TYPE = "type";
 		
 		/**
+		 * 	type: varchar(128)
+		 */
+		public static final String LOCATION = "location";
+		
+
+		
+		/**
 		 * 	type: Enum
 		 */
 		public static final int TYPE_ADDED = 1;

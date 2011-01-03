@@ -59,17 +59,7 @@ public class ReturnVisitsActivity extends ListActivity implements Observer {
 	private static final int SORT_TIME = 1;
 	private static final int SORT_DISTANCE = 2;
 
-	private static final String SORT_TXT_ALPHA = "Alphabetically";
-	private static final String SORT_TXT_TIME = "Last Visit";
-	private static final String SORT_TXT_DISTANCE = "Distance";
-	
-	private static final String DISTANCE_UNKNOWN = "Dist. Unknown";
-	private static final String DISTANCE_UNIT = "mi.";
-	
-	final CharSequence[] sortOptions = { SORT_TXT_ALPHA, SORT_TXT_TIME,
-			SORT_TXT_DISTANCE };
-
-	private AlertDialog sortOptionsDialog;
+	private AlertDialog mSortOptionsDialog;
 
 	private int mSortState;
 
@@ -97,7 +87,7 @@ public class ReturnVisitsActivity extends ListActivity implements Observer {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Sort Options");
-		builder.setSingleChoiceItems(sortOptions, 0,
+		builder.setSingleChoiceItems(R.array.sort_by, 0,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int item) {
 						mSortState = item;
@@ -107,7 +97,7 @@ public class ReturnVisitsActivity extends ListActivity implements Observer {
 						dialog.cancel();
 					}
 				});
-		sortOptionsDialog = builder.create();
+		mSortOptionsDialog = builder.create();
 
 		//fillData();
 		registerForContextMenu(getListView());
@@ -172,9 +162,9 @@ public class ReturnVisitsActivity extends ListActivity implements Observer {
 				map.put(Calls.IS_STUDY, isstudy);
 				String sDist;
 				if (dist == -1) {
-					sDist = DISTANCE_UNKNOWN;
+					sDist = getString(R.string.distance_unknown);
 				} else {
-					sDist = dist + " " + DISTANCE_UNIT;
+					sDist = dist + " " + getString(R.string.distance_unit);
 				}
 				map.put("distance", sDist);
 				fillMaps.add(map);
@@ -182,18 +172,22 @@ public class ReturnVisitsActivity extends ListActivity implements Observer {
 			}
 
 			class DistanceComparator implements Comparator {
+				
+				String mUnknown = getString(R.string.distance_unknown);
+				String mUnit = getString(R.string.distance_unit);
+				
 				@SuppressWarnings("unchecked")
 				public int compare(Object o1, Object o2) {
 					String dist1 = ((HashMap<String, String>) o1).get("distance");
 					String dist2 = ((HashMap<String, String>) o2).get("distance");
-					if (dist1 == DISTANCE_UNKNOWN){
+					if (dist1 == mUnknown){
 						return -1;
 					}
-					if (dist2 == DISTANCE_UNKNOWN){
+					if (dist2 == mUnknown){
 						return 1;
 					}
-					float fdist1 = Float.parseFloat(dist1.substring(0, DISTANCE_UNIT.length() - 1));
-					float fdist2 = Float.parseFloat(dist2.substring(0, DISTANCE_UNIT.length() - 1));
+					float fdist1 = Float.parseFloat(dist1.substring(0, mUnit.length() - 1));
+					float fdist2 = Float.parseFloat(dist2.substring(0, mUnit.length() - 1));
 					if (fdist1 < fdist2)
 						return -1;
 					if (fdist1 < fdist2)
@@ -256,20 +250,6 @@ public class ReturnVisitsActivity extends ListActivity implements Observer {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 
-		// menu depends on if how data is sorted
-		// using dialog now
-		/*
-		 * if(mSortState == SORT_ALPHA) { menu.removeItem(MENU_SORT_ALPHA);
-		 * if(menu.findItem(MENU_SORT_TIME) == null) { menu.add(0,
-		 * MENU_SORT_TIME, 2,
-		 * R.string.sort).setIcon(android.R.drawable.ic_menu_recent_history); }
-		 * } else if(mSortState == SORT_TIME){ menu.removeItem(MENU_SORT_TIME);
-		 * if(menu.findItem(MENU_SORT_ALPHA) == null) { menu.add(0,
-		 * MENU_SORT_ALPHA, 2,
-		 * R.string.sort).setIcon(android.R.drawable.ic_menu_sort_alphabetically
-		 * ); } }
-		 */
-
 		// adding Anonymous Placements depends on Cursor
 		if (mIsAnonCall) {
 			menu.removeItem(MENU_ADD_ANON_PLACEMENTS);
@@ -293,7 +273,7 @@ public class ReturnVisitsActivity extends ListActivity implements Observer {
 		case MENU_SORT_ALPHA:
 			// mSortState = SORT_ALPHA;
 			// fillData();
-			sortOptionsDialog.show();
+			mSortOptionsDialog.show();
 			break;
 		case MENU_SORT_TIME:
 			mSortState = SORT_TIME;

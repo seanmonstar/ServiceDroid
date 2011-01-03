@@ -87,4 +87,13 @@
     <string name="watchtower">Watchtower</string>
     <string name="whats_new">What\'s New!</string>
 	<string name="year">Year</string>
+
+
+
+<string-array name="sort_by"><item>Last Name</item>
+<item>Last Visit</item>
+<item>Distance</item>
+</string-array>
+<string name="distance_unknown">Dist. Unknown</string>
+<string name="distance_unit">mi.</string>
 </resources>

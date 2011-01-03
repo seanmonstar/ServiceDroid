@@ -22,8 +22,8 @@ public class LocationUtil extends java.util.Observable implements
 	private static final int DUE_E = 90;
 	private static final int DUE_W = 270;
 
-	private Geocoder geo;
-	private Location lastlocation;
+	private Geocoder mGeo;
+	private Location mLastLocation;
 
 	public LocationUtil(Context ctx) {
 		LocationManager lm = (LocationManager) ctx
@@ -34,9 +34,9 @@ public class LocationUtil extends java.util.Observable implements
 		Criteria criteria = new Criteria();
 		String bestProvider = lm.getBestProvider(criteria, false);
 
-		lastlocation = lm.getLastKnownLocation(bestProvider);
+		mLastLocation = lm.getLastKnownLocation(bestProvider);
 
-		geo = new Geocoder(ctx, Locale.getDefault());
+		mGeo = new Geocoder(ctx, Locale.getDefault());
 
 	}
 
@@ -47,17 +47,16 @@ public class LocationUtil extends java.util.Observable implements
 
 		try {
 			if (bounding == null) {
-				locations = geo.getFromLocationName(address, 1);
+				locations = mGeo.getFromLocationName(address, 1);
 
 			} else {
-				locations = geo.getFromLocationName(address, 1, bounding[0],
+				locations = mGeo.getFromLocationName(address, 1, bounding[0],
 						bounding[2], bounding[1], bounding[3]);
 
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 		if (locations.size() > 0) {
 			Address address1 = locations.get(0);
@@ -79,11 +78,11 @@ public class LocationUtil extends java.util.Observable implements
 	 */
 	public double getDistanceToLocation(double lat, double lon) {
 		double dist;
-		if (lastlocation != null) {
-			Location dest = new Location(lastlocation.getProvider());
+		if (mLastLocation != null) {
+			Location dest = new Location(mLastLocation.getProvider());
 			dest.setLatitude(lat);
 			dest.setLongitude(lon);
-			dist = lastlocation.distanceTo(dest);
+			dist = mLastLocation.distanceTo(dest);
 		} else {
 			return -1;
 		}
@@ -94,12 +93,12 @@ public class LocationUtil extends java.util.Observable implements
 	}
 
 	public double[] getBoundingBox(int distance_in_miles) {
-		if (lastlocation == null) {
+		if (mLastLocation == null) {
 			return null;
 		}
 
-		double lat = lastlocation.getLatitude();
-		double lon = lastlocation.getLongitude();
+		double lat = mLastLocation.getLatitude();
+		double lon = mLastLocation.getLongitude();
 
 		double lat_r = (Math.PI / 180) * lat;
 		double lon_r = (Math.PI / 180) * lon;
@@ -150,11 +149,11 @@ public class LocationUtil extends java.util.Observable implements
 	}
 
 	public double[] getBoundingBox(double degrees) {
-		if (lastlocation == null) {
+		if (mLastLocation == null) {
 			return null;
 		}
-		double lat = lastlocation.getLatitude();
-		double lon = lastlocation.getLongitude();
+		double lat = mLastLocation.getLatitude();
+		double lon = mLastLocation.getLongitude();
 
 		double lat1, lat2, lon1, lon2;
 		lat1 = lat - degrees;
@@ -170,7 +169,7 @@ public class LocationUtil extends java.util.Observable implements
 
 	/* This method is called when position is changed */
 	public void onLocationChanged(Location location) {
-		lastlocation = location;
+		mLastLocation = location;
 		setChanged();
 		notifyObservers();
 	}

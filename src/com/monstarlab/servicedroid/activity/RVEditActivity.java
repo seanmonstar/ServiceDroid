@@ -25,7 +25,7 @@ public class RVEditActivity extends Activity {
 	private EditText mNameText;
 	private EditText mAddressText;
 	private EditText mNotesText;
-	private Long mRowId;
+	//private Long mRowId;
 	private Uri mUri;
 	private int mState;
 	private boolean mIsCancelled;
@@ -83,7 +83,7 @@ public class RVEditActivity extends Activity {
 			
 		});
 		
-		Button cancelButton = (Button) findViewById(R.id.cancel);
+		/*Button cancelButton = (Button) findViewById(R.id.cancel);
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -92,7 +92,7 @@ public class RVEditActivity extends Activity {
 				finish();
 				
 			}
-		});
+		});*/
 	}
 	
 	@Override

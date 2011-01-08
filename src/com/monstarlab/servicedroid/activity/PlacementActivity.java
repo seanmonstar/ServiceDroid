@@ -102,6 +102,7 @@ public class PlacementActivity extends Activity {
 			
 			setResult(RESULT_OK, (new Intent()).setAction(mUri.toString()));
 		} else {
+			mState = -1;
 			Log.e(TAG, "Unknown action, exiting");
 			finish();
 			return;

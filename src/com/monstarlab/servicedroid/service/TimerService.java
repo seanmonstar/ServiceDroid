@@ -18,7 +18,7 @@ import android.os.IBinder;
 public class TimerService extends Service {
 
 	private static final int SHOW_TIMER_NOTIFICATION = 21;
-	private TimeUtil mTimeHelper;
+	//private TimeUtil mTimeHelper;
 	private Handler mHandler = new Handler();;
 	private long mStartTime;
 	private long mRunTime = 0L;
@@ -39,7 +39,7 @@ public class TimerService extends Service {
 	@Override
 	public void onCreate() {
 		isRunning = true;
-		mTimeHelper = new TimeUtil(this);
+		
 		
 		//show a notification
 		createNotification();

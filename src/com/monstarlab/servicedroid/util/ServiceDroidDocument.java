@@ -2,22 +2,15 @@ package com.monstarlab.servicedroid.util;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -62,23 +55,44 @@ public class ServiceDroidDocument {
 		mDoc.getDocumentElement().appendChild(el);
 	}
 	
-	public String toString() {
-		try {
-            Source source = new DOMSource(mDoc);
-            StringWriter stringWriter = new StringWriter();
-            Result result = new StreamResult(stringWriter);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer();
-            transformer.transform(source, result);
-            return stringWriter.getBuffer().toString();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-            Log.e(TAG, "Failed converting to string");
-        } catch (TransformerException e) {
-            e.printStackTrace();
-            Log.e(TAG, "Failed converting to string");
+	protected String getStringFromNode(Node root) {
+		StringBuilder result = new StringBuilder();
+
+        if (root.getNodeType() == 3)
+            result.append(root.getNodeValue());
+        else {
+            if (root.getNodeType() != 9) {
+                StringBuffer attrs = new StringBuffer();
+                for (int k = 0; k < root.getAttributes().getLength(); ++k) {
+                    attrs.append(" ").append(
+                            root.getAttributes().item(k).getNodeName()).append(
+                            "=\"").append(
+                            root.getAttributes().item(k).getNodeValue())
+                            .append("\" ");
+                }
+                result.append("<").append(root.getNodeName()).append(" ")
+                        .append(attrs).append(">");
+            } else {
+                result.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            }
+
+            NodeList nodes = root.getChildNodes();
+            for (int i = 0, j = nodes.getLength(); i < j; i++) {
+                Node node = nodes.item(i);
+                result.append(getStringFromNode(node));
+            }
+
+            if (root.getNodeType() != 9) {
+                result.append("</").append(root.getNodeName()).append(">");
+            }
         }
-        return null;
+        return result.toString();
+	}
+	
+	public String toString() {
+		
+		return getStringFromNode(mDoc.getDocumentElement());
+        //return null;
 	}
 	
 }

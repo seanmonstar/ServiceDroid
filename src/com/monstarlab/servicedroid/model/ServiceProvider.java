@@ -2,6 +2,7 @@ package com.monstarlab.servicedroid.model;
 
 import java.util.HashMap;
 
+import android.app.backup.BackupManager;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -44,6 +45,8 @@ public class ServiceProvider extends ContentProvider {
     private static HashMap<String, String> sBibleStudyProjectionMap;
     private static HashMap<String, String> sLiteratureProjectionMap;
     private static HashMap<String, String> sPlacementProjectionMap;
+
+	private static boolean sUseManager;
     
     private static final int TIME_ENTRIES = 1;
     private static final int TIME_ENTRY_ID = 2;
@@ -124,6 +127,13 @@ public class ServiceProvider extends ContentProvider {
     	sBibleStudyProjectionMap.put(BibleStudies.DATE_START, BibleStudies.DATE_START);
     	sBibleStudyProjectionMap.put(BibleStudies.DATE_END, BibleStudies.DATE_END);
     	sBibleStudyProjectionMap.put(BibleStudies.CALL_ID, BibleStudies.CALL_ID);
+    	
+    	try {
+    		WrapManager.checkAvailable();
+    		sUseManager = true;
+    	} catch (Throwable t) {
+    		sUseManager = false;
+    	}
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -222,6 +232,8 @@ public class ServiceProvider extends ContentProvider {
     }
     
     private DatabaseHelper mDbHelper;
+
+	private WrapManager mWrappedManager;
     
     @Override
     public boolean onCreate() {
@@ -287,7 +299,7 @@ public class ServiceProvider extends ContentProvider {
 		
 		getContext().getContentResolver().notifyChange(uri, null);
 		
-		//TODO: schedule backup
+		dataChanged();
 		
 		return count;
 	}
@@ -391,7 +403,7 @@ public class ServiceProvider extends ContentProvider {
 			Uri insertedUri = ContentUris.withAppendedId(contentUri, rowId);
 			getContext().getContentResolver().notifyChange(insertedUri, null);
 			
-			//TODO: schedule backup
+			dataChanged();
 			return insertedUri;
 		}
 		
@@ -588,9 +600,22 @@ public class ServiceProvider extends ContentProvider {
 		
 		getContext().getContentResolver().notifyChange(uri, null);
 		
-		//TODO: schedule backup
+		dataChanged();
 		
 		return count;
+	}
+	
+	protected void dataChanged() {
+		if(sUseManager) {
+			//instantiate BackupManager and dataChanged
+			if(mWrappedManager == null) {
+				mWrappedManager = new WrapManager(getContext());
+			}
+			mWrappedManager.dataChanged();
+		} else {
+			//TODO: launch BackupService for pre 2.2
+			Log.i(TAG, "Needs BackupService for this device");
+		}
 	}
 
 }

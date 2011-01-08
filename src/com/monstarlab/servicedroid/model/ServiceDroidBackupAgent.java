@@ -68,6 +68,8 @@ public class ServiceDroidBackupAgent extends BackupAgent {
 				String serializedData = sb.toString();
 				
 				//import data into the DB via BackupWorker
+				BackupWorker bw = new BackupWorker();
+				bw.restore(getContentResolver(), serializedData);
 			}
 		}
 	}

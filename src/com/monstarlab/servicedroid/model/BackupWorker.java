@@ -9,6 +9,7 @@ import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.util.ServiceDroidDocument;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -67,10 +68,25 @@ public class BackupWorker {
 		c.close();
 	}
 	
-	public void restore(String xml) {
+	public void restore(ContentResolver resolver, String xml) {
 		//receive XML, so decode it
+		ServiceDroidDocument doc = new ServiceDroidDocument(xml);
+		
 		//insert into DB
-			//is DB created yet?
+		insertDataFromDocument(doc, "TimeEntry", resolver, TimeEntries.CONTENT_URI);
+		
+	}
+	
+	protected void insertDataFromDocument(ServiceDroidDocument doc, String tag, ContentResolver resolver, Uri contentUri) {
+		for (int nodeIndex = 0, numOfNodes = doc.getNumberOfTag(tag); nodeIndex < numOfNodes; nodeIndex++) {
+			String[][] data = doc.getDataFromNode(tag, nodeIndex);
+			ContentValues values = new ContentValues();
+			for (int attrIndex = 0, numOfAttrs = data[0].length; attrIndex < numOfAttrs; attrIndex++) {
+				values.put(data[0][attrIndex], data[1][attrIndex]);
+			}
+			
+			resolver.insert(contentUri, values);
+		}
 	}
 	
 }

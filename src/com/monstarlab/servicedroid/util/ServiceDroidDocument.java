@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -55,13 +56,33 @@ public class ServiceDroidDocument {
 		mDoc.getDocumentElement().appendChild(el);
 	}
 	
+	public int getNumberOfTag(String tagName) {
+		return mDoc.getElementsByTagName(tagName).getLength();
+	}
+	
+	public String[][] getDataFromNode(String tagName, int index) {
+		Node node = mDoc.getElementsByTagName(tagName).item(index);
+		
+		NamedNodeMap attrs = node.getAttributes();
+		int numOfAttrs = attrs.getLength();
+		
+		String[][] data = new String[2][numOfAttrs];
+		for (int i = 0; i < numOfAttrs; i++) {
+			data[0][i] = attrs.item(i).getNodeName();
+			data[1][i] = attrs.item(i).getTextContent();
+		}
+		
+		
+		return data;
+	}
+	
 	protected String getStringFromNode(Node root) {
 		StringBuilder result = new StringBuilder();
 
-        if (root.getNodeType() == 3)
+        if (root.getNodeType() == Node.TEXT_NODE)
             result.append(root.getNodeValue());
         else {
-            if (root.getNodeType() != 9) {
+            if (root.getNodeType() != Node.DOCUMENT_NODE) {
                 StringBuffer attrs = new StringBuffer();
                 for (int k = 0; k < root.getAttributes().getLength(); ++k) {
                     attrs.append(" ").append(
@@ -71,27 +92,37 @@ public class ServiceDroidDocument {
                             .append("\" ");
                 }
                 result.append("<").append(root.getNodeName()).append(" ")
-                        .append(attrs).append(">");
+                        .append(attrs);
             } else {
                 result.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             }
 
             NodeList nodes = root.getChildNodes();
-            for (int i = 0, j = nodes.getLength(); i < j; i++) {
-                Node node = nodes.item(i);
-                result.append(getStringFromNode(node));
+            if (nodes.getLength() > 0) {
+            	if (root.getNodeType() != Node.DOCUMENT_NODE) {
+            		result.append(">");
+            	}
+            	for (int i = 0, j = nodes.getLength(); i < j; i++) {
+	                Node node = nodes.item(i);
+	                result.append(getStringFromNode(node));
+	            }
+				if (root.getNodeType() != Node.DOCUMENT_NODE) {
+				    result.append("</").append(root.getNodeName()).append(">");
+				}
+            } else {
+            	 if (root.getNodeType() != Node.DOCUMENT_NODE) {
+            		 result.append("/>");
+                 }
             }
 
-            if (root.getNodeType() != 9) {
-                result.append("</").append(root.getNodeName()).append(">");
-            }
+           
         }
         return result.toString();
 	}
 	
 	public String toString() {
 		
-		return getStringFromNode(mDoc.getDocumentElement());
+		return getStringFromNode(mDoc);
         //return null;
 	}
 	

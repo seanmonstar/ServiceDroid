@@ -38,10 +38,10 @@ public class BackupWorker {
 		//convert them to XML
 		ServiceDroidDocument doc = new ServiceDroidDocument();
 		
-		pushDataOntoDocument(doc, "TimeEntry", resolver, TimeEntries.CONTENT_URI, TIME_ENTRIES_PROJECTION, null, null, TimeEntries._ID);
+		pushDataOntoDocument(doc, "TimeEntry", resolver, TimeEntries.CONTENT_URI, TIME_ENTRIES_PROJECTION, "not("+ TimeEntries.LENGTH + " is null)", null, TimeEntries._ID);
 		pushDataOntoDocument(doc, "Call", resolver, Calls.CONTENT_URI, CALLS_PROJECTION, null, null, Calls._ID);
 		pushDataOntoDocument(doc, "ReturnVisit", resolver, ReturnVisits.CONTENT_URI, RETURN_VISITS_PROJECTION, null, null, ReturnVisits._ID);
-		pushDataOntoDocument(doc, "Literature", resolver, Literature.CONTENT_URI, LITERATURE_PROJECTION, null, null, Literature._ID);
+		pushDataOntoDocument(doc, "Literature", resolver, Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature._ID + "> 2", null, Literature._ID); // IDs 1-4 are inserted on DB creation.
 		pushDataOntoDocument(doc, "Placement", resolver, Placements.CONTENT_URI, PLACEMENTS_PROJECTION, null, null, Placements._ID);
 		pushDataOntoDocument(doc, "BibleStudy", resolver, BibleStudies.CONTENT_URI, BIBLE_STUDIES_PROJECTION, null, null, BibleStudies._ID);
 		
@@ -70,6 +70,7 @@ public class BackupWorker {
 	public void restore(String xml) {
 		//receive XML, so decode it
 		//insert into DB
+			//is DB created yet?
 	}
 	
 }

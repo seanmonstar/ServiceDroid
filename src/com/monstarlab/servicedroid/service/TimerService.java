@@ -1,5 +1,7 @@
 package com.monstarlab.servicedroid.service;
 
+import java.text.ParseException;
+
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.activity.TimeActivity;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
@@ -9,9 +11,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Handler;
 import android.os.IBinder;
 
@@ -22,10 +26,14 @@ public class TimerService extends Service {
 	private Handler mHandler = new Handler();;
 	private long mStartTime;
 	private long mRunTime = 0L;
-	
+	private TimeUtil mTimeHelper;
 	private Notification mNotification;
+	private int mEntryID;
+	
+	private static final String[] PROJECTION = new String[]{ TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	
 	public static boolean isRunning = false;
+	
 
 	/*@Override
 	public void onStart(Intent intent, int startId) {
@@ -40,7 +48,7 @@ public class TimerService extends Service {
 	public void onCreate() {
 		isRunning = true;
 		
-		
+		mTimeHelper = new TimeUtil(this);
 		//show a notification
 		createNotification();
 		showTimerNotification();
@@ -88,11 +96,34 @@ public class TimerService extends Service {
 	
 		
 	private void createTimer() {
-		if (mStartTime == 0L) {
-            mStartTime = System.currentTimeMillis();
-            mHandler.removeCallbacks(mUpdateTimeTask);
-            mHandler.postDelayed(mUpdateTimeTask, 100);
-       }
+		//find a TimeEntry with 0 length
+		mStartTime = getStartOfEmptyEntry();
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        mHandler.postDelayed(mUpdateTimeTask, 100);
+       
+	}
+	
+	private long getStartOfEmptyEntry() {
+		Cursor c = getContentResolver().query(TimeEntries.CONTENT_URI, PROJECTION, TimeEntries.LENGTH + " is null or " + TimeEntries.LENGTH + "=0", null, null);
+		long time = 0;
+		
+		if(c.getCount() > 0) {
+			c.moveToFirst();
+			mEntryID = c.getInt(0);
+			try {
+				time = mTimeHelper.parseDateText(c.getString(1)).getTime();
+			} catch (ParseException e) {
+				time = 0;
+			}
+		}
+		c.close();
+		
+		if(time == 0L) {
+			stopSelf();
+		}
+		
+		return time;
+		
 	}
 	
 	private void removeTimer() {
@@ -104,8 +135,8 @@ public class TimerService extends Service {
 		if(mRunTime >= 60) {
 			ContentValues values = new ContentValues();
 			values.put(TimeEntries.LENGTH, mRunTime);
-			values.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
-			getContentResolver().insert(TimeEntries.CONTENT_URI, values);
+			//values.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
+			getContentResolver().update(ContentUris.withAppendedId(TimeEntries.CONTENT_URI, mEntryID), values, null, null);
 		}
 		
 	}
@@ -126,7 +157,7 @@ public class TimerService extends Service {
 				showTimerNotification();
 			} 
 			
-			mHandler.postDelayed(this, 1000);
+			mHandler.postDelayed(this, 10000);
 		}
 	};
 

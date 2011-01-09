@@ -5,6 +5,7 @@ import java.util.Date;
 
 import android.app.ListActivity;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -61,8 +62,12 @@ public class TimeActivity extends ListActivity {
 		if(intent.getData() == null) {
 			intent.setData(TimeEntries.CONTENT_URI);
 		}
-
+		
+		
 		mTiming = TimerService.isRunning;
+		if(!mTiming) {
+			checkForTimer();
+		}
 
 		setContentView(R.layout.time);
 		
@@ -75,7 +80,7 @@ public class TimeActivity extends ListActivity {
 	
 	public void fillData() {
 		 // Get this month's entries from the database and create the item list
-		mCursor = managedQuery(getIntent().getData(), PROJECTION, TimeEntries.DATE + " between ? and ?", getTimePeriodArgs(TimeUtil.getCurrentYear(), TimeUtil.getCurrentMonth()), TimeEntries.DATE + " ASC");
+		mCursor = managedQuery(getIntent().getData(), PROJECTION, TimeEntries.LENGTH + " > 0 and " + TimeEntries.DATE + " between ? and ?", getTimePeriodArgs(TimeUtil.getCurrentYear(), TimeUtil.getCurrentMonth()), TimeEntries.DATE + " ASC");
 
         String[] from = new String[] { TimeEntries.DATE, TimeEntries.LENGTH };
         int[] to = new int[] { R.id.date, R.id.length };
@@ -233,6 +238,12 @@ public class TimeActivity extends ListActivity {
 	
 	private void startTimer() {
 		mTiming = true;
+		
+		// create a TimeEntry with 0 length, at this very second.
+		ContentValues values = new ContentValues();
+		values.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
+		getContentResolver().insert(getIntent().getData(), values);
+		
 		Intent i = new Intent(this, TimerService.class);
 		startService(i);
 	}
@@ -242,6 +253,16 @@ public class TimeActivity extends ListActivity {
 		mTiming = false;
 		Intent i = new Intent(this, TimerService.class);
 		stopService(i);
+	}
+	
+	private void checkForTimer() {
+		Cursor c = getContentResolver().query(TimeEntries.CONTENT_URI, PROJECTION, TimeEntries.LENGTH + " is null or " + TimeEntries.LENGTH + "=0", null, null);
+		if(c.getCount() > 0) {
+			mTiming = true;
+			Intent i = new Intent(this, TimerService.class);
+			startService(i);
+		}
+		c.close();
 	}
 
 }

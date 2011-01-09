@@ -195,27 +195,42 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	}
 	
 	private void refreshPlacementList() {
-		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { mUri.getPathSegments().get(1) }, "placements.date DESC");
+		String callId =  mUri.getPathSegments().get(1);
 		
+		// get all placements and return visits
+		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { callId }, "placements.date DESC");
+		Cursor rvCursor = getContentResolver().query(ReturnVisits.CONTENT_URI, new String[]{}, ReturnVisits.CALL_ID + "=?", new String[]{ callId } , ReturnVisits.DATE + " DESC");
+		
+		int dataLength = 0;
 		if(mPlacementsCursor != null) {
-			String[] from = new String[]{ Literature.PUBLICATION, Placements.DATE };
-			int[] to = new int[]{ R.id.name, R.id.date };
-			
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.placement_row, mPlacementsCursor, from, to) {
-				@Override
-	        	public void setViewText(TextView v, String text) {
-	        		if (v.getId() == R.id.date) {
-						text = mTimeHelper.normalizeDate(text);
-	        			v.setText(text);
-	        		} else {
-	        			super.setViewText(v, text);
-	        		}
-	        		
-	        	}
-			};
-			
-			mListView.setAdapter(adapter);
+			dataLength += mPlacementsCursor.getCount();
 		}
+		if(rvCursor != null) {
+			dataLength += rvCursor.getCount();
+		}
+		
+		
+		//jam both into an array
+		//sort the array via date (sigh)
+		//make the ArrayAdapter and link to the listView
+		
+		String[] from = new String[]{ Literature.PUBLICATION, Placements.DATE };
+		int[] to = new int[]{ R.id.name, R.id.date };
+		
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.placement_row, mPlacementsCursor, from, to) {
+			@Override
+        	public void setViewText(TextView v, String text) {
+        		if (v.getId() == R.id.date) {
+					text = mTimeHelper.normalizeDate(text);
+        			v.setText(text);
+        		} else {
+        			super.setViewText(v, text);
+        		}
+        		
+        	}
+		};
+		
+		mListView.setAdapter(adapter);
 	}
 	
 	@Override
@@ -346,9 +361,6 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		}
 		
 		i.putExtra("type", Literature.TYPE_BOOK);
-		
-		
-		
 		startActivity(i);
 		
 	}
@@ -363,9 +375,6 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		}
 		
 		i.putExtra("type", Literature.TYPE_BROCHURE);
-		
-		
-		
 		startActivity(i);
 		
 	}
@@ -380,9 +389,6 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		}
 		
 		i.putExtra("type", Literature.TYPE_MAGAZINE);
-		
-		
-		
 		startActivity(i);
 		
 	}
@@ -409,13 +415,6 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 				showDialog(DIALOG_BIBLESTUDYDELETE_ID);
 				
 			}
-			
-			
-			
-			
-			
-			
-			
 		}
 	}
 	

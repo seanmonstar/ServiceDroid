@@ -15,9 +15,9 @@ import android.widget.EditText;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 
-public class RVEditActivity extends Activity {
+public class CallEditActivity extends Activity {
 
-	private static final String TAG = "RVEditActivity";
+	private static final String TAG = "CallEditActivity";
 	
 	private static final int STATE_EDIT = 0;
 	private static final int STATE_INSERT = 1;

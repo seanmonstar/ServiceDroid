@@ -32,9 +32,9 @@ import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class RVShowActivity extends Activity implements OnItemClickListener {
+public class CallShowActivity extends Activity implements OnItemClickListener {
 	
-	private static final String TAG = "RVShowActivity";
+	private static final String TAG = "CallShowActivity";
 	
 	private static final int MENU_EDIT = Menu.FIRST;
 	private static final int MENU_PLACEMENT = Menu.FIRST + 1;
@@ -302,7 +302,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	}
 
 	protected void editCall() {
-		Intent i = new Intent(Intent.ACTION_EDIT, mUri, this, RVEditActivity.class);
+		Intent i = new Intent(Intent.ACTION_EDIT, mUri, this, CallEditActivity.class);
         startActivity(i);
 	}
 	
@@ -471,6 +471,12 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 	protected void returnOnCall() {
 		if(mCallCursor != null) {
 			mCallCursor.moveToFirst();
+			Intent i = new Intent(Intent.ACTION_INSERT, ReturnVisits.CONTENT_URI, this, ReturnVisitActivity.class);
+			//adding Call ID so we know what Call to associate the placement with
+			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
+			startActivity(i);
+			
+			/*mCallCursor.moveToFirst();
 		
 			ContentValues values = new ContentValues();
 			values.put(ReturnVisits.CALL_ID, mCallCursor.getInt(ID_COLUMN));
@@ -480,7 +486,7 @@ public class RVShowActivity extends Activity implements OnItemClickListener {
 			String name = mCallCursor.getString(NAME_COLUMN);
 			String text = getString(R.string.return_visit_success, name);
 			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-			updateLastVisited();
+			updateLastVisited();*/
 		}
 	}
 	

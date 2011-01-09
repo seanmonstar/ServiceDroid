@@ -16,14 +16,17 @@
 		<activity android:name=".activity.TimeEditActivity"
 			android:label="@string/time">
 		</activity>
-		<activity android:name=".activity.ReturnVisitsActivity"
+		<activity android:name=".activity.CallsActivity"
 			android:label="@string/callbook">
 		</activity>
-		<activity android:name=".activity.RVShowActivity"
+		<activity android:name=".activity.CallShowActivity"
 			android:label="@string/callbook">
 		</activity>
-		<activity android:name=".activity.RVEditActivity"
+		<activity android:name=".activity.CallEditActivity"
 			android:label="@string/callbook">
+		</activity>
+		<activity android:name=".activity.ReturnVisitActivity"
+			android:label="@string/rvs">
 		</activity>
 		<activity android:name=".activity.PlacementActivity"
 			android:label="@string/placement">

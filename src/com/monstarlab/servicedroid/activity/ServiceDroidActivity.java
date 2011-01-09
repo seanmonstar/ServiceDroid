@@ -40,7 +40,7 @@ public class ServiceDroidActivity extends TabActivity implements TabHost.OnTabCh
 	}
 	
 	public void setupReturnVisitsActivity() {
-		Intent intent = new Intent(this, ReturnVisitsActivity.class);
+		Intent intent = new Intent(this, CallsActivity.class);
         mTabHost.addTab(mTabHost.newTabSpec("rvs")
                 .setIndicator(getString(R.string.callbook), getResources().getDrawable(R.drawable.home))
                 .setContent(intent));

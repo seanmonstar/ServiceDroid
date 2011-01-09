@@ -24,9 +24,9 @@ import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class ReturnVisitsActivity extends ListActivity {
+public class CallsActivity extends ListActivity {
 	
-	private static final String TAG = "ReturnVisitsActivity";
+	private static final String TAG = "CallsActivity";
 	
 	private static final int MENU_ADD = Menu.FIRST;
 	private static final int MENU_SORT_ALPHA = Menu.FIRST + 1;
@@ -264,13 +264,13 @@ public class ReturnVisitsActivity extends ListActivity {
 	
 	protected void editCall(long id) {
 		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
-		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, RVShowActivity.class);
+		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, CallShowActivity.class);
         startActivity(i);
 	}
 	
 	
 	protected void createCall() {
-		Intent i = new Intent(Intent.ACTION_INSERT, getIntent().getData(), this, RVEditActivity.class);
+		Intent i = new Intent(Intent.ACTION_INSERT, getIntent().getData(), this, CallEditActivity.class);
 		startActivity(i);
 	}
 	

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_call">Adicionar Visita</string>
+    <string name="add_time">Adicionar Tempo</string>
+    <string name="address">Endereço</string>
+    <string name="anon_placement">Colocações Anónimas</string>
+    <string name="app_name">ServiçoDroid</string>
+    <string name="awake">Despertai!</string>
+    <string name="bible">Bíblia</string>
+    <string name="bible_studies">Estudos Bíblicos</string>
+    <string name="bible_study">Estudo Bíblico</string>
+    <string name="bible_study_prompt">Deseja marcar como concluído, ou apagar todos os registos deste estudo?</string>
+	<string name="bible_study_prompt_delete">Remover</string>
+	<string name="bible_study_prompt_finish">Terminou</string>
+	<string name="bible_teach">O Que a Bíblia Realmente Ensina?</string>
+    <string name="book">Livro</string>
+	<string name="books">Livros</string>
+	<string name="brochure">Brochura</string>
+	<string name="brochures">Brochuras</string>
+    <string name="callbook">Livro de Visitas</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="comfort_brochure">Quando Morre Alguém Que Amamos</string>
+    <string name="create_placement">Criar Colocação</string>
+    <string name="date">Data</string>
+    <string name="delete_call">Apagar Visita</string>
+    <string name="delete_placement">Remover Colocação</string>
+    <string name="delete_time">Apagar Tempo</string>
+    <string name="directions">Locais</string>
+    <string name="edit">Editar</string>
+    <string name="hours">Horas</string>
+	<string name="hr">hora</string>
+	<string name="hrs">horas</string>
+	<string name="is_bible_study">%s é agora um estudo bíblico.</string>
+	<string name="isnt_bible_study">%s já não é um estudo bíblico.</string>
+	<string name="issue">Edição</string>
+	<string name="last_visited">Última visita: %s</string>
+	<string name="length">Tempo no serviço</string>
+	<string name="magazine">Revista</string>
+	<string name="magazines">Revistas</string>
+	<string name="make_return">Revisita a</string>
+	<string name="min"> min</string>
+	<string name="mins"> mins</string>
+	<string name="month">Mês</string>
+	<string name="monthly">Mensalmente</string>
+	<string-array name="months_array">
+        <item>Janeiro</item>
+        <item>Fevereiro</item>
+        <item>Março</item>
+        <item>Abril</item>
+        <item>Maio</item>
+        <item>Junho</item>
+        <item>Julho</item>
+        <item>Agosto</item>
+        <item>Setembro</item>
+        <item>Outubro</item>
+        <item>Novembro</item>
+        <item>Dezembro</item>
+    </string-array>
+	<string name="name">Nome</string>
+	<string name="no_calls">Clique no MENU para adicionar uma nova visita.</string>
+	<string name="no_placements">Clique no MENU para adicionar uma colocação.</string>
+	<string name="no_time">Clique no MENU para adicionar tempo a este mês.</string>	
+	<string name="notes">Notas</string>
+    <string name="ok">Boa!</string>
+    <string name="placement">Colocação</string>
+    <string name="require_brochure">O Que Deus Requer de Nós?</string>
+    <string name="return_visit_success">Voçê fez uma revisita a %s.</string>
+    <string name="round_time_prompt">Deseja manter o seu tempo, ou arredondar minutos extras para o próximo mês?</string>
+	<string name="round_time_prompt_carry">Manter</string>
+	<string name="round_time_prompt_round">Arredondar</string>
+    <string name="rvs">Revisitas</string>
+    <string name="send">Enviar</string>
+	<string name="send_by">Enviar por...</string>
+	<string name="send_reminder">Enviar o seu Tempo de Serviço</string>
+	<string name="service_year">Ano de Serviço</string>
+	<string name="service_time_for">Ano de Serviço para %s</string>
+    <string name="sort">Ordenar</string>
+    <string name="start_time">Começar Tempo</string>
+    <string name="stats">Estatísticas</string>
+    <string name="stop_time">Parar Tempo</string>
+    <string name="time">Tempo</string>
+    <string name="time_due">O seu tempo é devido!</string>
+	<string name="time_in_service">Tempo no serviço: %s</string>
+	<string name="timer_active">Tempo activo no serviço</string>
+    <string name="tips">Dicas</string>
+    <string name="watchtower">A Sentinela</string>
+    <string name="whats_new">Novidades</string>
+	<string name="year">Ano</string>
+</resources>

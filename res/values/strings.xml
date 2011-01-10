@@ -29,6 +29,7 @@
     <string name="delete_time">Delete Time</string>
     <string name="directions">Directions</string>
     <string name="edit">Edit</string>
+    <string name="email_hint">You can e-mail your service record by pressing you phone\'s MENU button.</string>
     <string name="hours">Hours</string>
 	<string name="hr">hr</string>
 	<string name="hrs">hrs</string>
@@ -76,7 +77,7 @@
 	<string name="send_by">Send by...</string>
 	<string name="send_reminder">Send in your Service Time</string>
 	<string name="service_year">Service Year</string>
-	<string name="service_time_for">Service Year for %s</string>
+	<string name="service_time_for">Service Time for %s</string>
     <string name="sort">Sort</string>
     <string name="start_time">Start Time</string>
     <string name="stats">Stats</string>

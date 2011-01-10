@@ -53,6 +53,23 @@
 			<TextView android:id="@+id/bible_studies" android:padding="5dip" android:gravity="center_vertical|right" />
 		</TableRow>
 		
+		<TableRow>
+			<TextView
+			  	android:id="@+id/hint"
+			  	android:textColor="#cccccc"
+			  	android:text="@string/email_hint"
+			  	android:paddingTop="35dip"
+			  	android:layout_width="fill_parent"
+			  	android:layout_height="wrap_content"
+			  	android:gravity="center_horizontal"
+			    android:layout_span="2"
+			    android:visibility="gone"
+			  	 />
+			  	 
+		</TableRow>
+		
 	</TableLayout>
+	
+	
 	
 </LinearLayout>

@@ -24,7 +24,8 @@
     <string name="create_placement">Create Placement</string>
     <string name="date">Date</string>
     <string name="delete_call">Delete Call</string>
-    <string name="delete_placement">Remove Placement</string>
+    <string name="delete_placement">Delete Placement</string>
+    <string name="delete_rv">Delete Visit</string>
     <string name="delete_time">Delete Time</string>
     <string name="directions">Directions</string>
     <string name="edit">Edit</string>
@@ -65,6 +66,7 @@
     <string name="ok">Cool!</string>
     <string name="placement">Placement</string>
     <string name="require_brochure">What Does God Require of Us?</string>
+    <string name="return_visit">Return Visit</string>
     <string name="return_visit_success">You made a return visit on %s.</string>
     <string name="round_time_prompt">Would you like to round your time up, or carry over the extra minutes to the next month?</string>
 	<string name="round_time_prompt_carry">Carry Over</string>

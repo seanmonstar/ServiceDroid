@@ -1,5 +1,10 @@
 package com.monstarlab.servicedroid.activity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,7 +23,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -45,6 +50,8 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE  };
 	private static final String[] BIBLE_STUDY_PROJECTION = new String[] { BibleStudies._ID, BibleStudies.DATE_START, BibleStudies.DATE_END, BibleStudies.CALL_ID };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE };
+	private static final String[] RETURN_VISITS_PROJECTION = new String[]{ ReturnVisits._ID, ReturnVisits.CALL_ID, ReturnVisits.DATE };
+	
 	private static final int ID_COLUMN = 0;
 	private static final int NAME_COLUMN = 1;
 	private static final int ADDRESS_COLUMN = 2;
@@ -55,8 +62,15 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	private static final int DIALOG_PLACEMENT_ID = 0;
 	private static final int DIALOG_BIBLESTUDYDELETE_ID = 1;
 
-	private static final int EDIT_ID = 0;
-	private static final int DELETE_ID = 1;
+	private static final int EDIT_PLACEMENT_ID = 0;
+	private static final int DELETE_PLACEMENT_ID = 1;
+	private static final int EDIT_RV_ID = 2;
+	private static final int DELETE_RV_ID = 3;
+
+	private static final String HISTORY_LOG_TITLE = "title";
+	private static final String HISTORY_LOG_DATE = "date";
+	private static final String HISTORY_LOG_TYPE = "type";
+	private static final String HISTORY_LOG_ID = "_id";
 
 	
 	
@@ -70,8 +84,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	private CheckBox mBibleStudyCheckbox;
 
 	private ListView mListView;
-
-	private Cursor mPlacementsCursor;
+	private ArrayList<HashMap<String, String>> mHistoryMaps;
 	
 	private int mCallType = Calls.TYPE_ADDED;
 
@@ -120,7 +133,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		super.onResume();
 		
 		refreshCallData();
-		refreshPlacementList();
+		refreshHistoryLog();
 		
 	}
 	
@@ -194,30 +207,70 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		return getContentResolver().query(BibleStudies.CONTENT_URI, BIBLE_STUDY_PROJECTION, where, whereArgs, null);
 	}
 	
-	private void refreshPlacementList() {
+	private void refreshHistoryLog() {
 		String callId =  mUri.getPathSegments().get(1);
 		
 		// get all placements and return visits
-		mPlacementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { callId }, "placements.date DESC");
-		Cursor rvCursor = getContentResolver().query(ReturnVisits.CONTENT_URI, new String[]{}, ReturnVisits.CALL_ID + "=?", new String[]{ callId } , ReturnVisits.DATE + " DESC");
-		
-		int dataLength = 0;
-		if(mPlacementsCursor != null) {
-			dataLength += mPlacementsCursor.getCount();
-		}
-		if(rvCursor != null) {
-			dataLength += rvCursor.getCount();
-		}
+		Cursor placementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { callId }, "placements.date DESC");
+		Cursor rvCursor = getContentResolver().query(ReturnVisits.CONTENT_URI, RETURN_VISITS_PROJECTION, ReturnVisits.CALL_ID + "=?", new String[]{ callId } , ReturnVisits.DATE + " DESC");
 		
 		
 		//jam both into an array
+		mHistoryMaps = new ArrayList<HashMap<String, String>>();
+		
+		if (placementsCursor != null) {
+			if (placementsCursor.getCount() > 0) {
+				placementsCursor.moveToFirst();
+				int publicationIndex = placementsCursor.getColumnIndex(Literature.PUBLICATION);
+				int dateIndex = placementsCursor.getColumnIndex(Placements.DATE);
+				
+				while (!placementsCursor.isAfterLast()) {
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put(HISTORY_LOG_TITLE, placementsCursor.getString(publicationIndex));
+					map.put(HISTORY_LOG_DATE, placementsCursor.getString(dateIndex));
+					map.put(HISTORY_LOG_TYPE, Placements.CONTENT_ITEM_TYPE);
+					map.put(HISTORY_LOG_ID, placementsCursor.getString(0));
+					mHistoryMaps.add(map);
+					placementsCursor.moveToNext();
+				}
+			}
+			placementsCursor.close();
+		}
+		
+		if (rvCursor != null) {
+			if(rvCursor.getCount() > 0) {
+		
+				rvCursor.moveToFirst();
+				int dateIndex = rvCursor.getColumnIndex(Placements.DATE);
+				
+				while (!rvCursor.isAfterLast()) {
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put(HISTORY_LOG_TITLE, getString(R.string.return_visit));
+					map.put(HISTORY_LOG_DATE, rvCursor.getString(dateIndex));
+					map.put(HISTORY_LOG_TYPE, ReturnVisits.CONTENT_ITEM_TYPE);
+					map.put(HISTORY_LOG_ID, rvCursor.getString(0));
+					mHistoryMaps.add(map);
+					rvCursor.moveToNext();
+				}
+			}
+			rvCursor.close();
+		}
+
 		//sort the array via date (sigh)
+		Collections.sort(mHistoryMaps, new Comparator<HashMap<String, String>>() {
+			public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+				// negative for reverse order
+				return -o1.get(HISTORY_LOG_DATE).compareTo(o2.get(HISTORY_LOG_DATE));
+			}
+		});
+		
+		
 		//make the ArrayAdapter and link to the listView
 		
-		String[] from = new String[]{ Literature.PUBLICATION, Placements.DATE };
+		String[] from = new String[]{ HISTORY_LOG_TITLE, HISTORY_LOG_DATE };
 		int[] to = new int[]{ R.id.name, R.id.date };
 		
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.placement_row, mPlacementsCursor, from, to) {
+		SimpleAdapter adapter = new SimpleAdapter(this, mHistoryMaps, R.layout.placement_row, from, to) {
 			@Override
         	public void setViewText(TextView v, String text) {
         		if (v.getId() == R.id.date) {
@@ -534,33 +587,80 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		Uri entryUri = ContentUris.withAppendedId(Placements.CONTENT_URI, id);
 		getContentResolver().delete(entryUri, null, null);
 		
-		refreshPlacementList();
+		refreshHistoryLog();
+	}
+	
+	private void editReturnVisit(long id) {
+		Uri uri = ContentUris.withAppendedId(ReturnVisits.CONTENT_URI, id);
+		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, ReturnVisitActivity.class);
+        startActivity(i);
+	}
+	
+	private void deleteReturnVisit(long id) {
+		Uri entryUri = ContentUris.withAppendedId(ReturnVisits.CONTENT_URI, id);
+		getContentResolver().delete(entryUri, null, null);
+		
+		refreshHistoryLog();
 	}
 	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		
-		String title = ((TextView)((AdapterContextMenuInfo)menuInfo).targetView.findViewById(R.id.name)).getText().toString();
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+		int pos = info.position;
+		if (pos < 0 || pos >= mHistoryMaps.size()) {
+			return; // sanity check. this shouldn't happen, tho :)
+		}
+		
+		HashMap<String, String> map = mHistoryMaps.get(pos);
+		String type = map.get(HISTORY_LOG_TYPE);
+		
+		
+		
+		String title = map.get(HISTORY_LOG_TITLE);
 		
 		menu.setHeaderTitle(title);
-		menu.add(0, EDIT_ID, 0, R.string.edit);
-		menu.add(0, DELETE_ID, 0, R.string.delete_placement);
+		if (type == Placements.CONTENT_ITEM_TYPE) {
+			menu.add(0, EDIT_PLACEMENT_ID, 0, R.string.edit);
+			menu.add(0, DELETE_PLACEMENT_ID, 0, R.string.delete_placement);
+		} else if (type == ReturnVisits.CONTENT_ITEM_TYPE) {
+			menu.add(0, EDIT_RV_ID, 0, R.string.edit);
+			menu.add(0, DELETE_RV_ID, 0, R.string.delete_rv);
+		}
+		
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		
+		int pos = info.position;
+		if (pos < 0 || pos >= mHistoryMaps.size()) {
+			return false; // sanity check. this shouldn't happen, tho :)
+		}
+		
+		HashMap<String, String> map = mHistoryMaps.get(pos);
+		int id = Integer.parseInt(map.get(HISTORY_LOG_ID));
+		
 		switch(item.getItemId()) {
 		
-		case EDIT_ID:
-			editPlacement(info.id);
+		case EDIT_PLACEMENT_ID:
+			editPlacement(id);
 			return true;
 		
-		case DELETE_ID:
-			
-			deletePlacement(info.id);
+		case DELETE_PLACEMENT_ID:
+			deletePlacement(id);
 			return true;
+			
+		case EDIT_RV_ID:
+			editReturnVisit(id);
+			return true;
+			
+		case DELETE_RV_ID:
+			deleteReturnVisit(id);
+			return true;
+			
 		}
 		
 		
@@ -573,7 +673,20 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-		editPlacement(id);
+		if (pos < 0 || pos >= mHistoryMaps.size()) {
+			return; // sanity check. this shouldn't happen, tho :)
+		}
+		
+		HashMap<String, String> map =  mHistoryMaps.get(pos);
+		String type = map.get(HISTORY_LOG_TYPE);
+		String _id = map.get(HISTORY_LOG_ID);
+		
+		if (type == Placements.CONTENT_ITEM_TYPE) {
+			editPlacement(Integer.parseInt(_id));
+		} else if (type == ReturnVisits.CONTENT_ITEM_TYPE) {
+			editReturnVisit(Integer.parseInt(_id));
+		}
+		
 	}
 
 }

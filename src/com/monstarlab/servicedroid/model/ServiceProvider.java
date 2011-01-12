@@ -7,6 +7,7 @@ import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -24,6 +25,7 @@ import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
+import com.monstarlab.servicedroid.service.BackupService;
 
 public class ServiceProvider extends ContentProvider {
 	
@@ -205,8 +207,6 @@ public class ServiceProvider extends ContentProvider {
 			values.put(Literature.TYPE, Literature.TYPE_BROCHURE);
 			values.put(Literature.PUBLICATION, mContext.getString(R.string.comfort_brochure));
 			db.insert(LITERATURE_TABLE, Literature.TITLE, values);
-			
-			
 		}
 
 		@Override
@@ -237,7 +237,15 @@ public class ServiceProvider extends ContentProvider {
     
     @Override
     public boolean onCreate() {
-    	mDbHelper = new DatabaseHelper(getContext());
+    	mDbHelper = new DatabaseHelper(getContext()) {
+    		
+    		@Override
+    		public void onCreate(SQLiteDatabase db) {
+    			super.onCreate(db);
+    			restore();
+    		}
+    		
+    	};
     	return true;
     }
 
@@ -613,8 +621,19 @@ public class ServiceProvider extends ContentProvider {
 			}
 			mWrappedManager.dataChanged();
 		} else {
-			//TODO: launch BackupService for pre 2.2
-			Log.i(TAG, "Needs BackupService for this device");
+			Context ctx = getContext();
+			Intent i = new Intent(BackupService.ACTION_BACKUP, null, ctx, BackupService.class);
+			ctx.startService(i);
+		}
+	}
+	
+	protected void restore() {
+		if (!sUseManager) {
+			Context ctx = getContext();
+			Intent i = new Intent(BackupService.ACTION_RESTORE, null, ctx, BackupService.class);
+			ctx.startService(i);
+		} else {
+			//BackupAgent will do its thing
 		}
 	}
 

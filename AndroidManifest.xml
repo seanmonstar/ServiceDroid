@@ -41,6 +41,7 @@
 
 		<service android:name=".service.ReminderService"></service>
 		<service android:name=".service.TimerService"></service>
+		<service android:name=".service.BackupService"></service>
 
 		<receiver android:name=".receiver.NotificationReceiver"></receiver>
 

@@ -1,5 +1,7 @@
 package com.monstarlab.servicedroid.model;
 
+import java.util.HashMap;
+
 import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
@@ -12,6 +14,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 
 /**
@@ -23,12 +26,22 @@ import android.net.Uri;
  */
 public class BackupWorker {
 	
+	private static final String TIME_ENTRY_TAG = "TimeEntry";
+	private static final String CALL_TAG = "Call";
+	private static final String RETURN_VISIT_TAG = "ReturnVisit";
+	private static final String LITERATURE_TAG = "Literature";
+	private static final String PLACEMENT_TAG = "Placement";
+	private static final String BIBLE_STUDY_TAG = "BibleStudy";
+	
 	private static final String[] TIME_ENTRIES_PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE };
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE };
 	private static final String[] RETURN_VISITS_PROJECTION = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.PUBLICATION, Literature.TITLE, Literature.TYPE };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID };
 	private static final String[] BIBLE_STUDIES_PROJECTION = new String[] { BibleStudies._ID, BibleStudies.DATE_START, BibleStudies.DATE_END, BibleStudies.CALL_ID };
+	
+	private HashMap<String, String> mCallIDReplacements;
+	private HashMap<String, String> mLiteratureIDReplacements;
 	
 	public BackupWorker() {
 		
@@ -39,12 +52,12 @@ public class BackupWorker {
 		//convert them to XML
 		ServiceDroidDocument doc = new ServiceDroidDocument();
 		
-		pushDataOntoDocument(doc, "TimeEntry", resolver, TimeEntries.CONTENT_URI, TIME_ENTRIES_PROJECTION, "not("+ TimeEntries.LENGTH + " is null)", null, TimeEntries._ID);
-		pushDataOntoDocument(doc, "Call", resolver, Calls.CONTENT_URI, CALLS_PROJECTION, null, null, Calls._ID);
-		pushDataOntoDocument(doc, "ReturnVisit", resolver, ReturnVisits.CONTENT_URI, RETURN_VISITS_PROJECTION, null, null, ReturnVisits._ID);
-		pushDataOntoDocument(doc, "Literature", resolver, Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature._ID + "> 2", null, Literature._ID); // IDs 1-4 are inserted on DB creation.
-		pushDataOntoDocument(doc, "Placement", resolver, Placements.CONTENT_URI, PLACEMENTS_PROJECTION, null, null, Placements._ID);
-		pushDataOntoDocument(doc, "BibleStudy", resolver, BibleStudies.CONTENT_URI, BIBLE_STUDIES_PROJECTION, null, null, BibleStudies._ID);
+		pushDataOntoDocument(doc, TIME_ENTRY_TAG, resolver, TimeEntries.CONTENT_URI, TIME_ENTRIES_PROJECTION, "not("+ TimeEntries.LENGTH + " is null)", null, TimeEntries._ID);
+		pushDataOntoDocument(doc, CALL_TAG, resolver, Calls.CONTENT_URI, CALLS_PROJECTION, null, null, Calls._ID);
+		pushDataOntoDocument(doc, RETURN_VISIT_TAG, resolver, ReturnVisits.CONTENT_URI, RETURN_VISITS_PROJECTION, null, null, ReturnVisits._ID);
+		pushDataOntoDocument(doc, LITERATURE_TAG, resolver, Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature._ID + "> 4", null, Literature._ID); // IDs 1-4 are inserted on DB creation.
+		pushDataOntoDocument(doc, PLACEMENT_TAG, resolver, Placements.CONTENT_URI, PLACEMENTS_PROJECTION, null, null, Placements._ID);
+		pushDataOntoDocument(doc, BIBLE_STUDY_TAG, resolver, BibleStudies.CONTENT_URI, BIBLE_STUDIES_PROJECTION, null, null, BibleStudies._ID);
 		
 		
 		return doc.toString();
@@ -72,20 +85,71 @@ public class BackupWorker {
 		//receive XML, so decode it
 		ServiceDroidDocument doc = new ServiceDroidDocument(xml);
 		
+		mCallIDReplacements = new HashMap<String, String>();
+		mLiteratureIDReplacements = new HashMap<String, String>();
+		
+		// IDs 1-4 are pre-inserted brochures and books
+		for (int i = 1; i < 5; i++) {
+			mLiteratureIDReplacements.put(""+i, ""+i);
+		}
+		
 		//insert into DB
-		insertDataFromDocument(doc, "TimeEntry", resolver, TimeEntries.CONTENT_URI);
+		// IMPORTANT: order matters here!
+		insertDataFromDocument(doc, TIME_ENTRY_TAG, resolver, TimeEntries.CONTENT_URI);
+		insertDataFromDocument(doc, CALL_TAG, resolver, Calls.CONTENT_URI);
+		insertDataFromDocument(doc, RETURN_VISIT_TAG, resolver, ReturnVisits.CONTENT_URI);
+		insertDataFromDocument(doc, LITERATURE_TAG, resolver, Literature.CONTENT_URI);
+		insertDataFromDocument(doc, PLACEMENT_TAG, resolver, Placements.CONTENT_URI);
+		insertDataFromDocument(doc, BIBLE_STUDY_TAG, resolver, BibleStudies.CONTENT_URI);
 		
 	}
 	
 	protected void insertDataFromDocument(ServiceDroidDocument doc, String tag, ContentResolver resolver, Uri contentUri) {
+		boolean isCall = (tag == CALL_TAG);
+		boolean isLiterature = (tag == LITERATURE_TAG);
+		
 		for (int nodeIndex = 0, numOfNodes = doc.getNumberOfTag(tag); nodeIndex < numOfNodes; nodeIndex++) {
 			String[][] data = doc.getDataFromNode(tag, nodeIndex);
 			ContentValues values = new ContentValues();
+			String oldID = null;
+			
+			
 			for (int attrIndex = 0, numOfAttrs = data[0].length; attrIndex < numOfAttrs; attrIndex++) {
-				values.put(data[0][attrIndex], data[1][attrIndex]);
+				String key = data[0][attrIndex];
+				String value = data[1][attrIndex];
+				String newID = null;
+				
+				//always strip the ID away, we dont want it on insert
+				if (key == BaseColumns._ID) {
+					oldID = value;
+					continue;
+				}
+				
+				//CALL_ID and LITERATURE_ID should be replaced
+				if(key == ReturnVisits.CALL_ID) {
+					newID = mCallIDReplacements.get(key);
+				} else if (key == Placements.LITERATURE_ID) {
+					newID = mLiteratureIDReplacements.get(key);
+				}
+				
+				if (newID != null) {
+					value = newID;
+				}
+				
+				
+				values.put(key, value);
 			}
 			
-			resolver.insert(contentUri, values);
+			
+			//keep track of inserted Calls and Literature to replace foreign keys above
+			Uri insertedUri = resolver.insert(contentUri, values);
+			if (oldID != null) {
+				if (isCall) {
+					mCallIDReplacements.put(oldID, insertedUri.getPathSegments().get(1));
+				} else if (isLiterature) {
+					mLiteratureIDReplacements.put(oldID, insertedUri.getPathSegments().get(1));
+				}
+			}
 		}
 	}
 	

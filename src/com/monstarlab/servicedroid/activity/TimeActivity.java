@@ -12,21 +12,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnTouchListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.activity.StatisticsActivity.MyGestureDetector;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.service.TimerService;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class TimeActivity extends ListActivity {
+public class TimeActivity extends ListActivity implements OnTouchListener {
 	
 	private static final String TAG = "TimeActivity";
 	
@@ -45,13 +51,20 @@ public class TimeActivity extends ListActivity {
     
     private static final String[] PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE };
     
-    
+    private int mCurrentMonth = TimeUtil.getCurrentMonth();
+    private int mCurrentYear = TimeUtil.getCurrentYear();
 	private TimeUtil mTimeHelper;
 	private Cursor mCursor;
 	private Boolean mTiming = false;
 	//private Long mTimerStart;
 	//private Handler mTimer = new Handler();
 	//private TextView mTimerView;
+	
+	private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	
+    private GestureDetector gestureDetector;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,15 +85,22 @@ public class TimeActivity extends ListActivity {
 		setContentView(R.layout.time);
 		
 		mTimeHelper = new TimeUtil(this);
+		
+		
+		setHeaderText();
         
 		fillData();
 		
 		registerForContextMenu(getListView());
+		
+		// Gesture detection
+	    gestureDetector = new GestureDetector(new MyGestureDetector());
+	    getListView().setOnTouchListener(this);
 	}
 	
 	public void fillData() {
 		 // Get this month's entries from the database and create the item list
-		mCursor = managedQuery(getIntent().getData(), PROJECTION, TimeEntries.LENGTH + " > 0 and " + TimeEntries.DATE + " between ? and ?", getTimePeriodArgs(TimeUtil.getCurrentYear(), TimeUtil.getCurrentMonth()), TimeEntries.DATE + " ASC");
+		mCursor = managedQuery(getIntent().getData(), PROJECTION, TimeEntries.LENGTH + " > 0 and " + TimeEntries.DATE + " between ? and ?", getTimePeriodArgs(mCurrentYear, mCurrentMonth), TimeEntries.DATE + " ASC");
 
         String[] from = new String[] { TimeEntries.DATE, TimeEntries.LENGTH };
         int[] to = new int[] { R.id.date, R.id.length };
@@ -112,6 +132,14 @@ public class TimeActivity extends ListActivity {
         };
         
         setListAdapter(entries);
+	}
+	
+	protected void setHeaderText() {
+		TextView view = (TextView) findViewById(R.id.header);
+		String[] months = getResources().getStringArray(R.array.months_array);
+		
+		
+		view.setText(months[mCurrentMonth-1] + " " + mCurrentYear);
 	}
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
@@ -264,5 +292,59 @@ public class TimeActivity extends ListActivity {
 		}
 		c.close();
 	}
+	
+	protected void moveTimePeriodBackward() {
+		mCurrentMonth--;
+		if(mCurrentMonth <= 0) {
+			mCurrentMonth = 12;
+			mCurrentYear--;
+		}
+	}
+	
+	protected void moveTimePeriodForward() {
+		mCurrentMonth++;
+		if(mCurrentMonth > 12) {
+			mCurrentMonth = 1;
+			mCurrentYear++;
+		}
+	}
+	
+	class MyGestureDetector extends SimpleOnGestureListener {
+	    @Override
+	    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+	        try {
+	            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+	                return false;
+	            // right to left swipe
+	            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+	            	//left
+	            	moveTimePeriodForward();
+	            	fillData();
+	            	setHeaderText();
+	            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+	                //right
+	            	moveTimePeriodBackward();
+	            	fillData();
+	            	setHeaderText();
+	            }
+	        } catch (Exception e) {
+	            // nothing
+	        }
+	        return false;
+	    }
+	    
+	    @Override
+	    public boolean onDown(MotionEvent event) {
+	    	return true;
+	    }
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event)) {
+            return true;
+        }
+        return true;
+    }
 
 }

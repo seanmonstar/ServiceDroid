@@ -19,7 +19,7 @@ public class TimerService extends Service {
 
 	private static final int SHOW_TIMER_NOTIFICATION = 21;
 	//private TimeUtil mTimeHelper;
-	private Handler mHandler = new Handler();;
+	private Handler mHandler = new Handler();
 	private long mStartTime;
 	private long mRunTime = 0L;
 	
@@ -27,10 +27,10 @@ public class TimerService extends Service {
 	
 	public static boolean isRunning = false;
 
-	/*@Override
+	@Override
 	public void onStart(Intent intent, int startId) {
-	    handleCommand(intent);
-	}*/
+		
+	}
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    return 1; // START_STICKY

@@ -7,6 +7,7 @@ import android.app.ListActivity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,6 +88,7 @@ public class TimeActivity extends ListActivity {
  
         // Now create an cursor adapter and set it to display using our row
         // overriding setViewText to format the Date string
+        final Resources r = getResources();
         SimpleCursorAdapter entries = new SimpleCursorAdapter(this, R.layout.time_row, mCursor, from, to) {
         	
         	@Override
@@ -99,7 +101,7 @@ public class TimeActivity extends ListActivity {
         				text = "0";
         			}
         			
-        			text = TimeUtil.toTimeString(Integer.parseInt(text));
+        			text = TimeUtil.toTimeString(Integer.parseInt(text), r);
         			
         			v.setText(text);
         			

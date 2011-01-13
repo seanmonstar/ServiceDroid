@@ -6,7 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.monstarlab.servicedroid.R;
+
+import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 
 public class TimeUtil {
 	
@@ -50,16 +54,16 @@ public class TimeUtil {
 		return mDateFormatter.format(d);
 	}
 	
-	public static String toTimeString(int time) {
+	public static String toTimeString(int time, Resources r) {
 		StringBuilder out = new StringBuilder();
 		
 		int hours = getHours(time);
 		if(hours > 0) {
 			out.append(hours);
 			if(hours > 1) {
-				out.append("hrs");
+				out.append(r.getString(R.string.hrs));
 			} else {
-				out.append("hr");
+				out.append(r.getString(R.string.hr));
 			}
 		}
 		
@@ -70,9 +74,9 @@ public class TimeUtil {
 			}
 			out.append(mins);
 			if(mins > 1) {
-				out.append("mins");
+				out.append(r.getString(R.string.mins));
 			} else {
-				out.append("min");
+				out.append(r.getString(R.string.min));
 			}
 		}
 		

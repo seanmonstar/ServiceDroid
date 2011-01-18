@@ -1,18 +1,32 @@
 package com.monstarlab.servicedroid.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+
 import com.monstarlab.servicedroid.model.BackupWorker;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 public class BackupService extends Service {
 	
 	public static final String ACTION_BACKUP = "Backup";
 	public static final String ACTION_RESTORE = "Restore";
 	
-	private static final long SCHEDULE_DELAY = 1000 * 60 * 2;
+	private static final String TAG = "BackupService";
+	
+	private static final String FILE_NAME = "ServiceDroidBackup.sdml";
+	private static final String DIRECTORY = "backups";
+	
+	private static final long SCHEDULE_DELAY = 1000 * 5 * 2;
 	
 	private Handler mHandler = new Handler();
 	private Runnable mScheduler = new Runnable() {
@@ -62,11 +76,29 @@ public class BackupService extends Service {
 				//find backup file on SD card
 				//write SDML to backup file, overwriting if need be
 				
-				new BackupWorker().backup(getContentResolver());
+				writeToSDCard(new BackupWorker().backup(getContentResolver()));
 				stopSelf();
 			}
 			
 		}).start();
+	}
+	
+	protected void writeToSDCard(String raw) {
+		File root = Environment.getExternalStorageDirectory();
+		File dir = new File(root, DIRECTORY);
+		File file = new File(dir, FILE_NAME);
+		
+		try {
+			dir.mkdirs();
+			FileOutputStream os = new FileOutputStream(file);
+			os.write(raw.getBytes());
+			os.close();
+			
+		} catch (IOException e) {
+			// likely because SD card is mounted, otherwise unwriteable...
+			// oh well, so the backup doesn't happen *this* time. we'll live.
+			Log.w(TAG, "error writing to file");
+		}
 	}
 	
 	protected void onRestore() {
@@ -81,14 +113,36 @@ public class BackupService extends Service {
 			
 			public void run() {
 				//find backup file on SD card
-				
 				//read SDML from backup file
 				
-				//new BackupWorker().restore(getContentResolver(), sdml);
+				new BackupWorker().restore(getContentResolver(), readFromSDCard());
 				stopSelf();
 			}
 			
-		});
+		}).start();
+	}
+	
+	protected String readFromSDCard() {
+		File root = Environment.getExternalStorageDirectory();
+		File dir = new File(root, DIRECTORY);
+		File file = new File(dir, FILE_NAME);
+		StringBuilder sb = new StringBuilder();
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(file));
+			String line = null;
+			while ((line = in.readLine()) != null) {
+				sb.append(line);
+			}
+			
+			in.close();			
+		} catch (IOException e) {
+			// likely because SD card is mounted, otherwise unwriteable...
+			// Restore failing, but there *might* be a restore file there,
+			// should we try again a little later? much later and we risk data
+			// contamination
+			Log.w(TAG, "error writing to file");
+		}
+		return sb.toString();
 	}
 	
 	

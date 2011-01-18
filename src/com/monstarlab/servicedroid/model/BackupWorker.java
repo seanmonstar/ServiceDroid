@@ -15,6 +15,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.text.TextUtils;
 
 
 /**
@@ -83,6 +84,10 @@ public class BackupWorker {
 	
 	public void restore(ContentResolver resolver, String xml) {
 		//receive XML, so decode it
+		if (TextUtils.isEmpty(xml)) {
+			return;
+		}
+		
 		ServiceDroidDocument doc = new ServiceDroidDocument(xml);
 		
 		mCallIDReplacements = new HashMap<String, String>();
@@ -120,15 +125,15 @@ public class BackupWorker {
 				String newID = null;
 				
 				//always strip the ID away, we dont want it on insert
-				if (key == BaseColumns._ID) {
+				if (key.equals(BaseColumns._ID)) { /* BaseColumns._ID is null, but _i is the same on all Models */
 					oldID = value;
 					continue;
 				}
 				
 				//CALL_ID and LITERATURE_ID should be replaced
-				if(key == ReturnVisits.CALL_ID) {
+				if(key.equals(ReturnVisits.CALL_ID)) {
 					newID = mCallIDReplacements.get(key);
-				} else if (key == Placements.LITERATURE_ID) {
+				} else if (key.equals(Placements.LITERATURE_ID)) {
 					newID = mLiteratureIDReplacements.get(key);
 				}
 				

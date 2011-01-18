@@ -15,6 +15,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.IBinder;
@@ -29,6 +30,7 @@ public class TimerService extends Service {
 	private TimeUtil mTimeHelper;
 	private Notification mNotification;
 	private int mEntryID;
+	private Resources mResources;
 	
 	private static final String[] PROJECTION = new String[]{ TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	
@@ -49,6 +51,7 @@ public class TimerService extends Service {
 		isRunning = true;
 		
 		mTimeHelper = new TimeUtil(this);
+		mResources = getResources();
 		//show a notification
 		createNotification();
 		showTimerNotification();
@@ -77,7 +80,7 @@ public class TimerService extends Service {
 	
 	private void showTimerNotification() {
 		
-		CharSequence contentText = getString(R.string.time_in_service, TimeUtil.toTimeString((int) mRunTime));      // expanded message text
+		CharSequence contentText = getString(R.string.time_in_service, TimeUtil.toTimeString((int) mRunTime, mResources));      // expanded message text
 		CharSequence contentTitle = getString(R.string.app_name);  // expanded message title
 
 		Intent notificationIntent = new Intent(this, TimeActivity.class);

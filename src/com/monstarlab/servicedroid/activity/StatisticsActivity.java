@@ -216,7 +216,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	}
 	
 	protected String getHours() {
-		return TimeUtil.toTimeString(getHoursSum());
+		return TimeUtil.toTimeString(getHoursSum(), getResources());
 	}
 	
 	protected String getRVs() {

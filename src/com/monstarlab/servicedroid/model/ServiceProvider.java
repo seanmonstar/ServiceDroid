@@ -2,10 +2,12 @@ package com.monstarlab.servicedroid.model;
 
 import java.util.HashMap;
 
+import android.app.backup.BackupManager;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -23,6 +25,7 @@ import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
+import com.monstarlab.servicedroid.service.BackupService;
 
 public class ServiceProvider extends ContentProvider {
 	
@@ -44,6 +47,8 @@ public class ServiceProvider extends ContentProvider {
     private static HashMap<String, String> sBibleStudyProjectionMap;
     private static HashMap<String, String> sLiteratureProjectionMap;
     private static HashMap<String, String> sPlacementProjectionMap;
+
+	private static boolean sUseManager;
     
     private static final int TIME_ENTRIES = 1;
     private static final int TIME_ENTRY_ID = 2;
@@ -124,6 +129,13 @@ public class ServiceProvider extends ContentProvider {
     	sBibleStudyProjectionMap.put(BibleStudies.DATE_START, BibleStudies.DATE_START);
     	sBibleStudyProjectionMap.put(BibleStudies.DATE_END, BibleStudies.DATE_END);
     	sBibleStudyProjectionMap.put(BibleStudies.CALL_ID, BibleStudies.CALL_ID);
+    	
+    	try {
+    		WrapManager.checkAvailable();
+    		sUseManager = true;
+    	} catch (Throwable t) {
+    		sUseManager = false;
+    	}
     }
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -195,8 +207,6 @@ public class ServiceProvider extends ContentProvider {
 			values.put(Literature.TYPE, Literature.TYPE_BROCHURE);
 			values.put(Literature.PUBLICATION, mContext.getString(R.string.comfort_brochure));
 			db.insert(LITERATURE_TABLE, Literature.TITLE, values);
-			
-			
 		}
 
 		@Override
@@ -222,10 +232,20 @@ public class ServiceProvider extends ContentProvider {
     }
     
     private DatabaseHelper mDbHelper;
+
+	private WrapManager mWrappedManager;
     
     @Override
     public boolean onCreate() {
-    	mDbHelper = new DatabaseHelper(getContext());
+    	mDbHelper = new DatabaseHelper(getContext()) {
+    		
+    		@Override
+    		public void onCreate(SQLiteDatabase db) {
+    			super.onCreate(db);
+    			restore();
+    		}
+    		
+    	};
     	return true;
     }
 
@@ -286,6 +306,9 @@ public class ServiceProvider extends ContentProvider {
 		}
 		
 		getContext().getContentResolver().notifyChange(uri, null);
+		
+		dataChanged();
+		
 		return count;
 	}
 
@@ -387,6 +410,8 @@ public class ServiceProvider extends ContentProvider {
 			//insert worked
 			Uri insertedUri = ContentUris.withAppendedId(contentUri, rowId);
 			getContext().getContentResolver().notifyChange(insertedUri, null);
+			
+			dataChanged();
 			return insertedUri;
 		}
 		
@@ -582,7 +607,34 @@ public class ServiceProvider extends ContentProvider {
 		}
 		
 		getContext().getContentResolver().notifyChange(uri, null);
+		
+		dataChanged();
+		
 		return count;
+	}
+	
+	protected void dataChanged() {
+		if(sUseManager) {
+			//instantiate BackupManager and dataChanged
+			if(mWrappedManager == null) {
+				mWrappedManager = new WrapManager(getContext());
+			}
+			mWrappedManager.dataChanged();
+		} else {
+			Context ctx = getContext();
+			Intent i = new Intent(BackupService.ACTION_BACKUP, null, ctx, BackupService.class);
+			ctx.startService(i);
+		}
+	}
+	
+	protected void restore() {
+		if (!sUseManager) {
+			Context ctx = getContext();
+			Intent i = new Intent(BackupService.ACTION_RESTORE, null, ctx, BackupService.class);
+			ctx.startService(i);
+		} else {
+			//BackupAgent will do its thing
+		}
 	}
 
 }

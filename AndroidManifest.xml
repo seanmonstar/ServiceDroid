@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.monstarlab.servicedroid" android:versionCode="5"
 	android:versionName="1.3dev">
-	<application android:icon="@drawable/icon" android:label="@string/app_name">
+	<application android:icon="@drawable/icon" android:label="@string/app_name" android:backupAgent=".model.ServiceDroidBackupAgent">
+		<meta-data android:name="com.google.android.backup.api_key"
+    		android:value="AEdPqrEAAAAIKUSqko9a6m2X2AyT3qKk86es9TaE-au6Uxp2LQ" />
+		
 		<activity android:name=".activity.ServiceDroidActivity"
 			android:label="@string/app_name">
 			<intent-filter>
@@ -41,10 +44,11 @@
 
 		<service android:name=".service.ReminderService"></service>
 		<service android:name=".service.TimerService"></service>
+		<service android:name=".service.BackupService"></service>
 
 		<receiver android:name=".receiver.NotificationReceiver"></receiver>
 
 	</application>
-	<uses-sdk android:minSdkVersion="3" />
+	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="8" />
 
 </manifest> 

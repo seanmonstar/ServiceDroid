@@ -69,7 +69,7 @@ public class ServiceDroidDocument {
 		String[][] data = new String[2][numOfAttrs];
 		for (int i = 0; i < numOfAttrs; i++) {
 			data[0][i] = attrs.item(i).getNodeName();
-			data[1][i] = attrs.item(i).getTextContent();
+			data[1][i] = attrs.item(i).getNodeValue();
 		}
 		
 		

@@ -67,7 +67,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 
 	private static final int DIALOG_ROUND_ID = 1;
 	
-    private GestureDetector gestureDetector;
+    private GestureDetector mGestureDetector;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
         mBibleStudiesDisplay = (TextView)findViewById(R.id.bible_studies);
         
         // Gesture detection
-	    gestureDetector = new GestureDetector(new MyGestureDetector());
+	    mGestureDetector = new GestureDetector(new MyGestureDetector());
 	    TableLayout table = (TableLayout) findViewById(R.id.statstable);
 	    table.setOnTouchListener(this);
 
@@ -544,10 +544,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-        if (gestureDetector.onTouchEvent(event)) {
-            return true;
-        }
-        return false;
+        return mGestureDetector.onTouchEvent(event);
     }
 	
 }

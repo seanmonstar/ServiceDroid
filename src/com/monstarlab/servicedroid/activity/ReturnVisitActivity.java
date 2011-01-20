@@ -157,7 +157,8 @@ public class ReturnVisitActivity extends Activity {
 						String text = getString(R.string.return_visit_success, name);
 						Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 					}
-					
+					c.close();
+					c = null;
 				}
 				
 			}

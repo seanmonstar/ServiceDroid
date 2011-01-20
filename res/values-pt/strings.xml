@@ -69,6 +69,7 @@
     <string name="round_time_prompt">Deseja manter o seu tempo, ou arredondar minutos extras para o próximo mês?</string>
 	<string name="round_time_prompt_carry">Manter</string>
 	<string name="round_time_prompt_round">Arredondar</string>
+    <string name="rv">Revisita</string>
     <string name="rvs">Revisitas</string>
     <string name="send">Enviar</string>
 	<string name="send_by">Enviar por...</string>

@@ -67,11 +67,11 @@
     <string name="ok">Cool!</string>
     <string name="placement">Placement</string>
     <string name="require_brochure">What Does God Require of Us?</string>
-    <string name="return_visit">Return Visit</string>
     <string name="return_visit_success">You made a return visit on %s.</string>
     <string name="round_time_prompt">Would you like to round your time up, or carry over the extra minutes to the next month?</string>
 	<string name="round_time_prompt_carry">Carry Over</string>
 	<string name="round_time_prompt_round">Round Up</string>
+        <string name="rv">Return Visit</string>
     <string name="rvs">Return Visits</string>
     <string name="send">Send</string>
 	<string name="send_by">Send by...</string>

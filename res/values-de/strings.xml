@@ -67,11 +67,11 @@
     <string name="ok">Cool!</string>
     <string name="placement">Literatur</string>
     <string name="require_brochure">Was erwartet Gott von uns?</string>
-    <string name="return_visit">Rückbesuch</string>
     <string name="return_visit_success">Du hast bei %s einen Rückbesuch gemacht.</string>
     <string name="round_time_prompt">Möchtest du deine Zeit aufrunden, oder die übrigen Minuten in den nächsten Monat übernehmen?</string>
 	<string name="round_time_prompt_carry">Übernehmen</string>
 	<string name="round_time_prompt_round">Aufrunden</string>
+    <string name="rv">Rückbesuch</string>
     <string name="rvs">Rückbesuche</string>
     <string name="send">Senden</string>
 	<string name="send_by">Gesendet von ...</string>

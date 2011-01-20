@@ -211,7 +211,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		String callId =  mUri.getPathSegments().get(1);
 		
 		// get all placements and return visits
-		Cursor placementsCursor = managedQuery(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { callId }, "placements.date DESC");
+		Cursor placementsCursor = getContentResolver().query(Placements.DETAILS_CONTENT_URI, PLACEMENTS_PROJECTION, Placements.CALL_ID + "=?", new String[] { callId }, "placements.date DESC");
 		Cursor rvCursor = getContentResolver().query(ReturnVisits.CONTENT_URI, RETURN_VISITS_PROJECTION, ReturnVisits.CALL_ID + "=?", new String[]{ callId } , ReturnVisits.DATE + " DESC");
 		
 		
@@ -245,7 +245,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 				
 				while (!rvCursor.isAfterLast()) {
 					HashMap<String, String> map = new HashMap<String, String>();
-					map.put(HISTORY_LOG_TITLE, getString(R.string.return_visit));
+					map.put(HISTORY_LOG_TITLE, getString(R.string.rv));
 					map.put(HISTORY_LOG_DATE, rvCursor.getString(dateIndex));
 					map.put(HISTORY_LOG_TYPE, ReturnVisits.CONTENT_ITEM_TYPE);
 					map.put(HISTORY_LOG_ID, rvCursor.getString(0));

@@ -64,7 +64,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	
-    private GestureDetector gestureDetector;
+    private GestureDetector mGestureDetector;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,8 +94,11 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		registerForContextMenu(getListView());
 		
 		// Gesture detection
-	    gestureDetector = new GestureDetector(new MyGestureDetector());
+	    mGestureDetector = new GestureDetector(new MyGestureDetector());
 	    getListView().setOnTouchListener(this);
+	    findViewById(android.R.id.empty).setOnTouchListener(this);
+	    findViewById(R.id.header).setOnTouchListener(this);
+	    
 	}
 	
 	public void fillData() {
@@ -330,21 +333,21 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	        } catch (Exception e) {
 	            // nothing
 	        }
-	        return false;
+	        return true;
 	    }
 	    
-	    @Override
-	    public boolean onDown(MotionEvent event) {
-	    	return true;
-	    }
 	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-        if (gestureDetector.onTouchEvent(event)) {
-            return true;
-        }
-        return true;
+		boolean gestureConsumed = mGestureDetector.onTouchEvent(event);
+		if (v instanceof ListView) {
+			// this lets normal clicks, and longpresses still work for the listview
+			return gestureConsumed;
+		} else {
+			// otherwise, this lets the swipes work on the empty view
+			return true;
+		}
     }
 
 }

@@ -263,6 +263,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	protected String[] getTimePeriodArgs(int year, int month) {
 		if(mTimeSpan == MENU_YEAR) {
 			month = SERVICE_YEAR_START; // service year is from Sept (9) - Aug (8)
+			year = year - 1; //year is always in the future
 		}
 		
 		Calendar cal = Calendar.getInstance();
@@ -277,7 +278,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 			cal.add(Calendar.MONTH, 1);
 			cal.add(Calendar.DATE, -1);
 		} else {
-			cal.add(Calendar.YEAR, 1);
+			cal.add(Calendar.YEAR, +1);
 			cal.add(Calendar.DATE, -1);
 		}
 		
@@ -294,12 +295,12 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		//we need to make sure to move the Year around to show the correct service year
 		if(span == MENU_YEAR) {
-			if(mCurrentMonth < SERVICE_YEAR_START) {
-				mCurrentYear--;
+			if(mCurrentMonth >= SERVICE_YEAR_START) {
+				mCurrentYear++;
 			}
 		} else {
-			if(mCurrentMonth < SERVICE_YEAR_START) {
-				mCurrentYear++;
+			if(mCurrentMonth >= SERVICE_YEAR_START) {
+				mCurrentYear--;
 			}
 		}
 		

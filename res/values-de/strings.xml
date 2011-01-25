@@ -19,6 +19,12 @@
 	<string name="brochures">Broschüren</string>
     <string name="callbook">Gesprächsnotizen</string>
     <string name="cancel">Abbrechen</string>
+    <string-array name="changelog">
+    	<item>Die Daten können entweder auf die SD-Karte oder auf dein Google-Konto gesichert werden.</item>
+    	<item>Rückbesuche werden jetzt zusammen mit den Gesprächsnotizen angezeigt und sind editierbar.</item>
+    	<item>Durch Wischen nach links oder rechts kann bei der Predigtdienstzeit der Monat gewechselt werden.</item>
+    	<item>Übersetzt nach Spanisch, Portugiesisch und Deutsch (vielen Dank an  Dunnia Lempert, Ruben Reis, und Manuel Haas).</item>
+    </string-array>
     <string name="confirm">Bestätigen</string>
     <string name="comfort_brochure">Wenn ein geliebter Mensch gestorben ist</string>
     <string name="create_placement">Neue Literatur</string>
@@ -30,6 +36,8 @@
     <string name="directions">Navigation</string>
     <string name="edit">Bearbeiten</string>
     <string name="email_hint">Du kannst deinen Bericht per Email senden, indem du die MENÜ-Taste deines Telefons drückst.</string>
+    <string name="enjoy_servicedroid">Viel Spaß mit ServiceDroid?</string>
+    <string name="give_review"><![CDATA[Positive <a href=\"market://details?id=com.monstarlab.servicedroid\">Bewertungen</a> werden sehr geschätzt.]]></string>
     <string name="hours">Stunden</string>
 	<string name="hr">St</string>
 	<string name="hrs">St</string>

@@ -88,23 +88,19 @@ public class Changelog {
 	private static String getMessage(Context c) {
 		StringBuilder message = new StringBuilder();
 		
-		String[] features = new String[] { 
-			"Anonymous Placements support has been added to the Call Book.",
-			"Get directions to a Call.",
-			"Change the stats from monthly to the whole Service Year."
-		}; 
+		String[] features = c.getResources().getStringArray(R.array.changelog);
 		message.append("<html><body>");
 		
-		message.append("<b>v1.2</b>");
+		message.append("<b>v1.3</b>");
 		message.append("<ul>");
 		for(int i = 0; i < features.length; i++) {
 			message.append("<li>" + features[i] + "</li>");
 		}
 		message.append("</ul>");
 		
-		message.append("<b>Enjoy ServiceDroid?</b>");
+		message.append("<b>" + c.getString(R.string.enjoy_servicedroid) + "</b>");
 		message.append("<ul>");
-		message.append("<li>Consider giving a nice <a href=\"market://details?id=com.monstarlab.servicedroid\">review</a>.</li>");
+		message.append("<li>" + c.getString(R.string.give_review) + "</li>");
 		message.append("</ul>");
 		
 		message.append("</body></html>");

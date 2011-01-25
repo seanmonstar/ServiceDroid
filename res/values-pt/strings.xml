@@ -19,6 +19,12 @@
 	<string name="brochures">Brochuras</string>
     <string name="callbook">Livro de Visitas</string>
     <string name="cancel">Cancelar</string>
+    <string-array name="changelog">
+    	<item>Os dados são salvos numa Conta Google ou no Cartão de Memória.</item>
+    	<item>As revisitas agora aparecem em conjunto com os locais de visita, e são editáveis.</item>
+    	<item>Ao deslizar para esquerda ou direita na vista do Tempo irá mudar o mês apresentado.</item>
+    	<item>Traduzido para Espanhol, Português, e Alemão (agradecimentos a Dunnia Lempert, Ruben Reis, e Manuel Haas).</item>
+    </string-array>
     <string name="confirm">Confirmar</string>
     <string name="comfort_brochure">Quando Morre Alguém Que Amamos</string>
     <string name="create_placement">Criar Colocação</string>
@@ -28,6 +34,8 @@
     <string name="delete_time">Apagar Tempo</string>
     <string name="directions">Locais</string>
     <string name="edit">Editar</string>
+    <string name="enjoy_servicedroid">Gostou do ServiçoDroid?</string>
+    <string name="give_review"><![CDATA[Considere em dar uma boa <a href=\"market://details?id=com.monstarlab.servicedroid\">opinião</a>.]]></string>
     <string name="hours">Horas</string>
 	<string name="hr">hora</string>
 	<string name="hrs">horas</string>

@@ -6,6 +6,13 @@ ServiceDroid is an Android application built to assist Jehovah's Witnesses doing
 Features
 -------
 
+_Version 1.3_
+
+* Back up your data to your Google account
+* Edit Return Visit details
+* Change the month of the Time view
+* Translate values into Spanish
+
 _Version 1.2_
 
 * Anonymous Placements
@@ -32,17 +39,9 @@ _Version 1.0_
 Planned
 -------
 
-_For Version 1.3_
-
-* Back up your data to your Google account
-* Edit Return Visit details
-* Change the month of the Time view
-* Translate values into Spanish
-
-
 _Future Versions_
 
-
+* Transfer Calls to other ServiceDroid users
 * View map of all RVs
 * Sort calls by distance
 

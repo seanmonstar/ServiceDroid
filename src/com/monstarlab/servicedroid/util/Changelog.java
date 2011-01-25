@@ -47,8 +47,7 @@ public class Changelog {
 	        	return;
 	        }
 
-	        //builder.setMessage(message);
-	        webView.loadData(message, "text/html", "utf-8");
+	        webView.loadDataWithBaseURL(null, message, "text/html", "UTF-8", "about:blank");
 	        builder.show();
 		}
 	}

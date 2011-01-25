@@ -26,7 +26,7 @@ public class BackupService extends Service {
 	private static final String FILE_NAME = "ServiceDroidBackup.sdml";
 	private static final String DIRECTORY = "backups";
 	
-	private static final long SCHEDULE_DELAY = 1000 * 5 * 2;
+	private static final long SCHEDULE_DELAY = 1000 * 60 * 5;
 	
 	private Handler mHandler = new Handler();
 	private Runnable mScheduler = new Runnable() {

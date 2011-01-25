@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -317,7 +318,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	class MyGestureDetector extends SimpleOnGestureListener {
 	    @Override
 	    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-	        try {
+	    	try {
 	            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 	                return false;
 	            // right to left swipe
@@ -331,11 +332,18 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	            	moveTimePeriodBackward();
 	            	fillData();
 	            	setHeaderText();
+	            } else {
+	            	// vertical distance wasn't over MAX_OFF_PATH
+	            	// but horizontal wasnt enough for a SWIPE
+	            	// so don't consume event, cause we aren't doing anything else with it
+	            	return false;
 	            }
 	        } catch (Exception e) {
 	            // nothing
 	        }
-	        return true;
+	        // actually, we should just never "consume" the event.
+	        // always let the list handle the event too.
+	        return false;
 	    }
 	    
 	}

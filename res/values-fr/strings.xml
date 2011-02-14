@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_call">Ajout visite</string>
+    <string name="add_time">Ajout temps</string>
+    <string name="address">Addresse</string>
+    <string name="anon_placement">Placements anonymes</string>
+    <string name="app_name">ServiceDroid</string>
+    <string name="awake">Reveillez-vous !</string>
+    <string name="bible">Bible</string>
+    <string name="bible_studies">Études</string>
+    <string name="bible_study">Étude</string>
+    <string name="bible_study_prompt">Voulez-vous marquez cette étude comme terminée, ou bien la supprimer ?</string>
+	<string name="bible_study_prompt_delete">Supprimer</string>
+	<string name="bible_study_prompt_finish">Terminée</string>
+	<string name="bible_teach">Qu\'enseigne réellement la bible ?</string>
+    <string name="book">Livre</string>
+	<string name="books">Livress</string>
+	<string name="brochure">Brochure</string>
+	<string name="brochures">Brochures</string>
+    <string name="callbook">Visites</string>
+    <string name="cancel">Annuler</string>
+    <string-array name="changelog">
+    	<item>Les données sont sauvegardées sur votre compte Google ou sur votre carte SD.</item>
+    	<item>Les nouvelles visites apparaissent désormais sur les fiches des personnes visitées et elles sont modifiables.</item>
+    	<item>Glisser l\'écran des Heures à droite ou à gauche change le mois affiché.</item>
+    	<item>Traduit en espagnol, portugais, allemand, français et danois (merci à Dunnia Lempert, Ruben Reis, Manuel Haas, David V., et Flemming Jacobsen).</item>
+    </string-array>
+    <string name="confirm">Veuillez confirmer</string>
+    <string name="comfort_brochure">Quand on perd un être cher</string>
+    <string name="create_placement">Nouveau placement</string>
+    <string name="date">Date</string>
+    <string name="delete_call">Supprimer visite</string>
+    <string name="delete_placement">Supprimer placement</string>
+    <string name="delete_rv">Supprimer nouvelle visite</string>
+    <string name="delete_time">Supprimer temps</string>
+    <string name="directions">Itinéraire</string>
+    <string name="edit">Modifier</string>
+    <string name="email_hint">Vous pouvez envoyer votre rapport en utilisant le bouton MENU.</string>
+    <string name="enjoy_servicedroid">Vous aimez ServiceDroid ?</string>
+    <string name="give_review"><![CDATA[Pensez à laisser un <a href=\"market://details?id=com.monstarlab.servicedroid\">commentaire</a> positif !]]></string>
+    <string name="hours">Heures</string>
+	<string name="hr">hr</string>
+	<string name="hrs">hrs</string>
+	<string name="is_bible_study">%s est maintenant une étude.</string>
+	<string name="isnt_bible_study">%s n\'est plus une étude.</string>
+	<string name="issue">Numéro</string>
+	<string name="last_visited">Dernière visite : %s</string>
+	<string name="length">Temps de prédication</string>
+	<string name="magazine">Périodique</string>
+	<string name="magazines">Périodiques</string>
+	<string name="make_return">Nouvelle visite</string>
+	<string name="min">min</string>
+	<string name="mins">min</string>
+	<string name="month">Mois</string>
+	<string name="monthly">Mensuel</string>
+	<string-array name="months_array">
+        <item>Janvier</item>
+        <item>Février</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Août</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Décembre</item>
+    </string-array>
+	<string name="name">Nom</string>
+	<string name="no_calls">Appuyez sur MENU pour ajouter une visite.</string>
+	<string name="no_placements">Appuyez sur MENU pour ajouter un placement.</string>
+	<string name="no_time">Appuyez sur MENU pour ajouter des heures à ce mois.</string>	
+	<string name="notes">Notes</string>
+    <string name="ok">Cool !</string>
+    <string name="other">Autres...</string>
+    <string name="placement">Placement</string>
+    <string name="require_brochure">Qu\'est-ce que Dieu attend de nous ?</string>
+    <string name="return_visit_success">Vous avez fait une nouvelle visite à %s.</string>
+    <string name="round_time_prompt">Voulez-vous arrondir votre temps à l\'heure suppérieure, ou reporter les minutes en plus au mois suivant ?</string>
+	<string name="round_time_prompt_carry">Reporter</string>
+	<string name="round_time_prompt_round">Arrondir</string>
+    <string name="rv">Nouvelle visite</string>
+    <string name="rvs">Nouvelles visites</string>
+    <string name="send">Envoyer</string>
+	<string name="send_by">Envoyer par...</string>
+	<string name="send_reminder">Envoyez votre rapport de service</string>
+	<string name="service_year">Année de service</string>
+	<string name="service_time_for">Rapport de service pour %s</string>
+    <string name="sort">Trier</string>
+    <string name="start_time">Heure de début</string>
+    <string name="stats">Statistiques</string>
+    <string name="stop_time">Heure de fin</string>
+    <string name="time">Temps</string>
+    <string name="time_due">Souvenez-vous d\'envoyer votre rapport !</string>
+	<string name="time_in_service">Temps de prédication : %s</string>
+	<string name="timer_active">Chrono prédic actif</string>
+    <string name="tips">Astuces</string>
+    <string name="watchtower">Tour de Garde</string>
+    <string name="whats_new">Quoi de neuf !</string>
+	<string name="year">Année</string>
+</resources>

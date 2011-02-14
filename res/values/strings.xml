@@ -23,7 +23,7 @@
     	<item>Data is backed up either to your Google Account, or your SD card.</item>
     	<item>Return Visits now show up along with the Call\'s placements, and are editable.</item>
     	<item>Swiping left and right on the Time view will change the month displayed.</item>
-    	<item>Translated into Spanish, Portuguese, and German (thanks to Dunnia Lempert, Ruben Reis, and Manuel Haas).</item>
+    	<item>Translated into Spanish, Portuguese, German, French, and Danish (thanks to Dunnia Lempert, Ruben Reis, Manuel Haas, David V., and Flemming Jacobsen).</item>
     </string-array>
     <string name="confirm">Confirm</string>
     <string name="comfort_brochure">When Someone You Love Dies</string>
@@ -73,6 +73,7 @@
 	<string name="no_time">Press MENU to record time for this month.</string>	
 	<string name="notes">Notes</string>
     <string name="ok">Cool!</string>
+    <string name="other">Other...</string>
     <string name="placement">Placement</string>
     <string name="require_brochure">What Does God Require of Us?</string>
     <string name="return_visit_success">You made a return visit on %s.</string>

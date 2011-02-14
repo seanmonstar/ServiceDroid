@@ -23,7 +23,7 @@
     	<item>Os dados são salvos numa Conta Google ou no Cartão de Memória.</item>
     	<item>As revisitas agora aparecem em conjunto com os locais de visita, e são editáveis.</item>
     	<item>Ao deslizar para esquerda ou direita na vista do Tempo irá mudar o mês apresentado.</item>
-    	<item>Traduzido para Espanhol, Português, e Alemão (agradecimentos a Dunnia Lempert, Ruben Reis, e Manuel Haas).</item>
+    	<item>Traduzido para Espanhol, Português, Alemão, Francês, e Dinamarquês (agradecimentos a Dunnia Lempert, Ruben Reis, Manuel Haas, David V., e Flemming Jacobsen).</item>
     </string-array>
     <string name="confirm">Confirmar</string>
     <string name="comfort_brochure">Quando Morre Alguém Que Amamos</string>
@@ -32,6 +32,7 @@
     <string name="delete_call">Apagar Visita</string>
     <string name="delete_placement">Remover Colocação</string>
     <string name="delete_time">Apagar Tempo</string>
+    <string name="delete_rv">Apagar Revisita</string>
     <string name="directions">Locais</string>
     <string name="edit">Editar</string>
     <string name="enjoy_servicedroid">Gostou do ServiçoDroid?</string>
@@ -71,6 +72,7 @@
 	<string name="no_time">Clique no MENU para adicionar tempo a este mês.</string>	
 	<string name="notes">Notas</string>
     <string name="ok">Boa!</string>
+    <string name="other">Outros...</string>
     <string name="placement">Colocação</string>
     <string name="require_brochure">O Que Deus Requer de Nós?</string>
     <string name="return_visit_success">Voçê fez uma revisita a %s.</string>

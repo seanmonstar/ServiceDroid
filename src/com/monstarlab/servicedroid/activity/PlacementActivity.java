@@ -410,7 +410,9 @@ public class PlacementActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				String item = parent.getItemAtPosition(pos).toString();
-				if(item.equals("Other...")) {
+				int length = parent.getAdapter().getCount();
+				if(pos == length - 1) {
+					// Last item is "Other..."
 					showDialog(DIALOG_CREATE_ID);
 				} else {
 					mBook = item;
@@ -447,7 +449,7 @@ public class PlacementActivity extends Activity {
 					index++;
 				}
 			}
-			publications[index] = "Other...";
+			publications[index] = getString(R.string.other);
 			c.close();
 			c = null;
 			

@@ -628,13 +628,13 @@ public class ServiceProvider extends ContentProvider {
 	}
 	
 	protected void restore() {
-		if (!sUseManager) {
-			Context ctx = getContext();
-			Intent i = new Intent(BackupService.ACTION_RESTORE, null, ctx, BackupService.class);
-			ctx.startService(i);
-		} else {
-			//BackupAgent will do its thing
-		}
+		
+		Context ctx = getContext();
+		Intent i = new Intent(BackupService.ACTION_RESTORE, null, ctx, BackupService.class);
+		ctx.startService(i);
+		
+		//BackupAgent will do its thing
+		//but also check SD card for people upgrading to Android 2.2+
 	}
 
 }

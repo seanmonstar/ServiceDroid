@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_call">Tilføj genbesøg</string>
+    <string name="add_time">Tilføj tid</string>
+    <string name="address">Adresse</string>
+    <string name="anon_placement">Uformelle besøg</string>
+    <string name="app_name">ServiceDroid</string>
+    <string name="awake">Vågn op!</string>
+    <string name="bible">Bibel</string>
+    <string name="bible_studies">Bibelstudier</string>
+    <string name="bible_study">Bibelstudium</string>
+    <string name="bible_study_prompt">Ønsker du at markere studiet som ophørt, eller helt at slette det?</string>
+	<string name="bible_study_prompt_delete">Slette</string>
+	<string name="bible_study_prompt_finish">Ophørt</string>
+	<string name="bible_teach">Hvad er det Bibelen virkelig lærer?</string>
+    <string name="book">Bog</string>
+	<string name="books">Bøger</string>
+	<string name="brochure">Brochure</string>
+	<string name="brochures">Brochurer</string>
+    <string name="callbook">Besøg</string>
+    <string name="cancel">Fortryd</string>
+    <string-array name="changelog">
+    	<item>Der foretages backup af data til enten din Google-konto eller til SD-kort</item>
+    	<item>Genbesøg vises nu sammen med afsat litteratur og kan redigeres.</item>
+    	<item>Når du kører fingeren til højre og venstre i fanebladet Tid, vises de enkelte måneder separat.</item>
+    	<item>Oversat til spansk, portugisisk, tysk, fransk og dansk (Tak til Dunnia Lempert, Ruben Reis, Manuel Haas, David V. og Flemming Jacobsen).</item>
+    </string-array>
+    <string name="confirm">Bekræft</string>
+    <string name="comfort_brochure">Når man mister en han holder af</string>
+    <string name="create_placement">Afsat litteratur</string>
+    <string name="date">Dato</string>
+    <string name="delete_call">Slet besøg</string>
+    <string name="delete_placement">Slet afsat litteratur</string>
+    <string name="delete_rv">Slet besøg</string>
+    <string name="delete_time">Slet tid</string>
+    <string name="directions">Vis vej</string>
+    <string name="edit">Rediger</string>
+    <string name="email_hint">Du kan sende en mail med din rapport ved at trykke på telefonens MENU tast.</string>
+    <string name="enjoy_servicedroid">Synes du om ServiceDroid?</string>
+    <string name="give_review"><![CDATA[Giv gerne en positiv <a href=\"market://details?id=com.monstarlab.servicedroid\">anmeldelse</a>.]]></string>
+    <string name="hours">Timer</string>
+	<string name="hr">t</string>
+	<string name="hrs">t</string>
+	<string name="is_bible_study">%s er blevet et bibelstudium.</string>
+	<string name="isnt_bible_study">%s er ikke længere et bibelstudium..</string>
+	<string name="issue">Udgave</string>
+	<string name="last_visited">Sidst besøgt d. %s</string>
+	<string name="length">Tid i tjenesten</string>
+	<string name="magazine">Blad</string>
+	<string name="magazines">Blade</string>
+	<string name="make_return">Besøgt igen</string>
+	<string name="min">min</string>
+	<string name="mins">min</string>
+	<string name="month">Måned</string>
+	<string name="monthly">Månedligt</string>
+	<string-array name="months_array">
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>Marts</item>
+        <item>April</item>
+        <item>Maj</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+	<string name="name">Navn</string>
+	<string name="no_calls">Tryk MENU for at oprette et nyt genbesøg.</string>
+	<string name="no_placements">Tryk MENU for at markere afsætning af litteratur.</string>
+	<string name="no_time">Tryk MENU for at registrere tid for denne måned.</string>	
+	<string name="notes">Noter</string>
+    <string name="ok">Cool!</string>
+    <string name="other">Andet...</string>
+    <string name="placement">Afsæt</string>
+    <string name="require_brochure">Hvad kræver Gud af os?</string>
+    <string name="return_visit_success">Du har foretaget et genbesøg d. %s.</string>
+    <string name="round_time_prompt">Vil du runde din tid op, eller overføre overskydende minutter til næste måned?</string>
+	<string name="round_time_prompt_carry">Overfør overskydende</string>
+	<string name="round_time_prompt_round">Rund op</string>
+    <string name="rv">Genbesøg</string>
+    <string name="rvs">Genbesøg</string>
+    <string name="send">Send</string>
+	<string name="send_by">Sendt af...</string>
+	<string name="send_reminder">Send din tjenesterapport</string>
+	<string name="service_year">Tjenesteår</string>
+	<string name="service_time_for">Tjenestetid for %s</string>
+    <string name="sort">Sorter</string>
+    <string name="start_time">Start tid</string>
+    <string name="stats">Rapport</string>
+    <string name="stop_time">Stop tid</string>
+    <string name="time">Tid</string>
+    <string name="time_due">Din tid er overskredet</string>
+	<string name="time_in_service">Tid i tjenesten: %s</string>
+	<string name="timer_active">Tjeneste-Timer Aktiv</string>
+    <string name="tips">Tips</string>
+    <string name="watchtower">Vagttårnet</string>
+    <string name="whats_new">Hvad er nyt!</string>
+	<string name="year">År</string>
+</resources>

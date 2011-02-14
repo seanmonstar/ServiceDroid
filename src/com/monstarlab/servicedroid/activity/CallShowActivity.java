@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -106,7 +107,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		mAddressText = (TextView) findViewById(R.id.address);
 		mLastVisitText = (TextView) findViewById(R.id.lastVisit);
 		mNotesText = (TextView) findViewById(R.id.notes);
-		
+		mNotesText.setMovementMethod(ScrollingMovementMethod.getInstance());
 
 		
 		mListView = (ListView) findViewById(R.id.placements_list);
@@ -294,7 +295,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 
         default:
         	menu.add(0, MENU_EDIT, 1, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
-            menu.add(0, MENU_RETURN, 3, "Return").setIcon(android.R.drawable.ic_menu_myplaces);
+            menu.add(0, MENU_RETURN, 3, R.string.make_return).setIcon(android.R.drawable.ic_menu_myplaces);
             menu.add(0, MENU_DIRECTIONS, 4, R.string.directions).setIcon(android.R.drawable.ic_menu_directions);
             //falls through
             

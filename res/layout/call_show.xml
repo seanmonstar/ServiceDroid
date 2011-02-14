@@ -29,10 +29,10 @@
             android:layout_alignWithParentIfMissing="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/date"
+            android:layout_toLeftOf="@+id/address"
             android:layout_marginBottom="1dip"
             android:singleLine="true"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
             android:gravity="center_vertical|left"
             android:textAppearance="?android:attr/textAppearanceLarge"
         />
@@ -45,7 +45,10 @@
             android:layout_below="@id/call_header"
             android:text="notes"
             android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:maxLines="4"
             android:padding="10dip"
+            android:textColor="@android:color/secondary_text_dark_nodisable"
         />
         
     <CheckBox android:id="@+id/is_bible_study"

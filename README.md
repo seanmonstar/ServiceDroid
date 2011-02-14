@@ -11,7 +11,7 @@ _Version 1.3_
 * Back up your data to your Google account
 * Edit Return Visit details
 * Change the month of the Time view
-* Translate values into Spanish
+* Translated into Spanish, Portuguese, German, French, and Danish (thanks to Dunnia Lempert, Ruben Reis, Manuel Haas, David V., and Flemming Jacobsen).
 
 _Version 1.2_
 

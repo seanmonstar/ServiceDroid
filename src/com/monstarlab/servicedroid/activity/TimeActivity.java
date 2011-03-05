@@ -295,6 +295,15 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 			mTiming = true;
 			Intent i = new Intent(this, TimerService.class);
 			startService(i);
+			
+			//remove any extras
+			if(c.getCount() > 1) {
+				c.moveToFirst();
+				c.moveToNext();
+				while(!c.isAfterLast()) {
+					getContentResolver().delete(ContentUris.withAppendedId(getIntent().getData(), c.getInt(0)), null, null);
+				}
+			}
 		}
 		c.close();
 	}

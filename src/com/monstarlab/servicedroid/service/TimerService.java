@@ -140,6 +140,10 @@ public class TimerService extends Service {
 			values.put(TimeEntries.LENGTH, mRunTime);
 			//values.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
 			getContentResolver().update(ContentUris.withAppendedId(TimeEntries.CONTENT_URI, mEntryID), values, null, null);
+		} else {
+			
+			// be sure to delete the entry so timer doesn't start back up later
+			getContentResolver().delete(ContentUris.withAppendedId(TimeEntries.CONTENT_URI, mEntryID), null, null);
 		}
 		
 	}

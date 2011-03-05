@@ -43,7 +43,7 @@
 	<string name="hrs">hrs</string>
 	<string name="is_bible_study">%s es ahora un estudio bíblico.</string>
 	<string name="isnt_bible_study">%s ya no es un estudio bíblico.</string>
-	<string name="issue">numero</string>
+	<string name="issue">Numero</string>
 	<string name="last_visited">Ultima Visita: %s</string>
 	<string name="length">Tiempo en el servicio</string>
 	<string name="magazine">Revista</string>

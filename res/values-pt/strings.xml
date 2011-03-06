@@ -35,6 +35,7 @@
     <string name="delete_rv">Apagar Revisita</string>
     <string name="directions">Locais</string>
     <string name="edit">Editar</string>
+	<string name="email_hint">Você pode enviar por e-mail os dados de serviço por clicar no botão MENU (do telefone).</string>
     <string name="enjoy_servicedroid">Gostou do ServiçoDroid?</string>
     <string name="give_review"><![CDATA[Considere em dar uma boa <a href=\"market://details?id=com.monstarlab.servicedroid\">opinião</a>.]]></string>
     <string name="hours">Horas</string>

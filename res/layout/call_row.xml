@@ -13,6 +13,7 @@
             android:layout_marginRight="5dip"
             android:padding="7dip"
             android:gravity="center_vertical|right"
+            android:maxWidth="140dip"
             android:layout_alignParentRight="true"
         />
 

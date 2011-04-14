@@ -190,6 +190,7 @@ public class TimeEditActivity extends Activity {
 	}
 	
 	private String getDate() {
+		mDateText.clearFocus();
 		return new StringBuilder()
 			.append(mDateText.getYear())
 			.append("-")
@@ -200,6 +201,7 @@ public class TimeEditActivity extends Activity {
 	}
 	
 	private int getTime() {
+		mLengthText.clearFocus();
 		int hours = mLengthText.getCurrentHour();
 		int mins = mLengthText.getCurrentMinute();
 		return TimeUtil.toTimeInt(hours, mins);

@@ -83,7 +83,7 @@ public class PlacementActivity extends Activity {
 		if (Intent.ACTION_EDIT.equals(action)) {
 			mState = STATE_EDIT;
 			mUri = intent.getData();
-			retrievePlacementDetails(mUri); //TODO - this is way freaking messy...
+			retrievePlacementDetails(mUri);
 			
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
@@ -167,8 +167,9 @@ public class PlacementActivity extends Activity {
 				if(mPlacementType == Literature.TYPE_MAGAZINE) {
 					//set magazine, month, and year
 					String publication = c.getString(2);
-					mMagazine = publication.substring(0, publication.indexOf(" "));
-					mMonth =  Integer.parseInt(publication.substring(publication.indexOf(" ")+1, publication.indexOf("/")));
+					int lastSpaceIndex = publication.lastIndexOf(" ");
+					mMagazine = publication.substring(0, lastSpaceIndex);
+					mMonth =  Integer.parseInt(publication.substring(lastSpaceIndex+1, publication.indexOf("/")));
 					mYear = Integer.parseInt(publication.substring(publication.indexOf("/")+1));
 				} else {
 					//set book
@@ -250,7 +251,14 @@ public class PlacementActivity extends Activity {
 				//save the current changes to the Provider
 				ContentValues values = new ContentValues();
 				values.put(Placements.LITERATURE_ID, publication);
+				
+				//TODO: Combo must either save 2 placements, or somehow be able to count as 2 in stats
+				
 				getContentResolver().update(mUri, values, null, null);
+				
+				Intent i = getIntent();
+			 	i.setAction(Intent.ACTION_EDIT);
+			 	i.setData(mUri);
 			}
 		}
 	}
@@ -293,7 +301,7 @@ public class PlacementActivity extends Activity {
 	}
 	
 	private Dialog makeDateDialog() {
-		return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() { //TODO - dont make a new listener each time...
+		return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 			
 			@Override
 			public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -346,9 +354,10 @@ public class PlacementActivity extends Activity {
 		
 		final String watchtower = getString(R.string.watchtower);
 		final String awake = getString(R.string.awake);
+		final String combo = getString(R.string.combo);
 		
 		mPublicationSpinner = (Spinner) findViewById(R.id.magazine);
-		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, new String[] { watchtower, awake });
+		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, new String[] { watchtower, awake, combo });
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    mPublicationSpinner.setAdapter(adapter);
 	    

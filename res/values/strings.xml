@@ -27,6 +27,7 @@
     	<item>Swiping left and right on the Time view will change the month displayed.</item>
     	<item>Translated into Spanish, Portuguese, German, French, and Danish (thanks to Dunnia Lempert, Ruben Reis, Manuel Haas, David V., and Flemming Jacobsen).</item>
     </string-array>
+    <string name="combo">WT &amp; Awake</string>
     <string name="confirm">Save</string>
     <string name="comfort_brochure">When Someone You Love Dies</string>
     <string name="create_placement">Create Placement</string>

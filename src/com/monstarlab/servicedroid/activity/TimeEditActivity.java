@@ -171,6 +171,12 @@ public class TimeEditActivity extends Activity {
 				values.put(TimeEntries.DATE, date);
 				
 				getContentResolver().update(mUri, values, null, null);
+				
+				// set data on Intent in case the orientation has changed
+				// https://github.com/seanmonstar/ServiceDroid/issues/issue/58
+				Intent i = getIntent();
+				i.setAction(Intent.ACTION_EDIT);
+				i.setData(mUri);
 			}
 		}
 	}

@@ -8,9 +8,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 public class ReminderService extends Service {
 	
+	private static final String TAG = "ReminderService";
 	
 	/*@Override
 	public void onStart(Intent intent, int startId) {
@@ -24,7 +26,7 @@ public class ReminderService extends Service {
 	@Override
 	public void onCreate() {
 		scheduleReminderNotification();
-		
+		stopSelf();
 	}
 	
 	private void scheduleReminderNotification() {
@@ -36,9 +38,9 @@ public class ReminderService extends Service {
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 		
-		//first day of the month, around noonish
+		//first day of the month, around 5pm
 		long time = getFirstDayOfMonth();
-		
+
 		am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
 	}
 	
@@ -46,9 +48,17 @@ public class ReminderService extends Service {
 		long time = 0L;
 		
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.DATE, 1); //beginning of month
-		c.add(Calendar.MONTH, 1); //next month
-		c.set(Calendar.HOUR_OF_DAY, 12); //at 12 noon?
+		
+		
+		if ((c.get(Calendar.DATE) == 1) && (c.get(Calendar.HOUR_OF_DAY) < 17)) {
+			//if its the 1st, schedule for today
+		} else {
+			//else schedule for next month
+			c.add(Calendar.MONTH, 1); //next month
+			c.set(Calendar.DATE, 1); //beginning of month
+		}
+		
+		c.set(Calendar.HOUR_OF_DAY, 17); //at 5pm
 		c.set(Calendar.MINUTE, 0);
 		
 		time = c.getTimeInMillis();

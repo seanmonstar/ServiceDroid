@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_call">Додати відвідину</string>
+    <string name="add_time">Додати час</string>
+    <string name="address">Адреса</string>
+    <string name="anon_placement">Анонімне розповсюдження</string>
+    <string name="app_name">ServiceDroid</string>
+    <string name="awake">"Пробудись!"</string>
+    <string name="bible">Біблія</string>
+    <string name="bible_studies">Біблійні вивчення</string>
+    <string name="bible_study">Біблійне вивчення</string>
+    <string name="bible_study_prompt">Чи дійсно слід заздачити як закінчене і стерти усе інфо про це вивчення?</string>
+	<string name="bible_study_prompt_delete">Стерти</string>
+	<string name="bible_study_prompt_finish">Закінчено</string>
+	<string name="bible_teach">Чого насправді вчить Біблія?</string>
+    <string name="book">Книжка</string>
+	<string name="books">Книжки</string>
+	<string name="brochure">Брошура</string>
+	<string name="brochures">Брошури</string>
+    <string name="callbook">Відвідини</string>
+    <string name="cancel">Скасувати</string>
+    <string-array name="changelog">
+    	<item>Дані застраховано або на вашому акаунті Google, або ж на SD картці.</item>
+    	<item>Тепер повторні відвідини видно разом з розповсюдженнями рітератури, і їх можна редарувати.</item>
+    	<item>Рух пальцем по екрану праворуч чи ліворуч на закладці "Час" перемикатиме місяць.</item>
+    	<item>Перекладено на іспанську, португальську, німецьку, французьку, дацьку та українську(завдяки Dunnia Lempert, Ruben Reis, Manuel Haas, David V., Flemming Jacobsen та Геннадію Самолюку).</item>
+    </string-array>
+    <string name="confirm">Підтвердити</string>
+    <string name="comfort_brochure">Коли помирає той, кого ви любите</string>
+    <string name="create_placement">Створити розповсюдження</string>
+    <string name="date">Дата</string>
+    <string name="delete_call">Стерти відвідину</string>
+    <string name="delete_placement">Стерти розповсюдження</string>
+    <string name="delete_rv">Стерти повторну відвідину</string>
+    <string name="delete_time">Стерти час</string>
+    <string name="directions">Керунки</string>
+    <string name="edit">Редагувати</string>
+    <string name="email_hint">Свій звіт про служіння можна відіслати електронною поштою, натиснувши кнопку меню телефона.</string>
+    <string name="enjoy_servicedroid">Задоволені програмою ServiceDroid?</string>
+    <string name="give_review"><![CDATA[Consider giving a nice <a href=\"market://details?id=com.monstarlab.servicedroid\">review</a>.]]></string>
+    <string name="hours">Години</string>
+	<string name="hr">гд.</string>
+	<string name="hrs">гд.</string>
+	<string name="is_bible_study">% вважається біблійним вивченням.</string>
+	<string name="isnt_bible_study">% більше не вважається біблійним вивченням.</string>
+	<string name="issue">Номер</string>
+	<string name="last_visited">Востаннє відвідувалось: %</string>
+	<string name="length">Час у служінні</string>
+	<string name="magazine">Журнал</string>
+	<string name="magazines">жр.</string>
+	<string name="make_return">Відвідати</string>
+	<string name="min">хв.</string>
+	<string name="mins">хв.</string>
+	<string name="month">Місяць</string>
+	<string name="monthly">Щомісячно</string>
+	<string-array name="months_array">
+        <item>січень</item>
+        <item>лютий</item>
+        <item>березень</item>
+        <item>квітень</item>
+        <item>травень</item>
+        <item>червень</item>
+        <item>липень</item>
+        <item>серпень</item>
+        <item>вересень</item>
+        <item>жовтень</item>
+        <item>листопад</item>
+        <item>грудень</item>
+    </string-array>
+	<string name="name">Ім'я</string>
+	<string name="no_calls">Аби записати нову відвідину, слід натиснути кнопку МЕНЮ.</string>
+	<string name="no_placements">Аби записати нове розповсюдження, слід натиснути кнопку МЕНЮ.</string>
+	<string name="no_time">Аби записати час служіння, слід натиснути кнопку МЕНЮ.</string>	
+	<string name="notes">Нотатки</string>
+    <string name="ok">Круто!</string>
+    <string name="other">Інше...</string>
+    <string name="placement">Розповсюдження</string>
+    <string name="require_brochure">Чого Бог вимагає від нас?</string>
+    <string name="return_visit_success">Ти зробив повторну відвідину до %.</string>
+    <string name="round_time_prompt">Чи слід закруглити час служіння, чи перенести зайвий час до наступного місяця?</string>
+	<string name="round_time_prompt_carry">Перенести</string>
+	<string name="round_time_prompt_round">Закруглити</string>
+    <string name="rv">Повторна відвідина</string>
+    <string name="rvs">Повторні відвідини</string>
+    <string name="send">Вислати</string>
+	<string name="send_by">Вислати від...</string>
+	<string name="send_reminder">Send in your Service Time</string>
+	<string name="service_year">Службовий рік</string>
+	<string name="service_time_for">Час служіння на %</string>
+    <string name="sort">Сортувати</string>
+    <string name="start_time">Початок</string>
+    <string name="stats">Початки</string>
+    <string name="stop_time">Зупитини час</string>
+    <string name="time">Час</string>
+    <string name="time_due">Все вкладено в час!</string>
+	<string name="time_in_service">Час в служінні: %</string>
+	<string name="timer_active">Ведеться облік часу в служінні</string>
+    <string name="tips">Поради</string>
+    <string name="watchtower">"Вартова башта"</string>
+    <string name="whats_new">Що нового!</string>
+	<string name="year">Рік</string>
+</resources>

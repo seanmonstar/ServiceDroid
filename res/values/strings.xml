@@ -49,6 +49,7 @@
 	<string name="magazine">Magazine</string>
 	<string name="magazines">Mags</string>
 	<string name="make_return">Returned On</string>
+	<string name="menu_sms">SMS</string>
 	<string name="min">min</string>
 	<string name="mins">mins</string>
 	<string name="month">Month</string>
@@ -82,7 +83,7 @@
 	<string name="round_time_prompt_round">Round Up</string>
     <string name="rv">Return Visit</string>
     <string name="rvs">Return Visits</string>
-    <string name="send">Send</string>
+    <string name="send">Email</string>
 	<string name="send_by">Send by...</string>
 	<string name="send_reminder">Send in your Service Time</string>
 	<string name="service_year">Service Year</string>

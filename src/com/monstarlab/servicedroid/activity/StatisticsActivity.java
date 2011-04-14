@@ -30,6 +30,8 @@ import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.util.TimeUtil;
 import com.monstarlab.servicedroid.R;
 
+
+
 public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	private static final String TAG = "StatisticsActivity";
@@ -37,6 +39,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private static final int MENU_MONTH = Menu.FIRST;
 	private static final int MENU_YEAR = Menu.FIRST + 1;
 	private static final int MENU_EMAIL = Menu.FIRST + 2;
+	private static final int MENU_SMS = Menu.FIRST + 3;
 	
 	//private TimeUtil mTimeHelper;
 	
@@ -311,7 +314,8 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);		
-		menu.add(0, MENU_EMAIL, 2, R.string.send).setIcon(android.R.drawable.ic_menu_send);
+		menu.add(0, MENU_EMAIL, 1, R.string.send).setIcon(android.R.drawable.ic_menu_send);
+		menu.add(0, MENU_SMS, 2, R.string.menu_sms).setIcon(android.R.drawable.ic_menu_upload);
 		return result;
     }
 	
@@ -324,22 +328,25 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		if(mTimeSpan == MENU_MONTH) {
 			menu.removeItem(MENU_MONTH);
 			if(menu.findItem(MENU_YEAR) == null) {
-				menu.add(0, MENU_YEAR, 1, R.string.service_year).setIcon(android.R.drawable.ic_menu_my_calendar);
+				menu.add(0, MENU_YEAR, 3, R.string.service_year).setIcon(android.R.drawable.ic_menu_my_calendar);
 			}
 		} else {
 			menu.removeItem(MENU_YEAR);
 			if(menu.findItem(MENU_MONTH) == null) {
-				menu.add(0, MENU_MONTH, 1, R.string.monthly).setIcon(android.R.drawable.ic_menu_month);
+				menu.add(0, MENU_MONTH, 3, R.string.monthly).setIcon(android.R.drawable.ic_menu_month);
 			}
 		}
 		
 		return result;
 	}
 
+	  
+ 
 
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {		
+		
 		switch(item.getItemId()) {
 		
 		case MENU_MONTH:
@@ -352,13 +359,15 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		case MENU_EMAIL:
 			setupSendEmail();
 			break;
-			
+		
+		case MENU_SMS:
+			setupSendSMS();
+			break;	
 		}
+		
 		
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -483,6 +492,25 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		startActivity(Intent.createChooser(i, getString(R.string.send_by)));
 	}
 	
+	protected void setupSendSMS() {
+		if(shouldRoundTime()) {
+			//offer to round or carry over
+			showDialog(DIALOG_ROUND_ID);
+		} else {
+			sendEmail();
+		}
+	}
+	
+	protected void sendSMS() {
+		String smsNumber = "";
+		String smsText = getStatsTextForTimePeriod();
+		
+		Uri uri = Uri.parse("smsto:" + smsNumber); 
+		Intent intent = new Intent(Intent.ACTION_SENDTO, uri); 
+		intent.putExtra("sms_body", smsText);   
+		startActivity(intent);
+	}
+	
 	protected boolean shouldRoundTime() {
 		int seconds = getHoursSum();
 		int hours = TimeUtil.getHours(seconds);
@@ -490,7 +518,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		//make sure Hours greater than 1. don't want to bother someone if they're submitting under an hour
 		//since the Society points out that infirm publishers can still report as small as 15 minutes.
-		//asking them to round or carry over every time woudl be discouraging...
+		//asking them to round or carry over every time would be discouraging...
 		if(minutes > 0 && hours > 1) {
 			return true;
 		}

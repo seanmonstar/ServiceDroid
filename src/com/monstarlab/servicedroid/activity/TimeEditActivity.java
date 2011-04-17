@@ -4,8 +4,14 @@ import java.text.ParseException;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,12 +38,17 @@ public class TimeEditActivity extends Activity {
 	
 	private static final int MENU_DELETE = Menu.FIRST;
 	
+	private static final int DIALOG_DATE = 0;
+	private static final int DIALOG_LENGTH = 1;
+	
 	private boolean mIsCancelled;
 	
-	private DatePicker mDateText;
-	private TimePicker mLengthText;
+	private Button mDateBtn;
+	private Button mLengthBtn;
 	private EditText mNoteText;
-	//private Long mRowId;
+
+	private int mLength;
+	private String mDate;
 	
 	private TimeUtil mTimeHelper;
 	private int mState;
@@ -84,9 +95,29 @@ public class TimeEditActivity extends Activity {
 		
 		mTimeHelper = new TimeUtil(this);
 		
-		mDateText = (DatePicker) findViewById(R.id.date);
-		mLengthText = (TimePicker) findViewById(R.id.length);
-		mLengthText.setIs24HourView(true);
+		mDateBtn = (Button) findViewById(R.id.date);
+		mDateBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				showDialog(DIALOG_DATE);
+			}
+			
+		});
+		
+		mLengthBtn = (Button) findViewById(R.id.length);
+		mLengthBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				showDialog(DIALOG_LENGTH);
+			}
+			
+		});
+		
+		//mLengthText.setIs24HourView(true);
 		mNoteText = (EditText) findViewById(R.id.notes);
 
 		Button confirmButton = (Button) findViewById(R.id.confirm);
@@ -128,34 +159,14 @@ public class TimeEditActivity extends Activity {
 			String date = mCursor.getString(DATE_COLUMN);
 			String note = mCursor.getString(NOTE_COLUMN);
 			
-			if(length != null) {
-				mLengthText.setCurrentHour(TimeUtil.getHours(length));
-				mLengthText.setCurrentMinute(TimeUtil.getMins(length));
-			} else {
-				mLengthText.setCurrentHour(0);
-				mLengthText.setCurrentMinute(0);
-			}
+			setDate(date);
+			setLength(length);
 			
-			if(date != null) {
-				int year, month, day;
-				try {
-					Date d = mTimeHelper.parseDateText(date);
-					year = d.getYear() + 1900;
-					month = d.getMonth();
-					day = d.getDate();
-				} catch (ParseException e) {
-					e.printStackTrace();
-					year = TimeUtil.getCurrentYear();
-					month = TimeUtil.getCurrentMonth() - 1;
-					day = TimeUtil.getCurrentDay();
-				}
-				mDateText.updateDate(year, month, day);
-			}
 			
 			mNoteText.setText(note);
 		} else {
-			mLengthText.setCurrentHour(0);
-			mLengthText.setCurrentMinute(0);
+			setDate(TimeUtil.getCurrentTimeSQLText());
+			setLength(0);
 		}
 	}
 	
@@ -171,12 +182,13 @@ public class TimeEditActivity extends Activity {
 			String date = getDate();
 			String note = getNote();
 			
+			boolean finished = isFinishing();
 			
-			if(isFinishing() && (length == 0)) {
+			if(finished && (length == 0)) {
 				//when finishing, if no time was spent, just ditch the time period. its useless anyways
 				setResult(RESULT_CANCELED);
 				deleteEntry();
-			} else if(isFinishing() && mIsCancelled) {
+			} else if(finished && mIsCancelled) {
 				// if the cancel button was pressed, don't delete, but don't save either.
 				setResult(RESULT_CANCELED);
 			
@@ -211,8 +223,7 @@ public class TimeEditActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_DELETE:
-			mLengthText.setCurrentHour(0);
-			mLengthText.setCurrentMinute(0);
+			setLength(0);
 			finish();
 			break;
 		}
@@ -220,6 +231,72 @@ public class TimeEditActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog;
+		switch(id) {
+	    case DIALOG_DATE:
+	    	dialog = makeDateDialog();
+	        break;
+	    case DIALOG_LENGTH:
+	    	dialog = makeLengthDialog();
+	    	break;
+	    default:
+	        dialog = null;
+	    }
+		return dialog;
+	}
+
+	private Dialog makeLengthDialog() {
+		int hrs = 0, mins = 0;
+		if (mLength > 0) {
+			hrs = TimeUtil.getHours(mLength);
+			mins = TimeUtil.getMins(mLength);
+		}
+		
+		final Resources r = getResources();
+		
+		return new TimeLengthPickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+			
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				setLength(TimeUtil.toTimeInt(hourOfDay, minute));
+			}
+			
+		}, hrs, mins, r);
+	}
+
+	private Dialog makeDateDialog() {
+		int year = 0, month = 0, day = 0;
+		if(mDate != null) {
+			
+			try {
+				Date d = mTimeHelper.parseDateText(mDate);
+				year = d.getYear() + 1900;
+				month = d.getMonth();
+				day = d.getDate();
+			} catch (ParseException e) {
+				// oh well, default to today
+			}
+		}
+		
+		if (year == 0) {
+			year = TimeUtil.getCurrentYear();
+			month = TimeUtil.getCurrentMonth() - 1;
+			day = TimeUtil.getCurrentDay();
+		}
+		
+		return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+			
+			@Override
+			public void onDateSet(DatePicker view, int y, int m, int d) {
+				String date = y + "-" + pad(m) + "-" + d;
+				setDate(date);
+			}
+
+		}, year, month, day);
+	}
+
 	private void deleteEntry() {
 		if(mCursor != null) {
 			mCursor.close();
@@ -228,22 +305,26 @@ public class TimeEditActivity extends Activity {
 		}
 	}
 	
+	private void setDate(String date) {
+		mDate = date;
+		mDateBtn.setText(date);
+	}
+	
+	private void setLength(int length) {
+		mLength = length;
+		mLengthBtn.setText(TimeUtil.toTimeString(length, getResources()));
+	}
+	
 	private String getDate() {
-		mDateText.clearFocus();
-		return new StringBuilder()
-			.append(mDateText.getYear())
-			.append("-")
-			.append(pad(mDateText.getMonth() + 1))
-			.append("-")
-			.append(pad(mDateText.getDayOfMonth()))
-			.toString();
+		return mDate;
 	}
 	
 	private int getTime() {
-		mLengthText.clearFocus();
+		/*mLengthText.clearFocus();
 		int hours = mLengthText.getCurrentHour();
 		int mins = mLengthText.getCurrentMinute();
-		return TimeUtil.toTimeInt(hours, mins);
+		return TimeUtil.toTimeInt(hours, mins);*/
+		return mLength;
 	}
 	
 	private String getNote() {
@@ -258,5 +339,30 @@ public class TimeEditActivity extends Activity {
 	}
 	
 	
+	class TimeLengthPickerDialog extends TimePickerDialog {
+
+		private Resources mResources;
+		
+		public TimeLengthPickerDialog(Context context, OnTimeSetListener callBack, int hourOfDay, int minute, boolean is24HourView) {
+			super(context, callBack, hourOfDay, minute, is24HourView);
+		}
+		
+		public TimeLengthPickerDialog(Context context, OnTimeSetListener callBack, int hourOfDay, int minute, Resources r) {
+			this(context, callBack, hourOfDay, minute, true);
+			mResources = r;
+			updateTitle(hourOfDay, minute);
+		}
+		
+		@Override
+		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+			updateTitle(hourOfDay, minute);
+		}
+		
+		private void updateTitle(int h, int m) {
+			this.setTitle(TimeUtil.toTimeString(TimeUtil.toTimeInt(h, m), mResources));
+		}
+			
+		
+	}
 
 }

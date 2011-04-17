@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="wrap_content">
-
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="@string/date"
-		android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	<DatePicker android:id="@+id/date" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:layout_gravity="center_horizontal"/>
-
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="@string/length"
-		android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	<TimePicker android:id="@+id/length" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:layout_gravity="center_horizontal"/>
-	
-	<EditText android:id="@+id/notes"  
-		android:hint="@string/notes"
+	android:layout_height="fill_parent">
+	<ScrollView
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" 
-		android:inputType="text|textAutoCorrect" />
+		android:layout_height="1dip"
+		android:layout_weight="1"
+		android:fillViewport="true">
+		<LinearLayout android:orientation="vertical" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<TextView android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:text="@string/date"
+				android:textAppearance="?android:attr/textAppearanceLarge" />
+			
+			<Button android:id="@+id/date" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal" />
+		
+			<TextView android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:text="@string/length"
+				android:textAppearance="?android:attr/textAppearanceLarge" />
+			
+			<Button android:id="@+id/length" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal" />
+		
+			<TextView android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:text="@string/notes"
+				android:textAppearance="?android:attr/textAppearanceLarge" />
+				
+			<EditText android:id="@+id/notes"  
+				android:hint="@string/notes"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:inputType="text|textAutoCorrect" />
+		</LinearLayout>
 	
-	<RelativeLayout android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:id="@+id/button_container">
-
-
-		<Button android:id="@+id/confirm" android:layout_height="wrap_content"
-			android:text="@string/confirm" android:layout_width="wrap_content"
-			android:layout_alignParentLeft="true" />
-
-
-		<Button android:id="@+id/cancel" android:layout_height="wrap_content"
-			android:text="@string/cancel" android:layout_width="wrap_content"
-			android:layout_alignParentRight="true" />
-	</RelativeLayout>
+	</ScrollView>
+	
+	<include android:id="@+id/button_container" 
+		layout="@layout/buttons" />
 
 </LinearLayout>

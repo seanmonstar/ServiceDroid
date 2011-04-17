@@ -51,7 +51,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
     
     private static final int SHOW_TIMER_NOTIFICATION = 1;
     
-    private static final String[] PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE };
+    private static final String[] PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE, TimeEntries.NOTE };
     
     private int mCurrentMonth = TimeUtil.getCurrentMonth();
     private int mCurrentYear = TimeUtil.getCurrentYear();
@@ -107,8 +107,8 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		 // Get this month's entries from the database and create the item list
 		mCursor = managedQuery(getIntent().getData(), PROJECTION, TimeEntries.LENGTH + " > 0 and " + TimeEntries.DATE + " between ? and ?", getTimePeriodArgs(mCurrentYear, mCurrentMonth), TimeEntries.DATE + " ASC");
 
-        String[] from = new String[] { TimeEntries.DATE, TimeEntries.LENGTH };
-        int[] to = new int[] { R.id.date, R.id.length };
+        String[] from = new String[] { TimeEntries.DATE, TimeEntries.LENGTH, TimeEntries.NOTE };
+        int[] to = new int[] { R.id.date, R.id.length, R.id.notes };
  
         // Now create an cursor adapter and set it to display using our row
         // overriding setViewText to format the Date string

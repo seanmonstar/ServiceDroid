@@ -30,6 +30,11 @@ public final class Models {
 		 * 	type: integer
 		 */
 		public static final String LENGTH = "length";
+		
+		/**
+		 * 	type: text
+		 */
+		public static final String NOTE = "note";
 	}
 	
 	public static final class Calls implements BaseColumns {

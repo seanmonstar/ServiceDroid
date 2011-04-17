@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.monstarlab.servicedroid.R;
@@ -35,6 +36,7 @@ public class TimeEditActivity extends Activity {
 	
 	private DatePicker mDateText;
 	private TimePicker mLengthText;
+	private EditText mNoteText;
 	//private Long mRowId;
 	
 	private TimeUtil mTimeHelper;
@@ -43,9 +45,10 @@ public class TimeEditActivity extends Activity {
 
 	private Cursor mCursor;
 	
-	private static final String[] PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE };
+	private static final String[] PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE, TimeEntries.NOTE };
 	private static final int LENGTH_COLUMN = 1;
 	private static final int DATE_COLUMN = 2;
+	private static final int NOTE_COLUMN = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,7 @@ public class TimeEditActivity extends Activity {
 		mDateText = (DatePicker) findViewById(R.id.date);
 		mLengthText = (TimePicker) findViewById(R.id.length);
 		mLengthText.setIs24HourView(true);
+		mNoteText = (EditText) findViewById(R.id.notes);
 
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 		confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +126,7 @@ public class TimeEditActivity extends Activity {
 			
 			Integer length = mCursor.getInt(LENGTH_COLUMN);
 			String date = mCursor.getString(DATE_COLUMN);
-			//mRowId = extras.getLong(TimeEntryAdapter.KEY_ID);
+			String note = mCursor.getString(NOTE_COLUMN);
 			
 			if(length != null) {
 				mLengthText.setCurrentHour(TimeUtil.getHours(length));
@@ -147,6 +151,8 @@ public class TimeEditActivity extends Activity {
 				}
 				mDateText.updateDate(year, month, day);
 			}
+			
+			mNoteText.setText(note);
 		} else {
 			mLengthText.setCurrentHour(0);
 			mLengthText.setCurrentMinute(0);
@@ -163,6 +169,7 @@ public class TimeEditActivity extends Activity {
 		if(mCursor != null) {
 			int length = getTime();
 			String date = getDate();
+			String note = getNote();
 			
 			
 			if(isFinishing() && (length == 0)) {
@@ -178,6 +185,7 @@ public class TimeEditActivity extends Activity {
 				ContentValues values = new ContentValues();
 				values.put(TimeEntries.LENGTH, length);
 				values.put(TimeEntries.DATE, date);
+				values.put(TimeEntries.NOTE, note);
 				
 				getContentResolver().update(mUri, values, null, null);
 				
@@ -236,6 +244,10 @@ public class TimeEditActivity extends Activity {
 		int hours = mLengthText.getCurrentHour();
 		int mins = mLengthText.getCurrentMinute();
 		return TimeUtil.toTimeInt(hours, mins);
+	}
+	
+	private String getNote() {
+		return mNoteText.getText().toString();
 	}
 	
 	private static String pad(int c) {

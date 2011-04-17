@@ -15,6 +15,19 @@
             android:gravity="center_vertical|right"
             android:layout_alignParentRight="true"
         />
+        
+        <TextView android:id="@+id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip"
+            android:padding="4dip"
+            android:maxWidth="150dip"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center_vertical|right"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/date"
+        />
 
 
         <TextView android:id="@+id/length"

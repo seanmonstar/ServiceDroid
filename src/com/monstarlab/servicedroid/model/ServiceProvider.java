@@ -32,7 +32,7 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servicedroid";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
@@ -94,6 +94,7 @@ public class ServiceProvider extends ContentProvider {
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
     	sTimeProjectionMap.put(TimeEntries.LENGTH, TimeEntries.LENGTH);
     	sTimeProjectionMap.put(TimeEntries.DATE, TimeEntries.DATE);
+    	sTimeProjectionMap.put(TimeEntries.NOTE, TimeEntries.NOTE);
     	
     	sCallProjectionMap = new HashMap<String, String>();
     	sCallProjectionMap.put(Calls._ID, CALLS_TABLE + "." + Calls._ID);
@@ -152,6 +153,7 @@ public class ServiceProvider extends ContentProvider {
 			db.execSQL("create table " + TIME_ENTRIES_TABLE + " (" 
 			    + TimeEntries._ID + " integer primary key autoincrement,"
 			    + TimeEntries.LENGTH + " integer,"
+			    + TimeEntries.NOTE + " text,"
 			    + TimeEntries.DATE + " date not null default current_timestamp);");
 			
 			db.execSQL("create table " +  CALLS_TABLE + " (" 
@@ -215,15 +217,20 @@ public class ServiceProvider extends ContentProvider {
 			Log.d(TAG, "Upgrading database from version " + oldVersion);
             
 			switch (oldVersion) {
-			//these fall through on purpose
+			
 			
 			case 1:
 				db.execSQL("alter table " + CALLS_TABLE + " add column " + Calls.TYPE + " integer default 1");
-				
 			case 2:
 				//remove dangling Bible Studies
 				db.execSQL("delete from " + BIBLE_STUDIES_TABLE + " where " + BibleStudies.CALL_ID + 
 						" not in (select " + Calls._ID + " from " + CALLS_TABLE + ")");
+				
+			case 3:
+				db.execSQL("alter table " + TIME_ENTRIES_TABLE + " add column " + TimeEntries.NOTE + " text");
+				
+				
+				//these fall through on purpose
 				break;
 				
 			default:

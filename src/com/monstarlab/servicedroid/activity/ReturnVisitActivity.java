@@ -137,13 +137,15 @@ public class ReturnVisitActivity extends Activity {
 		
 		if(mCursor != null) {
 			
-			//when finishing, if no publication was picked, just ditch the whole thing. its useless anyways
+			
 			if(isFinishing() &&  mIsCancelled) {
+				//they pressed the delete button, so DELETE!
 				setResult(RESULT_CANCELED);
 				deleteEntry();
 			
-			//save the current changes to the Provider
+			
 			} else {
+				//save the current changes to the Provider
 				ContentValues values = new ContentValues();
 				values.put(ReturnVisits.DATE, getDate());
 				getContentResolver().update(mUri, values, null, null);

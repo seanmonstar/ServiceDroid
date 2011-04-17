@@ -22,6 +22,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,10 +34,12 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class PlacementActivity extends Activity {
-
+	private static final String TAG = "PlacementActivity";
+	
 	private static final int STATE_INSERT = 0;
 	private static final int STATE_EDIT = 1;
-	private static final String TAG = "PlacementActivity";
+
+	private static final int MENU_DELETE = Menu.FIRST;
 	
 	private static final String[] PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.TITLE, Literature.PUBLICATION, Literature.TYPE };
@@ -234,18 +238,42 @@ public class PlacementActivity extends Activity {
 			
 			
 			
-			//when finishing, if no publication was picked, just ditch the whole thing. its useless anyways
-			if(isFinishing() && (publication == 0 || mIsCancelled)) {
+			if(isFinishing() && (publication == 0)) {
+				//when finishing, if no publication was picked, just ditch the whole thing. its useless anyways
 				setResult(RESULT_CANCELED);
 				deleteEntry();
 			
-			//save the current changes to the Provider
+			} else if (isFinishing() &&  mIsCancelled) {
+				//if cancelled, don't delete, but dont save either
+				setResult(RESULT_CANCELED);
 			} else {
+				//save the current changes to the Provider
 				ContentValues values = new ContentValues();
 				values.put(Placements.LITERATURE_ID, publication);
 				getContentResolver().update(mUri, values, null, null);
 			}
 		}
+	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean result = super.onCreateOptionsMenu(menu);
+ 
+        menu.add(0, MENU_DELETE, 1, R.string.delete_placement).setIcon(android.R.drawable.ic_menu_delete);
+            
+        return result;
+    }
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_DELETE:
+			mLitID = 0;
+			finish();
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override

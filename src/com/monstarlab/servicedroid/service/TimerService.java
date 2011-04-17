@@ -101,6 +101,9 @@ public class TimerService extends Service {
 	private void createTimer() {
 		//find a TimeEntry with 0 length
 		mStartTime = getStartOfEmptyEntry();
+		if(mStartTime == 0) {
+			return;
+		}
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 100);
        

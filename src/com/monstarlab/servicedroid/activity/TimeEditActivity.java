@@ -10,12 +10,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
@@ -25,6 +28,8 @@ public class TimeEditActivity extends Activity {
 	
 	private static final int STATE_EDIT = 0;
 	private static final int STATE_INSERT = 1;
+	
+	private static final int MENU_DELETE = Menu.FIRST;
 	
 	private boolean mIsCancelled;
 	
@@ -159,13 +164,17 @@ public class TimeEditActivity extends Activity {
 			int length = getTime();
 			String date = getDate();
 			
-			//when finishing, if no time was spent, just ditch the time period. its useless anyways
-			if(isFinishing() && (length == 0 || mIsCancelled)) {
+			
+			if(isFinishing() && (length == 0)) {
+				//when finishing, if no time was spent, just ditch the time period. its useless anyways
 				setResult(RESULT_CANCELED);
 				deleteEntry();
+			} else if(isFinishing() && mIsCancelled) {
+				// if the cancel button was pressed, don't delete, but don't save either.
+				setResult(RESULT_CANCELED);
 			
-			//save the current changes to the Provider
 			} else {
+				//save the current changes to the Provider
 				ContentValues values = new ContentValues();
 				values.put(TimeEntries.LENGTH, length);
 				values.put(TimeEntries.DATE, date);
@@ -179,6 +188,28 @@ public class TimeEditActivity extends Activity {
 				i.setData(mUri);
 			}
 		}
+	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean result = super.onCreateOptionsMenu(menu);
+ 
+        menu.add(0, MENU_DELETE, 1, R.string.delete_time).setIcon(android.R.drawable.ic_menu_delete);
+            
+        return result;
+    }
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_DELETE:
+			mLengthText.setCurrentHour(0);
+			mLengthText.setCurrentMinute(0);
+			finish();
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 	
 	private void deleteEntry() {

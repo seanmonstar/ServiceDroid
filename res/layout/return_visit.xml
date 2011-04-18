@@ -4,28 +4,28 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:text="@string/date"
-		android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	<DatePicker android:id="@+id/date" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:layout_gravity="center_horizontal"/>
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"
+		android:layout_weight="1"
+		android:fillViewport="true">
+		<LinearLayout android:orientation="vertical" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			
+			<TextView android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:text="@string/date"
+				android:textAppearance="?android:attr/textAppearanceLarge" />
+			
+			<DatePicker android:id="@+id/date" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:layout_gravity="center_horizontal"/>
+		</LinearLayout>
+	</ScrollView>
 
-	<RelativeLayout android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:id="@+id/button_container">
-
-
-		<Button android:id="@+id/confirm" android:layout_height="wrap_content"
-			android:text="@string/confirm" android:layout_width="wrap_content"
-			android:layout_alignParentLeft="true" />
-
-
-		<Button android:id="@+id/cancel" android:layout_height="wrap_content"
-			android:text="@string/delete_rv" android:layout_width="wrap_content"
-			android:layout_alignParentRight="true" />
-	</RelativeLayout>
+	<include android:id="@+id/button_container" 
+		layout="@layout/buttons" />
 
 </LinearLayout>

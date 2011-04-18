@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:padding="10dip"
-	android:layout_height="wrap_content" android:orientation="vertical">
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" android:orientation="vertical">
 
 
-	<TextView android:id="@+id/title" android:text="@string/placement"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:padding="7dip" android:textAppearance="?android:attr/textAppearanceLarge" />
-	<Spinner android:id="@+id/placement" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:prompt="@string/placement" />
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"
+		android:layout_weight="1"
+		android:fillViewport="true">
+		<LinearLayout android:orientation="vertical" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:padding="10dip">
+			
+			<TextView android:id="@+id/title" android:text="@string/placement"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:padding="7dip" android:textAppearance="?android:attr/textAppearanceLarge" />
+			<Spinner android:id="@+id/placement" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:prompt="@string/placement" />
+		
+			<TextView android:text="@string/date" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_marginLeft="5dip"
+				android:layout_marginRight="5dip" android:padding="7dip" />
+		
+			<Button android:id="@+id/date" android:text="@string/date"
+				android:layout_width="fill_parent" android:layout_height="wrap_content" />
+		</LinearLayout>
+	</ScrollView>
 
-	<TextView android:text="@string/date" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_marginLeft="5dip"
-		android:layout_marginRight="5dip" android:padding="7dip" />
-
-	<Button android:id="@+id/date" android:text="@string/date"
-		android:layout_width="fill_parent" android:layout_height="wrap_content" />
-
-	<RelativeLayout android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:id="@+id/button_container">
-
-
-		<Button android:id="@+id/confirm" android:layout_height="wrap_content"
-			android:text="@string/confirm" android:layout_width="wrap_content"
-			android:layout_alignParentLeft="true" />
-
-
-		<Button android:id="@+id/cancel" android:layout_height="wrap_content"
-			android:text="@string/cancel" android:layout_width="wrap_content"
-			android:layout_alignParentRight="true" />
-	</RelativeLayout>
+	<include android:id="@+id/button_container" 
+		layout="@layout/buttons" />
 
 
 </LinearLayout>

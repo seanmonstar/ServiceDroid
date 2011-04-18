@@ -5,49 +5,46 @@
   android:layout_height="fill_parent"
   android:orientation="vertical">
    
-	
-	<EditText 
-		android:hint="@string/name" 
-		android:id="@+id/name" 
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-		android:inputType="textPersonName|textCapWords" />
-	
-	<EditText 
-		android:hint="@string/address" 
-		android:id="@+id/address" 
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-		android:inputType="textPostalAddress" />
-
-	<View
+	<ScrollView
 		android:layout_width="fill_parent"
-		android:id="@+id/divider"
-		android:layout_height="1px"
-		android:background="?android:attr/listDivider" />
-		
-	<EditText 
-		android:hint="@string/notes" 
-		android:id="@+id/notes" 
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent"
-		android:layout_weight="1" 
-		android:gravity="top" 
-		android:inputType="text|textMultiLine|textCapSentences|textAutoCorrect"/>
-	
-	<RelativeLayout android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:id="@+id/button_container">
-		<Button android:id="@+id/confirm" 
-		    android:text="@string/confirm"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true" />
+		android:layout_height="1dip"
+		android:layout_weight="1"
+		android:fillViewport="true">
+		<LinearLayout android:orientation="vertical" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<EditText 
+				android:hint="@string/name" 
+				android:id="@+id/name" 
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:inputType="textPersonName|textCapWords" />
 			
-		<Button android:id="@+id/cancel" 
-		    android:text="@string/cancel"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true" />
-	</RelativeLayout>
+			<EditText 
+				android:hint="@string/address" 
+				android:id="@+id/address" 
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content"
+				android:inputType="textPostalAddress" />
+		
+			<View
+				android:layout_width="fill_parent"
+				android:id="@+id/divider"
+				android:layout_height="1px"
+				android:background="?android:attr/listDivider" />
+				
+			<EditText 
+				android:hint="@string/notes" 
+				android:id="@+id/notes" 
+				android:layout_width="fill_parent" 
+				android:layout_height="fill_parent"
+				android:layout_weight="1" 
+				android:gravity="top" 
+				android:inputType="text|textMultiLine|textCapSentences|textAutoCorrect"/>
+		</LinearLayout>
+	</ScrollView>
+	
+	<include android:id="@+id/button_container" 
+		layout="@layout/buttons" />
 
 </LinearLayout>

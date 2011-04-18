@@ -44,7 +44,7 @@
 	
 	</ScrollView>
 	
-	<include android:id="@+id/button_container" 
-		layout="@layout/buttons" />
+	<include android:id="@+id/footer_buttons" 
+		layout="@layout/footer_buttons" />
 
 </LinearLayout>

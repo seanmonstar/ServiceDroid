@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_call">Aggiungere Visita</string>
+    <string name="add_time">Aggiungere Servizio</string>
+    <string name="address">Indirizzo</string>
+    <string name="anon_placement">Distribuzioni Anonime</string>
+    <string name="app_name">ServiceDroid</string>
+    <string name="awake">Svegliatevi!</string>
+    <string name="bible">Bibbia</string>
+    <string name="bible_studies">Studi Bibblici</string>
+    <string name="bible_study">Studio Bibblico</string>
+    <string name="bible_study_prompt">Vuoi impostare lo studio come concluso, o cancellare ogni riferimento a questo studio?</string>
+	<string name="bible_study_prompt_delete">Cancela</string>
+	<string name="bible_study_prompt_finish">Concluso</string>
+	<string name="bible_teach">Cosa insegna realmente la Bibbia?</string>
+    <string name="book">Libro</string>
+	<string name="books">Libri</string>
+	<string name="brochure">Opuscolo</string>
+	<string name="brochures">Opuscoli</string>
+    <string name="callbook">Nota</string>
+    <string name="cancel">Cancella</string>
+    <string-array name="changelog">
+    	<item>Le informazioni saranno salvate sul proprio account di Google o sulla memoria SD.</item>
+    	<item>Le visite ulteriori vengono ora gestite con la distribuzione delle riviste e sono editabili.</item>
+    	<item>Nella scheda delle Ore è pssibile cambiare il mese visualizzato scorrendo lo schermo a destra o sinistra.</item>
+    	<item>Translated into Spanish, Portuguese, German, French, Danish, and Italian (thanks to Dunnia Lempert, Ruben Reis, Manuel Haas, David V., Flemming Jacobsen, and Stefano R.).</item>
+    </string-array>
+    <string name="confirm">Confermare</string>
+    <string name="comfort_brochure">Quando muore una persona cara</string>
+    <string name="create_placement">Creare Itinerario delle riviste</string>
+    <string name="date">Data</string>
+    <string name="delete_call">Cancella Nota</string>
+    <string name="delete_placement">Cancella Itinerario</string>
+    <string name="delete_rv">Cancella Visita</string>
+    <string name="delete_time">Cancella Ore</string>
+    <string name="directions">Percorso</string>
+    <string name="edit">Edit</string>
+    <string name="email_hint">Premendo il bottone MENU del telefono è possibile inviare il proprio rapporto di servizio per e-mail.</string>
+    <string name="enjoy_servicedroid">Trovi ServiceDroid di tuo gradimento?</string>
+    <string name="give_review"><![CDATA[Considera di offrire un contributo <a href=\"market://details?id=com.monstarlab.servicedroid\">review</a>.]]></string>
+    <string name="hours">Ore</string>
+	<string name="hr">hr</string>
+	<string name="hrs">hrs</string>
+	<string name="is_bible_study">%s è ora uno studio bibblico.</string>
+	<string name="isnt_bible_study">%s non è più uno studio bibblico.</string>
+	<string name="issue">Numero</string>
+	<string name="last_visited">Ultima Visita: %s</string>
+	<string name="length">Tempo nel Servizio</string>
+	<string name="magazine">Rivista</string>
+	<string name="magazines">Riviste</string>
+	<string name="make_return">Rivisitato</string>
+	<string name="menu_sms">SMS</string>
+	<string name="min">min</string>
+	<string name="mins">mins</string>
+	<string name="month">Mese</string>
+	<string name="monthly">Mensilmente</string>
+	<string-array name="months_array">
+        <item>Gennaio</item>
+        <item>Febbraio</item>
+        <item>Marzo</item>
+        <item>Aprile</item>
+        <item>Maggio</item>
+        <item>Giugno</item>
+        <item>Luglio</item>
+        <item>Agosto</item>
+        <item>Settembre</item>
+        <item>Ottobre</item>
+        <item>Novembre</item>
+        <item>Dicembre</item>
+    </string-array>
+	<string name="name">Nome</string>
+	<string name="no_calls">Premere MENU per creare una nuova Visita.</string>
+	<string name="no_placements">Premere MENU per creare un nuovo itinerario delle riviste.</string>
+	<string name="no_time">Premere MENU per registrare un nuovo orario di servizio.</string>	
+	<string name="notes">Note</string>
+    <string name="ok">Ottimo!</string>
+    <string name="other">Other...</string>
+    <string name="placement">Distribuzione</string>
+    <string name="require_brochure">Cosa richiede Dio da noi?</string>
+    <string name="return_visit_success">Hai fatto una visita ulteriore il %s.</string>
+    <string name="round_time_prompt">Si preferisce arrotondare le ore di servizio o riportare i minuti extra al mese successivo?</string>
+	<string name="round_time_prompt_carry">Riportare</string>
+	<string name="round_time_prompt_round">Arrotondare</string>
+    <string name="rv">Visita Ulteriore</string>
+    <string name="rvs">Visite Ulteriori</string>
+    <string name="send">Email</string>
+	<string name="send_by">Inviato da...</string>
+	<string name="send_reminder">Inviare nel proprio orario di servizio</string>
+	<string name="service_year">Servizio Anno</string>
+	<string name="service_time_for">Tempo di servizio per %s</string>
+    <string name="sort">Ordina</string>
+    <string name="start_time">Avvia il tempo</string>
+    <string name="stats">Statistiche</string>
+    <string name="stop_time">Ferma il tempo</string>
+    <string name="time">Tempo</string>
+    <string name="time_due">Preparare rapporto di servizio!</string>
+	<string name="time_in_service">Tempo nel servizio: %s</string>
+	<string name="timer_active">Timer di servizio attivo</string>
+    <string name="tips">Tips</string>
+    <string name="watchtower">Torre di Guardia</string>
+    <string name="whats_new">Cosa c\'è di nuovo!</string>
+	<string name="year">Anno</string>
+</resources>

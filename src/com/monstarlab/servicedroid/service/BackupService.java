@@ -7,18 +7,22 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.BackupWorker;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 public class BackupService extends Service {
 	
 	public static final String ACTION_BACKUP = "Backup";
+	public static final String ACTION_BACKUP_IMMEDIATELY = "BackupImmediately";
 	public static final String ACTION_RESTORE = "Restore";
 	
 	private static final String TAG = "BackupService";
@@ -27,6 +31,9 @@ public class BackupService extends Service {
 	private static final String DIRECTORY = "backups";
 	
 	private static final long SCHEDULE_DELAY = 1000 * 60 * 5;
+	
+	private static final boolean DO_NOTIFY = true;
+	private static final boolean DONT_NOTIFY = false;
 	
 	private Handler mHandler = new Handler();
 	private Runnable mScheduler = new Runnable() {
@@ -55,6 +62,8 @@ public class BackupService extends Service {
 		final String action = intent.getAction();
 		if (ACTION_BACKUP.equals(action)) {
 			onBackup();
+		} else if (ACTION_BACKUP_IMMEDIATELY.equals(action)) {
+			backupImmediately();
 		} else if (ACTION_RESTORE.equals(action)) {
 			onRestore();
 		}
@@ -68,6 +77,10 @@ public class BackupService extends Service {
 	}
 	
 	protected void doBackup() {
+		doBackup(DONT_NOTIFY);
+	}
+	
+	protected void doBackup(final boolean notifyOnSuccess) {
 		
 		//actually doing the backup should be in a separate thread, so we don't bog down the UI at all
 		new Thread(new Runnable() {
@@ -75,12 +88,34 @@ public class BackupService extends Service {
 			public void run() {
 				//find backup file on SD card
 				//write SDML to backup file, overwriting if need be
-				
 				writeToSDCard(new BackupWorker().backup(getContentResolver()));
+				
+				if (notifyOnSuccess) {
+					notifySuccess();
+				}
+				
 				stopSelf();
 			}
 			
 		}).start();
+	}
+	
+	protected void backupImmediately() {
+		doBackup(DO_NOTIFY);
+	}
+	
+	protected void notifySuccess() {
+		final Context ctx = getApplicationContext();
+		final String text = getString(R.string.backup_success, "/" + DIRECTORY + "/" + FILE_NAME);
+		mHandler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				Toast.makeText(ctx, text, Toast.LENGTH_LONG).show();
+			}
+			
+		});
+		
 	}
 	
 	protected void writeToSDCard(String raw) {

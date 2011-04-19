@@ -79,6 +79,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
         
        // mTimeHelper = new TimeUtil(this);
         mTimePeriodDisplay = (TextView)findViewById(R.id.stats_timeperiod);
+        
         mHoursDisplay = (TextView)findViewById(R.id.hours);
         mRvsDisplay = (TextView)findViewById(R.id.rvs);
         mMagsDisplay = (TextView)findViewById(R.id.magazines);
@@ -135,7 +136,8 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	protected String getTimePeriodText() {
 		if(mTimeSpan == MENU_MONTH) {
-			return "" + mCurrentMonth + "/" + mCurrentYear;
+			String[] months = getResources().getStringArray(R.array.months_array);
+			return months[mCurrentMonth-1] + " " + mCurrentYear;
 		} else {
 			return getString(R.string.service_year) + " " + mCurrentYear;
 		}

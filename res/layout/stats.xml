@@ -2,8 +2,17 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
   
+  	<TextView android:id="@+id/stats_timeperiod"
+	  	android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content"
+	  	android:padding="7dip"
+	  	android:gravity="center"
+	  	android:background="#555555"
+	  	android:textAppearance="?android:attr/textAppearanceLarge" />
+			  	 
 	<TableLayout 
 		android:id="@+id/statstable" 
 		android:layout_width="fill_parent" 
@@ -13,44 +22,68 @@
 		android:gravity="center_vertical|center_horizontal">
 		
 		<TableRow>
-		
-			<TextView
-			  	android:id="@+id/stats_timeperiod"
-			  	android:layout_width="fill_parent"
-			  	android:layout_height="wrap_content"
-			  	android:gravity="center_horizontal"
-			    android:layout_span="2"
-			  	android:textAppearance="?android:attr/textAppearanceLarge"
-			  	 />
-			  	 
-		</TableRow>
-		<TableRow>
-			<TextView android:text="@string/hours" android:padding="5dip" android:gravity="center_vertical|left" />
-			<TextView android:id="@+id/hours" android:padding="5dip" android:gravity="center_vertical|right" />
+			<TextView android:text="@string/hours" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge" 
+				android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/hours"  
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/magazines" android:padding="5dip" android:gravity="center_vertical|left" />
-			<TextView android:id="@+id/magazines" android:padding="5dip" android:gravity="center_vertical|right" />
+			<TextView android:text="@string/magazines" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/magazines" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|right" />
 		</TableRow>
 		<TableRow>
-			<TextView android:text="@string/brochures" android:padding="5dip" android:gravity="center_vertical|left" />
-			<TextView android:id="@+id/brochures" android:padding="5dip" android:gravity="center_vertical|right" />
+			<TextView android:text="@string/brochures" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/brochures" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/books" android:padding="5dip" android:gravity="center_vertical|left" />
-			<TextView android:id="@+id/books" android:padding="5dip" android:gravity="center_vertical|right" />
+			<TextView android:text="@string/books" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/books" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/rvs" android:padding="5dip" android:gravity="center_vertical|left" />
-			<TextView android:id="@+id/rvs" android:padding="5dip" android:gravity="center_vertical|right" />
+			<TextView android:text="@string/rvs" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/rvs" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>
-			<TextView android:text="@string/bible_studies" android:padding="5dip" android:gravity="center_vertical|left" />
-			<TextView android:id="@+id/bible_studies" android:padding="5dip" android:gravity="center_vertical|right" />
+			<TextView android:text="@string/bible_studies" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|left" />
+			<TextView android:id="@+id/bible_studies" 
+				android:padding="5dip" 
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:gravity="center_vertical|right" />
 		</TableRow>
 		
 		<TableRow>

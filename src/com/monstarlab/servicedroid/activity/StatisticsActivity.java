@@ -66,6 +66,9 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	private static int SERVICE_YEAR_START = 9;
 	
+	private int mSendMethod = 0;
+	private static final int SEND_EMAIL = 0;
+	private static final int SEND_SMS = 1;
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -401,13 +404,21 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	       .setPositiveButton(getString(R.string.round_time_prompt_round), new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   roundUpTime();
-	        	   sendEmail();
+	        	   if (mSendMethod == SEND_EMAIL) {
+		        	   sendEmail();
+	        	   } else if (mSendMethod == SEND_SMS) {
+	        		   sendSMS();
+	        	   }
 	           }
 	       })
 	       .setNegativeButton(getString(R.string.round_time_prompt_carry), new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	                carryOverTime();
-	                sendEmail();
+		           carryOverTime();
+		           if (mSendMethod == SEND_EMAIL) {
+		        	   sendEmail();
+	        	   } else if (mSendMethod == SEND_SMS) {
+	        		   sendSMS();
+	        	   }
 	           }
 	       });
 		return builder.create();
@@ -505,17 +516,18 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	protected void setupSendSMS() {
 		if(shouldRoundTime()) {
 			//offer to round or carry over
+			mSendMethod = SEND_SMS;
 			showDialog(DIALOG_ROUND_ID);
 		} else {
-			sendEmail();
+			sendSMS();
+			mSendMethod = SEND_EMAIL;
 		}
 	}
 	
 	protected void sendSMS() {
-		String smsNumber = "";
 		String smsText = getStatsTextForTimePeriod();
 		
-		Uri uri = Uri.parse("smsto:" + smsNumber); 
+		Uri uri = Uri.parse("sms:"); 
 		Intent intent = new Intent(Intent.ACTION_SENDTO, uri); 
 		intent.putExtra("sms_body", smsText);   
 		startActivity(intent);

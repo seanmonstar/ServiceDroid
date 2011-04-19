@@ -6,6 +6,8 @@
     <string name="anon_placement">Anonymous Placements</string>
     <string name="app_name">ServiceDroid</string>
     <string name="awake">Awake!</string>
+    <string name="backup">Backup</string>
+    <string name="backup_success">Successfully backed up data to \"%s\" on your SD card.</string>
     <string name="bible">Bible</string>
     <string name="bible_studies">Bible Studies</string>
     <string name="bible_study">Bible Study</string>

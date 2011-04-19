@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,6 +28,7 @@ import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
+import com.monstarlab.servicedroid.service.BackupService;
 import com.monstarlab.servicedroid.util.TimeUtil;
 import com.monstarlab.servicedroid.R;
 
@@ -40,6 +42,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private static final int MENU_YEAR = Menu.FIRST + 1;
 	private static final int MENU_EMAIL = Menu.FIRST + 2;
 	private static final int MENU_SMS = Menu.FIRST + 3;
+	private static final int MENU_BACKUP = Menu.FIRST + 4;
 	
 	//private TimeUtil mTimeHelper;
 	
@@ -63,6 +66,9 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	
 	private static int SERVICE_YEAR_START = 9;
 	
+	private int mSendMethod = 0;
+	private static final int SEND_EMAIL = 0;
+	private static final int SEND_SMS = 1;
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -318,6 +324,8 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		boolean result = super.onCreateOptionsMenu(menu);		
 		menu.add(0, MENU_EMAIL, 1, R.string.send).setIcon(android.R.drawable.ic_menu_send);
 		menu.add(0, MENU_SMS, 2, R.string.menu_sms).setIcon(android.R.drawable.ic_menu_upload);
+		
+		menu.add(0, MENU_BACKUP, 4, R.string.backup).setIcon(android.R.drawable.ic_menu_save);
 		return result;
     }
 	
@@ -365,6 +373,10 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		case MENU_SMS:
 			setupSendSMS();
 			break;	
+		
+		case MENU_BACKUP:
+			backupData();
+			break;
 		}
 		
 		
@@ -394,13 +406,21 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	       .setPositiveButton(getString(R.string.round_time_prompt_round), new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   roundUpTime();
-	        	   sendEmail();
+	        	   if (mSendMethod == SEND_EMAIL) {
+		        	   sendEmail();
+	        	   } else if (mSendMethod == SEND_SMS) {
+	        		   sendSMS();
+	        	   }
 	           }
 	       })
 	       .setNegativeButton(getString(R.string.round_time_prompt_carry), new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	                carryOverTime();
-	                sendEmail();
+		           carryOverTime();
+		           if (mSendMethod == SEND_EMAIL) {
+		        	   sendEmail();
+	        	   } else if (mSendMethod == SEND_SMS) {
+	        		   sendSMS();
+	        	   }
 	           }
 	       });
 		return builder.create();
@@ -477,6 +497,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		if(shouldRoundTime()) {
 			//offer to round or carry over
+			mSendMethod = SEND_EMAIL;
 			showDialog(DIALOG_ROUND_ID);
 		} else {
 			sendEmail();
@@ -497,20 +518,26 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	protected void setupSendSMS() {
 		if(shouldRoundTime()) {
 			//offer to round or carry over
+			mSendMethod = SEND_SMS;
 			showDialog(DIALOG_ROUND_ID);
 		} else {
-			sendEmail();
+			sendSMS();
+			mSendMethod = SEND_EMAIL;
 		}
 	}
 	
 	protected void sendSMS() {
-		String smsNumber = "";
 		String smsText = getStatsTextForTimePeriod();
 		
-		Uri uri = Uri.parse("smsto:" + smsNumber); 
+		Uri uri = Uri.parse("sms:"); 
 		Intent intent = new Intent(Intent.ACTION_SENDTO, uri); 
 		intent.putExtra("sms_body", smsText);   
 		startActivity(intent);
+	}
+	
+	protected void backupData() {
+		Intent i = new Intent(BackupService.ACTION_BACKUP_IMMEDIATELY, null, this, BackupService.class);
+		startService(i);
 	}
 	
 	protected boolean shouldRoundTime() {

@@ -2,7 +2,35 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
+  <LinearLayout android:orientation="horizontal" 
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+		android:background="@drawable/action_bar">
+  		
+		<TextView android:id="@+id/header"
+			android:layout_width="1dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:padding="7dip"
+			android:gravity="center"
+			android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		<ImageView android:src="@drawable/action_bar_btn_border"
+			android:layout_width="1dip"
+			android:layout_height="fill_parent" />
+		
+		<ImageButton android:id="@+id/btn_add"
+			android:src="@drawable/button_add"
+			android:background="@drawable/action_bar_button"
+			android:scaleType="center"
+			android:layout_width="42dip"
+			android:layout_height="fill_parent"
+			android:layout_centerVertical="true" />
+	
+	</LinearLayout>
+  
   <ListView android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>

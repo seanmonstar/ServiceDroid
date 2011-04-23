@@ -21,7 +21,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TableLayout;
@@ -67,6 +70,11 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	
     private GestureDetector mGestureDetector;
+
+	private ImageButton mQuickAddBtn;
+	private ImageButton mQuickStartBtn;
+
+	private ImageButton mQuickStopBtn;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,20 +85,18 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		if(intent.getData() == null) {
 			intent.setData(TimeEntries.CONTENT_URI);
 		}
+
+		setContentView(R.layout.time);
+		setHeaderText();
+		setupQuickButtons();
 		
-		
+		mTimeHelper = new TimeUtil(this);
 		mTiming = TimerService.isRunning;
 		if(!mTiming) {
 			checkForTimer();
 		}
-
-		setContentView(R.layout.time);
+		setIsTiming(mTiming);
 		
-		mTimeHelper = new TimeUtil(this);
-		
-		
-		setHeaderText();
-        
 		fillData();
 		
 		registerForContextMenu(getListView());
@@ -101,6 +107,38 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	    findViewById(android.R.id.empty).setOnTouchListener(this);
 	    findViewById(R.id.header).setOnTouchListener(this);
 	    
+	}
+	
+	protected void setupQuickButtons() {
+		mQuickAddBtn = (ImageButton)findViewById(R.id.btn_add);
+		mQuickAddBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				createEntry();
+			}
+			
+		});
+		
+		mQuickStartBtn = (ImageButton)findViewById(R.id.btn_start);
+		mQuickStartBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startTimer();
+			}
+			
+		});
+		
+		mQuickStopBtn = (ImageButton)findViewById(R.id.btn_stop);
+		mQuickStopBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				stopTimer();
+			}
+			
+		});
 	}
 	
 	public void fillData() {
@@ -271,7 +309,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	}
 	
 	private void startTimer() {
-		mTiming = true;
+		setIsTiming(true);
 		
 		// create a TimeEntry with 0 length, at this very second.
 		ContentValues values = new ContentValues();
@@ -284,7 +322,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	
 	private void stopTimer() {
 		if(!mTiming) return;
-		mTiming = false;
+		setIsTiming(false);
 		Intent i = new Intent(this, TimerService.class);
 		stopService(i);
 	}
@@ -292,7 +330,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	private void checkForTimer() {
 		Cursor c = getContentResolver().query(TimeEntries.CONTENT_URI, PROJECTION, TimeEntries.LENGTH + " is null or " + TimeEntries.LENGTH + "=0", null, null);
 		if(c.getCount() > 0) {
-			mTiming = true;
+			setIsTiming(true);
 			Intent i = new Intent(this, TimerService.class);
 			startService(i);
 			
@@ -306,6 +344,17 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 			}
 		}
 		c.close();
+	}
+	
+	private void setIsTiming(boolean isTiming) {
+		mTiming = isTiming;
+		if (mTiming) {
+			mQuickStartBtn.setVisibility(View.GONE);
+			mQuickStopBtn.setVisibility(View.VISIBLE);
+		} else {
+			mQuickStartBtn.setVisibility(View.VISIBLE);
+			mQuickStopBtn.setVisibility(View.GONE);
+		}
 	}
 	
 	protected void moveTimePeriodBackward() {

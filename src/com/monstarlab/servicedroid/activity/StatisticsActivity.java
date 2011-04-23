@@ -20,7 +20,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -59,6 +62,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private TextView mBrochuresDisplay;
 	private TextView mBooksDisplay;
 	private TextView mBibleStudiesDisplay;
+	private ImageButton mQuickEmailBtn;
 	
 	private int mCurrentMonth = TimeUtil.getCurrentMonth();
 	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
@@ -77,7 +81,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private static final int DIALOG_ROUND_ID = 1;
 	
     private GestureDetector mGestureDetector;
-	
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +96,16 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
         mBrochuresDisplay = (TextView)findViewById(R.id.brochures);
         mBooksDisplay = (TextView)findViewById(R.id.books);
         mBibleStudiesDisplay = (TextView)findViewById(R.id.bible_studies);
+        
+        mQuickEmailBtn = (ImageButton)findViewById(R.id.btn_send);
+        mQuickEmailBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				setupSendEmail();
+			}
+        	
+        });
         
         // Gesture detection
 	    mGestureDetector = new GestureDetector(new MyGestureDetector());

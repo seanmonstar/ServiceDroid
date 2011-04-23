@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:paddingLeft="14dip"
-        android:background="#555555">
+        android:background="@drawable/action_bar">
 
         <TextView android:id="@+id/address"
             android:layout_width="wrap_content"

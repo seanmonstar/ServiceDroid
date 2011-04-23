@@ -13,9 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -47,6 +51,9 @@ public class CallsActivity extends ListActivity {
 
 	private boolean mIsAnonCall = false;
 	private Cursor mListCursor;
+
+	private ImageButton mQuickAddBtn;
+	private TextView mHeaderText;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,17 @@ public class CallsActivity extends ListActivity {
         
         this.setContentView(R.layout.calls);
         
+        mHeaderText = (TextView)findViewById(R.id.header);
+        mQuickAddBtn = (ImageButton)findViewById(R.id.btn_add);
+        mQuickAddBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				createCall();
+			}
+        	
+        });
+        
         //initial sort state will be alphabetically
         mSortState = SORT_ALPHA;
         
@@ -69,11 +87,15 @@ public class CallsActivity extends ListActivity {
 
 	protected void fillData() {
 		String sortBy = null;
+		String sortText = getString(R.string.sorted_alpha);
 		if(mSortState == SORT_ALPHA) {
 			sortBy = Calls.NAME;
 		} else if (mSortState == SORT_TIME) {
 			sortBy = Calls.LAST_VISITED;
+			sortText = getString(R.string.sorted_time);
 		}
+		
+		mHeaderText.setText(sortText);
 		
 		mListCursor = managedQuery(getIntent().getData(), PROJECTION, null, null, sortBy);
 		

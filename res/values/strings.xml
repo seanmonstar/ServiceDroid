@@ -91,6 +91,8 @@
 	<string name="service_year">Service Year</string>
 	<string name="service_time_for">Service Time for %s</string>
     <string name="sort">Sort</string>
+    <string name="sorted_alpha">Alphabetically</string>
+    <string name="sorted_time">Oldest Visit</string>
     <string name="start_time">Start Time</string>
     <string name="stats">Stats</string>
     <string name="stop_time">Stop Time</string>

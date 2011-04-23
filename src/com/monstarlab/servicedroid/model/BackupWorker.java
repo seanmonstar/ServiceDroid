@@ -34,10 +34,10 @@ public class BackupWorker {
 	private static final String PLACEMENT_TAG = "Placement";
 	private static final String BIBLE_STUDY_TAG = "BibleStudy";
 	
-	private static final String[] TIME_ENTRIES_PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE };
+	private static final String[] TIME_ENTRIES_PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE, TimeEntries.NOTE };
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE };
 	private static final String[] RETURN_VISITS_PROJECTION = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
-	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.PUBLICATION, Literature.TITLE, Literature.TYPE };
+	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.PUBLICATION, Literature.TITLE, Literature.TYPE, Literature.WEIGHT };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID };
 	private static final String[] BIBLE_STUDIES_PROJECTION = new String[] { BibleStudies._ID, BibleStudies.DATE_START, BibleStudies.DATE_END, BibleStudies.CALL_ID };
 	

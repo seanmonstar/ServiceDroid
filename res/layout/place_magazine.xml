@@ -38,18 +38,24 @@
 		            android:padding="7dip"
 		            android:textAppearance="?android:attr/textAppearanceLarge"
 		        />
-		    <Spinner 
-		        android:id="@+id/month"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:prompt="@string/month"
-		    />
-		    <Spinner 
-		        android:id="@+id/year"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:prompt="@string/year"
-		    />
+		    <LinearLayout android:orientation="horizontal"
+		    	android:layout_height="wrap_content"
+		    	android:layout_width="fill_parent">
+			    <Spinner 
+			        android:id="@+id/month"
+			        android:layout_width="1dip"
+			        android:layout_weight="3"
+			        android:layout_height="wrap_content"
+			        android:prompt="@string/month"
+			    />
+			    <Spinner 
+			        android:id="@+id/year"
+			        android:layout_width="1dip"
+			        android:layout_weight="2"
+			        android:layout_height="wrap_content"
+			        android:prompt="@string/year"
+			    />
+		    </LinearLayout>
 		  
 		  <TextView
 		    		android:text="@string/date"

@@ -28,6 +28,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.monstarlab.servicedroid.model.Models.BibleStudies;
+import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
@@ -53,7 +54,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	private static String[] BibleStudiesProjection = new String[] { BibleStudies._ID };
 	private static String[] TimeProjection = new String[] { TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	private static String[] RVProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
-	private static String[] PlacementsProjection = new String[] { Placements._ID, Placements.DATE };
+	private static String[] PlacementsProjection = new String[] { Placements._ID, Placements.DATE, Literature.WEIGHT };
 	
 	private TextView mTimePeriodDisplay;
 	private TextView mHoursDisplay;
@@ -215,7 +216,12 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		Cursor c = getContentResolver().query(Placements.MAGAZINES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {
-			sum = c.getCount();
+			c.moveToFirst();
+			int weightCol = c.getColumnIndex(Literature.WEIGHT);
+			while(!c.isAfterLast()) {
+				sum += c.getInt(weightCol);
+				c.moveToNext(); 
+			}
 			c.close();
 			c = null;
 		}

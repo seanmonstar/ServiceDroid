@@ -356,13 +356,15 @@ public class PlacementActivity extends Activity {
 		final String awake = getString(R.string.awake);
 		final String combo = getString(R.string.combo);
 		
+		final String[] magChoices = new String[] { combo, watchtower, awake };
+		
 		mPublicationSpinner = (Spinner) findViewById(R.id.magazine);
-		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, new String[] { watchtower, awake, combo });
+		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, magChoices);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    mPublicationSpinner.setAdapter(adapter);
 	    
 	    if(mMagazine == null) {
-	    	mMagazine = watchtower;
+	    	mMagazine = combo;
 	    }
 	    if(mMonth == 0) {
 	    	mMonth = TimeUtil.getCurrentMonth();
@@ -386,11 +388,16 @@ public class PlacementActivity extends Activity {
 	    	
 		});
 	    
-	    if(mMagazine.equals(watchtower)) {
-	    	mPublicationSpinner.setSelection(0);
-	    } else {
-	    	mPublicationSpinner.setSelection(1);
+	    int startingSelection = 0;
+	    for (int i = 0; i < magChoices.length; i++) {
+	    	if (mMagazine.equals(magChoices[i])) {
+	    		startingSelection = i;
+	    		break;
+	    	}
 	    }
+	    
+	    mPublicationSpinner.setSelection(startingSelection);
+	    
 	    
 	    
 	    mMonthSpinner = (Spinner) findViewById(R.id.month);
@@ -539,6 +546,12 @@ public class PlacementActivity extends Activity {
 				ContentValues values = new ContentValues();
 				values.put(Literature.TYPE, mPlacementType);
 				values.put(Literature.PUBLICATION, publication);
+				
+				//adjust WEIGHT for combo placements
+				if (mMagazine.equals(getString(R.string.combo))) {
+					values.put(Literature.WEIGHT, 2);
+				}
+				
 				Uri insertedLit = getContentResolver().insert(Literature.CONTENT_URI, values);
 				newId = Integer.parseInt(insertedLit.getPathSegments().get(1));
 			}

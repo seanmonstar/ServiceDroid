@@ -210,6 +210,11 @@ public final class Models {
 		 */
 		public static final String PUBLICATION = "publication";
 		
+		/**
+		 *  type: int
+		 */
+		public static final String WEIGHT = "weight";
+		
 	}
 	
 	

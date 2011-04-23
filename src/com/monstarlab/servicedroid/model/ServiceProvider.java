@@ -32,7 +32,7 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servicedroid";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
@@ -124,6 +124,7 @@ public class ServiceProvider extends ContentProvider {
     	sPlacementProjectionMap.put(Placements.LITERATURE_ID, PLACEMENTS_TABLE + "." + Placements.LITERATURE_ID);
     	sPlacementProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
     	sPlacementProjectionMap.put(Literature.TYPE, LITERATURE_TABLE + "." + Literature.TYPE);
+    	sPlacementProjectionMap.put(Literature.WEIGHT, LITERATURE_TABLE + "." + Literature.WEIGHT);
     	
     	sBibleStudyProjectionMap = new HashMap<String, String>();
     	sBibleStudyProjectionMap.put(BibleStudies._ID, BibleStudies._ID);
@@ -178,6 +179,7 @@ public class ServiceProvider extends ContentProvider {
 			db.execSQL("create table " +  LITERATURE_TABLE + " (" 
 				+ Literature._ID + " integer primary key autoincrement,"
 				+ Literature.TYPE + " integer default 0,"
+				+ Literature.WEIGHT + " integer default 1,"
 				+ Literature.PUBLICATION + " varchar(256),"
 			    + Literature.TITLE + " varchar(256))");
 			
@@ -228,6 +230,11 @@ public class ServiceProvider extends ContentProvider {
 				
 			case 3:
 				db.execSQL("alter table " + TIME_ENTRIES_TABLE + " add column " + TimeEntries.NOTE + " text");
+			
+			case 4:
+				db.execSQL("alter table " + LITERATURE_TABLE + " add column " + Literature.WEIGHT + " integer default 1");
+				
+				
 				
 				
 				//these fall through on purpose

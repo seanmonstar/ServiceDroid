@@ -143,6 +143,15 @@ public final class Models {
 		 */
 		public static final String CALL_ID = "call_id";
 		
+		/**
+		 *  type: text
+		 */
+		public static final String NOTE = "note";
+		
+		/**
+		 *  type: boolean
+		 */
+		public static final String IS_BIBLE_STUDY = "is_bible_study";
 	}
 	
 	public static final class Placements implements BaseColumns {

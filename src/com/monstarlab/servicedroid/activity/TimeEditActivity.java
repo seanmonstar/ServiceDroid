@@ -166,7 +166,7 @@ public class TimeEditActivity extends Activity {
 			
 			mNoteText.setText(note);
 		} else {
-			setDate(TimeUtil.getCurrentTimeSQLText());
+			setDate(TimeUtil.getCurrentDateSQLText());
 			setLength(0);
 		}
 	}

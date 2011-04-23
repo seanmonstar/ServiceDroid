@@ -145,6 +145,16 @@ public class TimeUtil {
 		return c.get(Calendar.SECOND);
 	}
 	
+	public static String getCurrentDateSQLText() {
+		return new StringBuilder()
+			.append(getCurrentYear())
+			.append("-")
+			.append(pad(getCurrentMonth()))
+			.append("-")
+			.append(pad(getCurrentDay()))
+			.toString();
+	}
+	
 	public static String getCurrentTimeSQLText() {
 		return new StringBuilder()
 			.append(getCurrentYear())

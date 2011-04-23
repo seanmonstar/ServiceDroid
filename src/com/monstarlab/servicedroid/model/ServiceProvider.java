@@ -110,6 +110,8 @@ public class ServiceProvider extends ContentProvider {
     	sRVProjectionMap.put(ReturnVisits._ID, ReturnVisits._ID);
     	sRVProjectionMap.put(ReturnVisits.DATE, ReturnVisits.DATE);
     	sRVProjectionMap.put(ReturnVisits.CALL_ID, ReturnVisits.CALL_ID);
+    	sRVProjectionMap.put(ReturnVisits.NOTE, ReturnVisits.NOTE);
+    	sRVProjectionMap.put(ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.IS_BIBLE_STUDY);
     	
     	sLiteratureProjectionMap = new HashMap<String, String>();
     	sLiteratureProjectionMap.put(Literature._ID, Literature._ID);
@@ -164,12 +166,6 @@ public class ServiceProvider extends ContentProvider {
 			    + Calls.DATE + " date default current_timestamp,"
 			    + Calls.NOTES + " text,"
 			    + Calls.TYPE + " integer default 1 );");
-			
-			db.execSQL("create table " +  BIBLE_STUDIES_TABLE + " (" 
-					+ BibleStudies._ID + " integer primary key autoincrement,"
-				    + BibleStudies.DATE_START + " date default current_timestamp,"
-				    + BibleStudies.DATE_END + " date,"
-				    + BibleStudies.CALL_ID + " integer references calls(id) );");
 			
 			db.execSQL("create table " +  RETURN_VISITS_TABLE + " (" 
 				+ ReturnVisits._ID + " integer primary key autoincrement,"
@@ -234,7 +230,15 @@ public class ServiceProvider extends ContentProvider {
 			case 4:
 				db.execSQL("alter table " + LITERATURE_TABLE + " add column " + Literature.WEIGHT + " integer default 1");
 				
+			case 5:
+				//at this point, we moved from a BibleStudies table, to each visit 
+				//being a study or not.
 				
+				//For the old "bible studies", assign every Return Visit that happened
+				//during the same time period to be IS_BIBLE_STUDY.
+				
+				
+				//db.execSQL("drop table " + BIBLE_STUDIES_TABLE);
 				
 				
 				//these fall through on purpose

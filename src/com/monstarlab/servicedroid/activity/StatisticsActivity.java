@@ -122,7 +122,6 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		super.onResume();
 		
 		fillData();
-		toggleEmailHint();
 	}
 
 
@@ -135,24 +134,6 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		mBrochuresDisplay.setText(getBrochures());
 		mBooksDisplay.setText(getBooks());
 		mBibleStudiesDisplay.setText(getBibleStudies());
-	}
-	
-	protected void toggleEmailHint() {
-		//show the email hint 2 days before then end of the month
-		// and 5 days from the start
-		
-		int day = TimeUtil.getCurrentDay();
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.MONTH, 1);
-		c.set(Calendar.DATE, 1);
-		c.add(Calendar.DATE, -1);
-		
-		int lastDayOfMonth = c.get(Calendar.DATE);
-		if (day <= 5 || day > lastDayOfMonth - 2) {
-			View hintView = findViewById(R.id.hint);
-			hintView.setVisibility(View.VISIBLE);
-		}
-		
 	}
 	
 	protected String getTimePeriodText() {

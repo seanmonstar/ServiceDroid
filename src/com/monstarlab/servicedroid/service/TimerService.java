@@ -161,13 +161,13 @@ public class TimerService extends Service {
 			final long start = mStartTime;
 			int newTime = (int)( System.currentTimeMillis() - start) / 1000;
 			
-			if(mRunTime + 60 <= newTime) {
+			if(newTime >= mRunTime + 60) {
 				//every 60 seconds, update notification
 				mRunTime = newTime;
 				showTimerNotification();
 			} 
 			
-			mHandler.postDelayed(this, 10000);
+			mHandler.postDelayed(this, 15000); // every 15 seconds...
 		}
 	};
 

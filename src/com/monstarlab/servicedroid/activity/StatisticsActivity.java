@@ -110,8 +110,8 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
         
         // Gesture detection
 	    mGestureDetector = new GestureDetector(new MyGestureDetector());
-	    TableLayout table = (TableLayout) findViewById(R.id.statstable);
-	    table.setOnTouchListener(this);
+	    View view = findViewById(R.id.statsscrollview);
+	    view.setOnTouchListener(this);
 
     }
 	
@@ -595,10 +595,6 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	        return false;
 	    }
 	    
-	    @Override
-	    public boolean onDown(MotionEvent event) {
-	    	return true;
-	    }
 	}
 
 	@Override

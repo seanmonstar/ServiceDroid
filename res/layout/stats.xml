@@ -37,7 +37,8 @@
 			android:layout_centerVertical="true" />
 	
 	</LinearLayout>
-	<ScrollView android:layout_width="fill_parent"
+	<ScrollView android:id="@+id/statsscrollview"  
+		android:layout_width="fill_parent"
 		android:layout_height="1dip"
 		android:layout_weight="1"
 		android:fillViewport="true"> 

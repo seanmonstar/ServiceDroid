@@ -159,7 +159,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		
 		
 		cal.add(Calendar.MONTH, 1);
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.SECOND, -1);
 		Date endOfMonth = cal.getTime();
 		
 		//end of month

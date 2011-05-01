@@ -61,6 +61,7 @@ public class ReturnVisitActivity extends Activity {
 			}
 			ContentValues values = new ContentValues();
 			values.put(ReturnVisits.CALL_ID, mCallId);
+			values.put(ReturnVisits.DATE, TimeUtil.getCurrentTimeSQLText());
 			mUri = getContentResolver().insert(intent.getData(), values);
 			
 			if(mUri == null) {

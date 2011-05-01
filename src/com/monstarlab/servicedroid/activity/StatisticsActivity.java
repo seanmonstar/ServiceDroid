@@ -285,11 +285,11 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		if(mTimeSpan == MENU_MONTH) {
 			cal.add(Calendar.MONTH, 1);
-			cal.add(Calendar.DATE, -1);
 		} else {
-			cal.add(Calendar.YEAR, +1);
-			cal.add(Calendar.DATE, -1);
+			cal.add(Calendar.YEAR, 1);
 		}
+		
+		cal.add(Calendar.SECOND, -1);
 		
 		Date end = cal.getTime();
 		

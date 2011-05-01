@@ -95,6 +95,7 @@ public class PlacementActivity extends Activity {
 			}
 			ContentValues values = new ContentValues();
 			values.put(Placements.CALL_ID, mCallId);
+			values.put(Placements.DATE, TimeUtil.getCurrentTimeSQLText());
 			mUri = getContentResolver().insert(intent.getData(), values);
 			mPlacementType = intent.getIntExtra("type", Literature.TYPE_MAGAZINE);
 			

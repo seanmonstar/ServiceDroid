@@ -32,14 +32,12 @@ public class BackupWorker {
 	private static final String RETURN_VISIT_TAG = "ReturnVisit";
 	private static final String LITERATURE_TAG = "Literature";
 	private static final String PLACEMENT_TAG = "Placement";
-	private static final String BIBLE_STUDY_TAG = "BibleStudy";
 	
 	private static final String[] TIME_ENTRIES_PROJECTION = new String[] { TimeEntries._ID, TimeEntries.LENGTH, TimeEntries.DATE, TimeEntries.NOTE };
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE };
-	private static final String[] RETURN_VISITS_PROJECTION = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
+	private static final String[] RETURN_VISITS_PROJECTION = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.NOTE, ReturnVisits.CALL_ID };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.PUBLICATION, Literature.TITLE, Literature.TYPE, Literature.WEIGHT };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE };
-	private static final String[] BIBLE_STUDIES_PROJECTION = new String[] { BibleStudies._ID, BibleStudies.DATE_START, BibleStudies.DATE_END, BibleStudies.CALL_ID };
 	
 	private HashMap<String, String> mCallIDReplacements;
 	private HashMap<String, String> mLiteratureIDReplacements;
@@ -58,7 +56,6 @@ public class BackupWorker {
 		pushDataOntoDocument(doc, RETURN_VISIT_TAG, resolver, ReturnVisits.CONTENT_URI, RETURN_VISITS_PROJECTION, null, null, ReturnVisits._ID);
 		pushDataOntoDocument(doc, LITERATURE_TAG, resolver, Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature._ID + "> 4", null, Literature._ID); // IDs 1-4 are inserted on DB creation.
 		pushDataOntoDocument(doc, PLACEMENT_TAG, resolver, Placements.CONTENT_URI, PLACEMENTS_PROJECTION, null, null, Placements._ID);
-		pushDataOntoDocument(doc, BIBLE_STUDY_TAG, resolver, BibleStudies.CONTENT_URI, BIBLE_STUDIES_PROJECTION, null, null, BibleStudies._ID);
 		
 		
 		return doc.toString();
@@ -105,7 +102,6 @@ public class BackupWorker {
 		insertDataFromDocument(doc, RETURN_VISIT_TAG, resolver, ReturnVisits.CONTENT_URI);
 		insertDataFromDocument(doc, LITERATURE_TAG, resolver, Literature.CONTENT_URI);
 		insertDataFromDocument(doc, PLACEMENT_TAG, resolver, Placements.CONTENT_URI);
-		insertDataFromDocument(doc, BIBLE_STUDY_TAG, resolver, BibleStudies.CONTENT_URI);
 		
 	}
 	

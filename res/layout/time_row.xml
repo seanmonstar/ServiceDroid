@@ -24,6 +24,8 @@
             android:maxWidth="150dip"
             android:singleLine="true"
             android:ellipsize="end"
+            android:textColor="@android:color/secondary_text_dark_nodisable"
+            android:textStyle="italic"
             android:gravity="center_vertical|right"
             android:layout_alignParentRight="true"
             android:layout_alignBottom="@+id/date"

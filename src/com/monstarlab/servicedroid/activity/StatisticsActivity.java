@@ -51,7 +51,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	//private TimeUtil mTimeHelper;
 	
 	//private static String[] CallsProjection = new String[] { Calls._ID, Calls.BIBLE_STUDY };
-	private static String[] BibleStudiesProjection = new String[] { BibleStudies._ID };
+	private static String[] BibleStudiesProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.CALL_ID };
 	private static String[] TimeProjection = new String[] { TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	private static String[] RVProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
 	private static String[] PlacementsProjection = new String[] { Placements._ID, Placements.DATE, Literature.WEIGHT };
@@ -146,23 +146,16 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	}
 	
 	protected String getBibleStudies() {
-		//all Bible Studies started before next month, and not ended before this month
-		String where = BibleStudies.DATE_START + "<? and (" + BibleStudies.DATE_END+" isnull or "+BibleStudies.DATE_END + ">?)";
-		
-		String[] args = getTimePeriodArgs(mCurrentYear, mCurrentMonth);
-		String thisMonth = args[0];
-		String nextMonth = args[1];
-		
-		String[] whereArgs = new String[] { nextMonth, thisMonth };
-		Cursor c = getContentResolver().query(BibleStudies.CONTENT_URI, BibleStudiesProjection, where, whereArgs, null);
-		int sum = 0;
+		Cursor c = getContentResolver().query(ReturnVisits.BIBLE_STUDIES_CONTENT_URI, BibleStudiesProjection, ReturnVisits.IS_BIBLE_STUDY + "=1 and " + getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		String numOfRVs = "0";
 		if(c != null) {
 			c.moveToFirst();
-			sum = c.getCount();
+			numOfRVs = "" + c.getCount();
 			c.close();
 			c = null;
 		}
-		return "" + sum;
+		
+		return numOfRVs;
 	}
 
 

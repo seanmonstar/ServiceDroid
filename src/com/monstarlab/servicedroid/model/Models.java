@@ -127,6 +127,8 @@ public final class Models {
 		
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/returnvisits");
 		
+		public static final Uri BIBLE_STUDIES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/returnvisits/biblestudies");
+		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.returnvisit";
 		
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.returnvisit";

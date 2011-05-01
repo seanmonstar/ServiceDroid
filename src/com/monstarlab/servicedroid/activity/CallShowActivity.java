@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -50,7 +51,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE  };
 	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE };
-	private static final String[] RETURN_VISITS_PROJECTION = new String[]{ ReturnVisits._ID, ReturnVisits.CALL_ID, ReturnVisits.DATE };
+	private static final String[] RETURN_VISITS_PROJECTION = new String[]{ ReturnVisits._ID, ReturnVisits.CALL_ID, ReturnVisits.DATE, ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.NOTE };
 	
 	private static final int ID_COLUMN = 0;
 	private static final int NAME_COLUMN = 1;
@@ -71,6 +72,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	private static final String HISTORY_LOG_DATE = "date";
 	private static final String HISTORY_LOG_TYPE = "type";
 	private static final String HISTORY_LOG_ID = "_id";
+	private static final String HISTORY_LOG_NOTE = "note";
 
 	
 	
@@ -154,6 +156,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 				default:
 					mNameText.setText(name);
 					mAddressText.setText(address);
+					mNotesText.setVisibility(TextUtils.isEmpty(notes) ? View.GONE : View.VISIBLE);
 					mNotesText.setText(notes);
 					updateLastVisited();
 					break;
@@ -204,11 +207,18 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 			if(rvCursor.getCount() > 0) {
 		
 				rvCursor.moveToFirst();
-				int dateIndex = rvCursor.getColumnIndex(Placements.DATE);
+				int dateIndex = rvCursor.getColumnIndex(ReturnVisits.DATE);
+				int studyIndex = rvCursor.getColumnIndex(ReturnVisits.IS_BIBLE_STUDY);
+				int noteIndex = rvCursor.getColumnIndex(ReturnVisits.NOTE);
+				String rvTitle = getString(R.string.rv);
+				String bibleStudyTitle = getString(R.string.bible_study);
 				
 				while (!rvCursor.isAfterLast()) {
 					HashMap<String, String> map = new HashMap<String, String>();
-					map.put(HISTORY_LOG_TITLE, getString(R.string.rv));
+					boolean isStudy = rvCursor.getInt(studyIndex) == 1;
+					
+					map.put(HISTORY_LOG_TITLE, isStudy ? bibleStudyTitle : rvTitle);
+					map.put(HISTORY_LOG_NOTE, rvCursor.getString(noteIndex));
 					map.put(HISTORY_LOG_DATE, rvCursor.getString(dateIndex));
 					map.put(HISTORY_LOG_TYPE, ReturnVisits.CONTENT_ITEM_TYPE);
 					map.put(HISTORY_LOG_ID, rvCursor.getString(0));
@@ -230,8 +240,8 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		
 		//make the ArrayAdapter and link to the listView
 		
-		String[] from = new String[]{ HISTORY_LOG_TITLE, HISTORY_LOG_DATE };
-		int[] to = new int[]{ R.id.name, R.id.date };
+		String[] from = new String[]{ HISTORY_LOG_TITLE, HISTORY_LOG_DATE, HISTORY_LOG_NOTE };
+		int[] to = new int[]{ R.id.name, R.id.date, R.id.notes };
 		
 		SimpleAdapter adapter = new SimpleAdapter(this, mHistoryMaps, R.layout.placement_row, from, to) {
 			@Override
@@ -395,17 +405,6 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
 			startActivity(i);
 			
-			/*mCallCursor.moveToFirst();
-		
-			ContentValues values = new ContentValues();
-			values.put(ReturnVisits.CALL_ID, mCallCursor.getInt(ID_COLUMN));
-			getContentResolver().insert(ReturnVisits.CONTENT_URI, values);
-			
-			
-			String name = mCallCursor.getString(NAME_COLUMN);
-			String text = getString(R.string.return_visit_success, name);
-			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-			updateLastVisited();*/
 		}
 	}
 	

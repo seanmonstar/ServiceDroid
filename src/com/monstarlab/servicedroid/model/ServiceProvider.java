@@ -26,13 +26,14 @@ import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.service.BackupService;
+import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class ServiceProvider extends ContentProvider {
 	
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servicedroid";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
@@ -44,7 +45,6 @@ public class ServiceProvider extends ContentProvider {
     private static HashMap<String, String> sTimeProjectionMap;
     private static HashMap<String, String> sCallProjectionMap;
     private static HashMap<String, String> sRVProjectionMap;
-    private static HashMap<String, String> sBibleStudyProjectionMap;
     private static HashMap<String, String> sLiteratureProjectionMap;
     private static HashMap<String, String> sPlacementProjectionMap;
 
@@ -66,7 +66,6 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACEMENTS_DETAILS = 14;
     private static final int PLACEMENTS_DETAILS_ID = 15;
     private static final int BIBLE_STUDIES = 16;
-    private static final int BIBLE_STUDIES_ID = 17;
     
     private static final UriMatcher sUriMatcher;
     
@@ -78,6 +77,7 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "calls/#", CALLS_ID);
     	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits", RETURN_VISITS);
     	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits/#", RETURN_VISITS_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "returnvisits/biblestudies", BIBLE_STUDIES);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements", PLACEMENTS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/#", PLACEMENTS_ID);
     	sUriMatcher.addURI(Models.AUTHORITY, "literature", LITERATURE);
@@ -87,8 +87,6 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", PLACEMENTS_DETAILS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details/#", PLACEMENTS_DETAILS_ID);
-    	sUriMatcher.addURI(Models.AUTHORITY, "biblestudies", BIBLE_STUDIES);
-    	sUriMatcher.addURI(Models.AUTHORITY, "biblestudies/#", BIBLE_STUDIES_ID);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -103,7 +101,7 @@ public class ServiceProvider extends ContentProvider {
     	sCallProjectionMap.put(Calls.NOTES, CALLS_TABLE + "." + Calls.NOTES);
     	sCallProjectionMap.put(Calls.DATE, CALLS_TABLE + "." + Calls.DATE);
     	sCallProjectionMap.put(Calls.TYPE, CALLS_TABLE + "." + Calls.TYPE);
-    	sCallProjectionMap.put(Calls.IS_STUDY, "((select count(bible_studies._id) from bible_studies where bible_studies.call_id = calls._id and bible_studies.date_end isnull) <> 0) as 'is_study'");
+    	sCallProjectionMap.put(Calls.IS_STUDY, "((select count(return_visits._id) from return_visits where return_visits.call_id = calls._id and return_visits.date >= date('now', 'start of month')) > 0) as 'is_study'");
     	sCallProjectionMap.put(Calls.LAST_VISITED, "coalesce((select return_visits.date from return_visits where return_visits.call_id = calls._id order by return_visits.date desc limit 1),calls.date) as 'last_visited'");
     	
     	sRVProjectionMap = new HashMap<String, String>();
@@ -127,12 +125,6 @@ public class ServiceProvider extends ContentProvider {
     	sPlacementProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
     	sPlacementProjectionMap.put(Literature.TYPE, LITERATURE_TABLE + "." + Literature.TYPE);
     	sPlacementProjectionMap.put(Literature.WEIGHT, LITERATURE_TABLE + "." + Literature.WEIGHT);
-    	
-    	sBibleStudyProjectionMap = new HashMap<String, String>();
-    	sBibleStudyProjectionMap.put(BibleStudies._ID, BibleStudies._ID);
-    	sBibleStudyProjectionMap.put(BibleStudies.DATE_START, BibleStudies.DATE_START);
-    	sBibleStudyProjectionMap.put(BibleStudies.DATE_END, BibleStudies.DATE_END);
-    	sBibleStudyProjectionMap.put(BibleStudies.CALL_ID, BibleStudies.CALL_ID);
     	
     	try {
     		WrapManager.checkAvailable();
@@ -170,6 +162,8 @@ public class ServiceProvider extends ContentProvider {
 			db.execSQL("create table " +  RETURN_VISITS_TABLE + " (" 
 				+ ReturnVisits._ID + " integer primary key autoincrement,"
 			    + ReturnVisits.DATE + " date default current_timestamp,"
+			    + ReturnVisits.NOTE + " text,"
+			    + ReturnVisits.IS_BIBLE_STUDY + " integer default 0,"
 			    + ReturnVisits.CALL_ID + " integer references calls(id) )");
 			
 			db.execSQL("create table " +  LITERATURE_TABLE + " (" 
@@ -233,12 +227,14 @@ public class ServiceProvider extends ContentProvider {
 			case 5:
 				//at this point, we moved from a BibleStudies table, to each visit 
 				//being a study or not.
+				db.execSQL("alter table " + RETURN_VISITS_TABLE + " add column " + ReturnVisits.IS_BIBLE_STUDY + " integer default 0");
+				db.execSQL("alter table " + RETURN_VISITS_TABLE + " add column " + ReturnVisits.NOTE + " text");
 				
 				//For the old "bible studies", assign every Return Visit that happened
 				//during the same time period to be IS_BIBLE_STUDY.
+				upgradeBibleStudies(db);
 				
-				
-				//db.execSQL("drop table " + BIBLE_STUDIES_TABLE);
+				db.execSQL("drop table " + BIBLE_STUDIES_TABLE);
 				
 				
 				//these fall through on purpose
@@ -252,8 +248,42 @@ public class ServiceProvider extends ContentProvider {
 			
 			
 		}
+		
+
+	    private void upgradeBibleStudies(SQLiteDatabase db) {
+	    	Cursor c = null;
+			try {
+				c = db.rawQuery("select * from " + BIBLE_STUDIES_TABLE, null);
+				if (c != null) {
+					c.moveToFirst();
+					int callIDCol = c.getColumnIndex(BibleStudies.CALL_ID);
+					int dateStartCol = c.getColumnIndex(BibleStudies.DATE_START);
+					int dateEndCol = c.getColumnIndex(BibleStudies.DATE_END);
+					
+					String today = TimeUtil.getCurrentTimeSQLText();
+					while (!c.isAfterLast()) {
+						String[] args = new String[] { c.getString(callIDCol), c.getString(dateStartCol), c.getString(dateEndCol) };
+						if (args[2] == null) {
+							args[2] = today;
+						}
+						db.execSQL("update " + RETURN_VISITS_TABLE + 
+								" set " + ReturnVisits.IS_BIBLE_STUDY + "=1 where " + ReturnVisits.CALL_ID + "=? and"
+								+ ReturnVisits.DATE + " between ? and ?",
+								args);
+						c.moveToNext();
+					}
+				}
+			} catch (Exception e) {
+				Log.e(TAG, e.toString());
+			} finally {
+				if (c != null) {
+					c.close();
+				}
+			}
+	    }
     	
     }
+    
     
     private DatabaseHelper mDbHelper;
 
@@ -317,14 +347,6 @@ public class ServiceProvider extends ContentProvider {
 			count = db.delete(LITERATURE_TABLE, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
 			break;
 			
-		case BIBLE_STUDIES:
-			count = db.delete(BIBLE_STUDIES_TABLE, where, whereArgs);
-			break;
-		case BIBLE_STUDIES_ID:
-			String bsId = uri.getPathSegments().get(1);
-			count = db.delete(BIBLE_STUDIES_TABLE, BibleStudies._ID + "=" + bsId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
-			break;
-			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -362,11 +384,6 @@ public class ServiceProvider extends ContentProvider {
 			return Literature.CONTENT_TYPE;
 		case LITERATURE_ID:
 			return Literature.CONTENT_ITEM_TYPE;
-			
-		case BIBLE_STUDIES:
-			return BibleStudies.CONTENT_TYPE;
-		case BIBLE_STUDIES_ID:
-			return BibleStudies.CONTENT_ITEM_TYPE;
 			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -410,11 +427,6 @@ public class ServiceProvider extends ContentProvider {
 			contentUri = Literature.CONTENT_URI;
 			break;
 			
-		case BIBLE_STUDIES:
-			tableName = BIBLE_STUDIES_TABLE;
-			nullColumn = BibleStudies.DATE_END;
-			contentUri = BibleStudies.CONTENT_URI;
-			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI + "+uri);
 		}
@@ -487,6 +499,15 @@ public class ServiceProvider extends ContentProvider {
 				orderBy = ReturnVisits.DEFAULT_SORT_ORDER;
 			}
 			break;
+		
+		case BIBLE_STUDIES:
+			qb.setTables(RETURN_VISITS_TABLE);
+			qb.setProjectionMap(sRVProjectionMap);
+			groupBy = ReturnVisits.CALL_ID;
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = ReturnVisits.DEFAULT_SORT_ORDER;
+			}
+			break;
 			
 		case PLACEMENTS_ID:
 			qb.appendWhere(Placements._ID + "=" + uri.getPathSegments().get(1));
@@ -510,18 +531,6 @@ public class ServiceProvider extends ContentProvider {
 			}
 			break;
 			
-		case BIBLE_STUDIES_ID:
-			qb.appendWhere(BibleStudies._ID + "=" + uri.getPathSegments().get(1));
-			//falls through
-		case BIBLE_STUDIES:
-			qb.setTables(BIBLE_STUDIES_TABLE);
-			qb.setProjectionMap(sBibleStudyProjectionMap);
-			if(TextUtils.isEmpty(orderBy)) {
-				orderBy = BibleStudies.DEFAULT_SORT_ORDER;
-			}
-			
-			groupBy = BibleStudies.CALL_ID;
-			break;
 			
 		case PLACED_MAGAZINES:
 			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
@@ -619,13 +628,6 @@ public class ServiceProvider extends ContentProvider {
 			count = db.update(LITERATURE_TABLE, values, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
 			break;
 			
-		case BIBLE_STUDIES:
-			count = db.update(BIBLE_STUDIES_TABLE, values, where, whereArgs);
-			break;
-		case BIBLE_STUDIES_ID:
-			String bsId = uri.getPathSegments().get(1);
-			count = db.update(BIBLE_STUDIES_TABLE, values, BibleStudies._ID + "=" + bsId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
-			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}

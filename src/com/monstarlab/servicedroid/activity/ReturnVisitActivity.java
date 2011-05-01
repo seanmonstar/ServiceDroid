@@ -23,7 +23,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class ReturnVisitActivity extends Activity {
@@ -35,7 +37,7 @@ public class ReturnVisitActivity extends Activity {
 	
 	private static final int DIALOG_DATE = 1;
 	
-	private static final String[] PROJECTION = new String[]{ ReturnVisits._ID, ReturnVisits.CALL_ID, ReturnVisits.DATE };
+	private static final String[] PROJECTION = new String[]{ ReturnVisits._ID, ReturnVisits.CALL_ID, ReturnVisits.DATE, ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.NOTE };
 	
 	private int mState;
 	private Uri mUri;
@@ -44,9 +46,11 @@ public class ReturnVisitActivity extends Activity {
 	private TimeUtil mTimeHelper;
 	private Cursor mCursor;
 	private Button mDateBtn;
-
-	private String mDate;
+	private CheckBox mBibleStudyCheckbox;
+	private EditText mNotesText;
 	
+	private String mDate;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,7 @@ public class ReturnVisitActivity extends Activity {
 			}
 			ContentValues values = new ContentValues();
 			values.put(ReturnVisits.CALL_ID, mCallId);
-			values.put(ReturnVisits.DATE, TimeUtil.getCurrentTimeSQLText());
+			values.put(ReturnVisits.DATE, TimeUtil.getCurrentDateSQLText());
 			mUri = getContentResolver().insert(intent.getData(), values);
 			
 			if(mUri == null) {
@@ -98,6 +102,9 @@ public class ReturnVisitActivity extends Activity {
 			}
 			
 		});
+		
+		mBibleStudyCheckbox = (CheckBox) findViewById(R.id.is_bible_study);
+		mNotesText = (EditText) findViewById(R.id.notes);
 		
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
@@ -129,8 +136,10 @@ public class ReturnVisitActivity extends Activity {
 			//grab date
 			if(mCursor.getCount() > 0) {
 				mCursor.moveToFirst();
-				String date = mCursor.getString(2);
-				setDate(date);
+				setDate(mCursor.getString(2));
+				mBibleStudyCheckbox.setChecked(mCursor.getInt(3) == 1);
+				mNotesText.setText(mCursor.getString(4));
+				
 				
 			}
 			
@@ -146,16 +155,20 @@ public class ReturnVisitActivity extends Activity {
 		if(mCursor != null) {
 			
 			
-			if(isFinishing() &&  mIsCancelled) {
-				//they pressed the delete button, so DELETE!
+			if(isFinishing() && (mState == STATE_INSERT) && mIsCancelled) {
+				//they pressed the Cancel button when this a new visit, so delete
 				setResult(RESULT_CANCELED);
 				deleteEntry();
 			
-			
+			} else if (isFinishing() && mIsCancelled) {
+				//they pressed the Cancel button for editing a visit, just dont update
+				setResult(RESULT_CANCELED);
 			} else {
 				//save the current changes to the Provider
 				ContentValues values = new ContentValues();
 				values.put(ReturnVisits.DATE, getDate());
+				values.put(ReturnVisits.IS_BIBLE_STUDY, mBibleStudyCheckbox.isChecked());
+				values.put(ReturnVisits.NOTE, mNotesText.getText().toString());
 				getContentResolver().update(mUri, values, null, null);
 				
 				// make a toast if creating a new Return Visit
@@ -170,6 +183,12 @@ public class ReturnVisitActivity extends Activity {
 					c.close();
 					c = null;
 				}
+				
+				// set data on Intent in case the orientation has changed
+				// https://github.com/seanmonstar/ServiceDroid/issues/issue/58
+				Intent i = getIntent();
+				i.setAction(Intent.ACTION_EDIT);
+				i.setData(mUri);
 				
 			}
 		}
@@ -212,7 +231,7 @@ public class ReturnVisitActivity extends Activity {
 			
 			@Override
 			public void onDateSet(DatePicker view, int y, int m, int d) {
-				String date = y + "-" + TimeUtil.pad(m) + "-" + d;
+				String date = y + "-" + TimeUtil.pad(m+1) + "-" + d;
 				setDate(date);
 			}
 

@@ -267,7 +267,7 @@ public class ServiceProvider extends ContentProvider {
 							args[2] = today;
 						}
 						db.execSQL("update " + RETURN_VISITS_TABLE + 
-								" set " + ReturnVisits.IS_BIBLE_STUDY + "=1 where " + ReturnVisits.CALL_ID + "=? and"
+								" set " + ReturnVisits.IS_BIBLE_STUDY + "=1 where " + ReturnVisits.CALL_ID + "=? and "
 								+ ReturnVisits.DATE + " between ? and ?",
 								args);
 						c.moveToNext();

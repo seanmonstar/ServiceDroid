@@ -635,17 +635,19 @@ public class ServiceProvider extends ContentProvider {
 	}
 	
 	protected void dataChanged() {
+		//try to use BackupAgent, but backup to SD card also, for redundancy
 		if(sUseManager) {
 			//instantiate BackupManager and dataChanged
 			if(mWrappedManager == null) {
 				mWrappedManager = new WrapManager(getContext());
 			}
 			mWrappedManager.dataChanged();
-		} else {
-			Context ctx = getContext();
-			Intent i = new Intent(BackupService.ACTION_BACKUP, null, ctx, BackupService.class);
-			ctx.startService(i);
 		}
+		
+		//backup to SD card
+		Context ctx = getContext();
+		Intent i = new Intent(BackupService.ACTION_BACKUP, null, ctx, BackupService.class);
+		ctx.startService(i);
 	}
 	
 	protected void restore() {

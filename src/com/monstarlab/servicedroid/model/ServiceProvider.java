@@ -19,7 +19,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.monstarlab.servicedroid.R;
-import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -215,7 +214,7 @@ public class ServiceProvider extends ContentProvider {
 				db.execSQL("alter table " + CALLS_TABLE + " add column " + Calls.TYPE + " integer default 1");
 			case 2:
 				//remove dangling Bible Studies
-				db.execSQL("delete from " + BIBLE_STUDIES_TABLE + " where " + BibleStudies.CALL_ID + 
+				db.execSQL("delete from " + BIBLE_STUDIES_TABLE + " where call_id" + 
 						" not in (select " + Calls._ID + " from " + CALLS_TABLE + ")");
 				
 			case 3:
@@ -256,9 +255,9 @@ public class ServiceProvider extends ContentProvider {
 				c = db.rawQuery("select * from " + BIBLE_STUDIES_TABLE, null);
 				if (c != null) {
 					c.moveToFirst();
-					int callIDCol = c.getColumnIndex(BibleStudies.CALL_ID);
-					int dateStartCol = c.getColumnIndex(BibleStudies.DATE_START);
-					int dateEndCol = c.getColumnIndex(BibleStudies.DATE_END);
+					int callIDCol = c.getColumnIndex("call_id");
+					int dateStartCol = c.getColumnIndex("date_start");
+					int dateEndCol = c.getColumnIndex("date_end");
 					
 					String today = TimeUtil.getCurrentTimeSQLText();
 					while (!c.isAfterLast()) {

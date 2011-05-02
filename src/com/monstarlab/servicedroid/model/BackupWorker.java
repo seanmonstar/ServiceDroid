@@ -2,7 +2,6 @@ package com.monstarlab.servicedroid.model;
 
 import java.util.HashMap;
 
-import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;

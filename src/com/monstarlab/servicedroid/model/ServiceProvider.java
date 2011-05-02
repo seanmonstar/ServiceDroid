@@ -115,6 +115,7 @@ public class ServiceProvider extends ContentProvider {
     	sLiteratureProjectionMap.put(Literature._ID, Literature._ID);
     	sLiteratureProjectionMap.put(Literature.TYPE, Literature.TYPE);
     	sLiteratureProjectionMap.put(Literature.TITLE, Literature.TITLE);
+    	sLiteratureProjectionMap.put(Literature.WEIGHT, Literature.WEIGHT);
     	sLiteratureProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
     	
     	sPlacementProjectionMap = new HashMap<String, String>();

@@ -11,9 +11,6 @@
     <string name="bible">Bible</string>
     <string name="bible_studies">Bible Studies</string>
     <string name="bible_study">Bible Study</string>
-    <string name="bible_study_prompt">Do you wish to mark it as ended, or delete all traces of this study?</string>
-	<string name="bible_study_prompt_delete">Delete</string>
-	<string name="bible_study_prompt_finish">It Ended</string>
 	<string name="bible_teach">What Does the Bible Really Teach?</string>
     <string name="book">Book</string>
 	<string name="books">Books</string>
@@ -33,6 +30,7 @@
     <string name="create_placement">Create Placement</string>
     <string name="date">Date</string>
     <string name="delete_call">Delete Call</string>
+    <string name="delete_call_prompt">Would you like to delete all placements and visits associated with this call?</string>
     <string name="delete_placement">Delete Placement</string>
     <string name="delete_rv">Delete Visit</string>
     <string name="delete_time">Delete Time</string>
@@ -72,6 +70,7 @@
         <item>December</item>
     </string-array>
 	<string name="name">Name</string>
+	<string name="no">No</string>
 	<string name="no_calls">Press MENU to record a new Call.</string>
 	<string name="no_placements">Press MENU to record a placement.</string>
 	<string name="no_time">Press MENU to record time for this month.</string>	
@@ -105,4 +104,5 @@
     <string name="watchtower">Watchtower</string>
     <string name="whats_new">What\'s New!</string>
 	<string name="year">Year</string>
+	<string name="yes">Yes</string>
 </resources>

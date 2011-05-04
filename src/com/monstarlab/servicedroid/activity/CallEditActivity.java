@@ -14,6 +14,8 @@ import android.widget.EditText;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.model.Models.TimeEntries;
+import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class CallEditActivity extends Activity {
 
@@ -49,7 +51,9 @@ public class CallEditActivity extends Activity {
 			mUri = intent.getData();
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
-			mUri = getContentResolver().insert(intent.getData(), null);
+			ContentValues v = new ContentValues();
+			v.put(Calls.DATE, TimeUtil.getCurrentDateSQLText());
+			mUri = getContentResolver().insert(intent.getData(), v);
 			
 			if(mUri == null) {
 				Log.e(TAG, "Failed to insert a blank row into " + getIntent().getData());

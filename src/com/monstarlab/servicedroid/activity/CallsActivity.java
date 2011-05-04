@@ -1,8 +1,11 @@
 package com.monstarlab.servicedroid.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -25,6 +28,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
@@ -36,10 +40,13 @@ public class CallsActivity extends ListActivity {
 	private static final int MENU_SORT_ALPHA = Menu.FIRST + 1;
 	private static final int MENU_SORT_TIME = Menu.FIRST + 2;
 	private static final int MENU_ADD_ANON_PLACEMENTS = Menu.FIRST + 3;
+	
 	private static final int EDIT_ID  = Menu.FIRST + 4;
 	private static final int RETURN_ID  = Menu.FIRST + 5;
 	private static final int DIRECTIONS_ID  = Menu.FIRST + 6;
 	private static final int DELETE_ID = Menu.FIRST + 7;
+	
+	private static final int DELETE_CALL_DIALOG = 0;
 	
 	private static final String[] PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.IS_STUDY, Calls.LAST_VISITED, Calls.TYPE };
 	
@@ -47,6 +54,7 @@ public class CallsActivity extends ListActivity {
 	private static final int SORT_TIME = 1;
 
 	private int mSortState;
+	private long mJustDeletedCall;
 
 	private boolean mIsAnonCall = false;
 	private Cursor mListCursor;
@@ -119,6 +127,35 @@ public class CallsActivity extends ListActivity {
 		getAnonCall();
 	}
 	
+	private Dialog makeDeleteCallDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		//builder.setTitle(getString(R.string.placement));
+		builder.setMessage(getString(R.string.delete_call_prompt))
+	       .setCancelable(false)
+	       .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               deleteCallRelatedData();
+	           }
+	       })
+	       .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	                //do nothing
+	           }
+	       });
+		return builder.create();
+	}
+	
+	private void deleteCallRelatedData() {
+		if (mJustDeletedCall == 0) {
+			return;
+		}
+		
+		String[] whereArgs = new String[] { String.valueOf(mJustDeletedCall) };
+		getContentResolver().delete(ReturnVisits.CONTENT_URI, ReturnVisits.CALL_ID+"=?", whereArgs);
+		getContentResolver().delete(Placements.CONTENT_URI, Placements.CALL_ID+"=?", whereArgs);
+	}
+	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
@@ -126,6 +163,20 @@ public class CallsActivity extends ListActivity {
         return result;
     }
 	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog;
+	    switch(id) {
+	    case DELETE_CALL_DIALOG:
+	    	dialog = makeDeleteCallDialog();
+	        break;
+	    default:
+	        dialog = null;
+	    }
+	    return dialog;
+	}
+
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
@@ -280,6 +331,8 @@ public class CallsActivity extends ListActivity {
 	protected void deleteCall(long id) {
 		Uri callUri = ContentUris.withAppendedId(getIntent().getData(), id);
 		getContentResolver().delete(callUri, null, null);
+		mJustDeletedCall = id;
+		showDialog(DELETE_CALL_DIALOG);
 		
 		getAnonCall();
 	}

@@ -24,7 +24,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.monstarlab.servicedroid.R;
-import com.monstarlab.servicedroid.model.Models.BibleStudies;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
@@ -282,19 +281,7 @@ public class CallsActivity extends ListActivity {
 		Uri callUri = ContentUris.withAppendedId(getIntent().getData(), id);
 		getContentResolver().delete(callUri, null, null);
 		
-		//be sure to end a bible study if currently active with this call
-		endRelatedStudy(id);
-		
 		getAnonCall();
-	}
-	
-	protected void endRelatedStudy(long callId) {
-		ContentValues values = new ContentValues();
-		values.put(BibleStudies.DATE_END, TimeUtil.getCurrentTimeSQLText());
-		getContentResolver().update(BibleStudies.CONTENT_URI, 
-				values, 
-				BibleStudies.CALL_ID+"=? and "+BibleStudies.DATE_END+" is null", 
-				new String[]{""+callId});
 	}
 	
 	protected void editCall(long id) {

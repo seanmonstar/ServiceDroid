@@ -44,7 +44,6 @@
     <TextView android:id="@+id/notes"
             android:layout_width="fill_parent"
             android:layout_below="@id/call_header"
-            android:text="notes"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:maxLines="4"
@@ -52,15 +51,9 @@
             android:textColor="@android:color/secondary_text_dark_nodisable"
         />
         
-    <CheckBox android:id="@+id/is_bible_study"
-        android:layout_width="fill_parent"
-        android:layout_height="?android:attr/listPreferredItemHeight"
-        android:layout_below="@id/notes"
-        android:text="@string/bible_study" />
-        
     <TextView android:id="@+id/lastVisit" 
             android:layout_width="fill_parent"
-            android:layout_below="@id/is_bible_study"
+            android:layout_below="@id/notes"
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:gravity="center_horizontal"

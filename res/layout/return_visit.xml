@@ -18,10 +18,22 @@
 				android:text="@string/date"
 				android:textAppearance="?android:attr/textAppearanceLarge" />
 			
-			<DatePicker android:id="@+id/date" 
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:layout_gravity="center_horizontal"/>
+			<Button android:id="@+id/date" android:text="@string/date"
+				android:layout_width="fill_parent" android:layout_height="wrap_content" />
+			
+			<CheckBox android:id="@+id/is_bible_study"
+		        android:layout_width="fill_parent"
+		        android:layout_height="?android:attr/listPreferredItemHeight"
+		        android:text="@string/bible_study" />
+		    
+		    <EditText android:id="@+id/notes"
+		    	android:hint="@string/notes" 
+		    	android:layout_width="fill_parent" 
+				android:layout_height="fill_parent"
+				android:layout_weight="1" 
+				android:gravity="top" 
+				android:inputType="text|textMultiLine|textCapSentences|textAutoCorrect"/>
+				
 		</LinearLayout>
 	</ScrollView>
 

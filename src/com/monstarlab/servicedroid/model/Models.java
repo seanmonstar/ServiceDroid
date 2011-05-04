@@ -93,39 +93,13 @@ public final class Models {
 		
 	}
 	
-	public static final class BibleStudies implements BaseColumns {
-
-		private BibleStudies() {}
-		
-		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/biblestudies");
-		
-		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.biblestudy";
-		
-		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.biblestudy";
-		
-		public static final String DEFAULT_SORT_ORDER = "date_start ASC";
-		
-		/**
-		 * 	type: date
-		 */
-		public static final String DATE_START = "date_start";
-		
-		/**
-		 * 	type: date
-		 */
-		public static final String DATE_END = "date_end";
-		
-		/**
-		 * 	type: varchar(128)
-		 */
-		public static final String CALL_ID = "call_id";
-	}
-	
 	public static final class ReturnVisits implements BaseColumns {
 		
 		private ReturnVisits() {}
 		
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/returnvisits");
+		
+		public static final Uri BIBLE_STUDIES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/returnvisits/biblestudies");
 		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.returnvisit";
 		
@@ -143,6 +117,15 @@ public final class Models {
 		 */
 		public static final String CALL_ID = "call_id";
 		
+		/**
+		 *  type: text
+		 */
+		public static final String NOTE = "note";
+		
+		/**
+		 *  type: boolean
+		 */
+		public static final String IS_BIBLE_STUDY = "is_bible_study";
 	}
 	
 	public static final class Placements implements BaseColumns {

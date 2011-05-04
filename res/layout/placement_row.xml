@@ -27,5 +27,21 @@
            android:singleLine="true"
            android:ellipsize="marquee"
            android:gravity="center_vertical|left"
+           android:textColor="#fff"
+       />
+       
+       <TextView android:id="@+id/notes"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignWithParentIfMissing="true"
+           android:layout_alignParentLeft="true"
+           android:layout_alignBottom="@id/date"
+           android:layout_marginTop="5dip"
+           android:layout_marginBottom="5dip"
+           android:singleLine="true"
+           android:ellipsize="end"
+           android:gravity="center_vertical|left"
+           android:textColor="@android:color/secondary_text_dark_nodisable"
+           android:textStyle="italic"
        />
 </RelativeLayout>

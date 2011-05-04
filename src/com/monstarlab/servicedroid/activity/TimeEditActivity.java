@@ -75,7 +75,7 @@ public class TimeEditActivity extends Activity {
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
 			ContentValues v = new ContentValues();
-			v.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
+			v.put(TimeEntries.DATE, TimeUtil.getCurrentDateSQLText());
 			mUri = getContentResolver().insert(intent.getData(), v);
 			
 			if(mUri == null) {
@@ -166,7 +166,7 @@ public class TimeEditActivity extends Activity {
 			
 			mNoteText.setText(note);
 		} else {
-			setDate(TimeUtil.getCurrentTimeSQLText());
+			setDate(TimeUtil.getCurrentDateSQLText());
 			setLength(0);
 		}
 	}
@@ -291,7 +291,7 @@ public class TimeEditActivity extends Activity {
 			
 			@Override
 			public void onDateSet(DatePicker view, int y, int m, int d) {
-				String date = y + "-" + pad(m) + "-" + d;
+				String date = y + "-" + pad(m+1) + "-" + d;
 				setDate(date);
 			}
 

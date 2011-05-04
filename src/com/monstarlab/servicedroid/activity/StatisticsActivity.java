@@ -279,7 +279,7 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		}
 		
 		Calendar cal = Calendar.getInstance();
-		cal.set(year, month - 1, 1);
+		cal.set(year, month - 1, 1, 0, 0, 0);
 		String[] args = new String[2];
 
 		//beginning of month

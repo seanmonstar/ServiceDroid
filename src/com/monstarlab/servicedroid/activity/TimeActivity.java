@@ -188,7 +188,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
 		Calendar cal = Calendar.getInstance();
-		cal.set(year, month - 1, 1);
+		cal.set(year, month - 1, 1, 0, 0, 0);
 		String[] args = new String[2];
 
 		//beginning of month

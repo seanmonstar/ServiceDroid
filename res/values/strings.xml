@@ -19,10 +19,12 @@
     <string name="callbook">Call Book</string>
     <string name="cancel">Cancel</string>
     <string-array name="changelog">
-    	<item>Data is backed up either to your Google Account, or your SD card.</item>
-    	<item>Return Visits now show up along with the Call\'s placements, and are editable.</item>
-    	<item>Swiping left and right on the Time view will change the month displayed.</item>
-    	<item>Translated into Spanish, Portuguese, German, French, and Danish (thanks to Dunnia Lempert, Ruben Reis, Manuel Haas, David V., and Flemming Jacobsen).</item>
+    	<item>Many views have been improved aesthetically and functionally.</item>
+    	<item>Added a combination placement of Watchtower &amp; Awake.</item>
+    	<item>Bible studies received a major change. Bible studies are now recorded when making a return visit.</item>
+    	<item>Time Entries and Return Visits can have notes.</item>
+    	<item>Backups will always use the SD card when available.</item>
+    	<item>New translations: Italian (thanks to Stefano Rinolfi)</item>
     </string-array>
     <string name="combo">Watchtower &amp; Awake!</string>
     <string name="confirm">Save</string>

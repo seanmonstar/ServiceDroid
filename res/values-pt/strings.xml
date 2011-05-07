@@ -20,16 +20,20 @@
     <string name="callbook">Livro de Visitas</string>
     <string name="cancel">Cancelar</string>
     <string-array name="changelog">
-    	<item>Os dados são salvos numa Conta Google ou no Cartão de Memória.</item>
-    	<item>As revisitas agora aparecem em conjunto com os locais de visita, e são editáveis.</item>
-    	<item>Ao deslizar para esquerda ou direita na vista do Tempo irá mudar o mês apresentado.</item>
-    	<item>Traduzido para Espanhol, Português, Alemão, Francês, e Dinamarquês (agradecimentos a Dunnia Lempert, Ruben Reis, Manuel Haas, David V., e Flemming Jacobsen).</item>
-    </string-array>
+	   <item>Várias vistas foram melhoradas esteticamente e estão mais funcionais.</item>
+	   <item>Foi adicionada a colocação combinada de A Sentinela &amp; Despertai!.</item>
+	   <item>Os Estudos Bíblicos receberam maiores melhoramentos. Os Estudos Bíblicos são agora gravados ao fazer uma revisita.</item>
+	   <item>As Entradas de Tempo e Revisitas podem ter notas.</item>
+	   <item>As cópias de seguranaça sempre usarão o cartão de memória quando disponível.</item>
+	   <item>Novas Traduções: Italiano (agradecimentos para: Stefano Rinolfi)</item>
+	</string-array>
     <string name="confirm">Confirmar</string>
+    <string name="combo">A Sentinela &amp; Despertai!</string>
     <string name="comfort_brochure">Quando Morre Alguém Que Amamos</string>
     <string name="create_placement">Criar Colocação</string>
     <string name="date">Data</string>
     <string name="delete_call">Apagar Visita</string>
+    <string name="delete_call_prompt">Would you like to delete all placements and visits associated with this call?</string>
     <string name="delete_placement">Remover Colocação</string>
     <string name="delete_time">Apagar Tempo</string>
     <string name="delete_rv">Apagar Revisita</string>
@@ -68,6 +72,7 @@
         <item>Dezembro</item>
     </string-array>
 	<string name="name">Nome</string>
+	<string name="no">Não</string>
 	<string name="no_calls">Clique no MENU para adicionar uma nova visita.</string>
 	<string name="no_placements">Clique no MENU para adicionar uma colocação.</string>
 	<string name="no_time">Clique no MENU para adicionar tempo a este mês.</string>	
@@ -88,6 +93,8 @@
 	<string name="service_year">Ano de Serviço</string>
 	<string name="service_time_for">Ano de Serviço para %s</string>
     <string name="sort">Ordenar</string>
+    <string name="sorted_alpha">Alfabeticamente</string>
+    <string name="sorted_time">Visita mais antiga</string>
     <string name="start_time">Começar Tempo</string>
     <string name="stats">Estatísticas</string>
     <string name="stop_time">Parar Tempo</string>
@@ -99,4 +106,5 @@
     <string name="watchtower">A Sentinela</string>
     <string name="whats_new">Novidades</string>
 	<string name="year">Ano</string>
+	<string name="yes">Sim</string>
 </resources>

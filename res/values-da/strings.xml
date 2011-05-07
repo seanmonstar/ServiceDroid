@@ -9,9 +9,6 @@
     <string name="bible">Bibel</string>
     <string name="bible_studies">Bibelstudier</string>
     <string name="bible_study">Bibelstudium</string>
-    <string name="bible_study_prompt">Ønsker du at markere studiet som ophørt, eller helt at slette det?</string>
-	<string name="bible_study_prompt_delete">Slette</string>
-	<string name="bible_study_prompt_finish">Ophørt</string>
 	<string name="bible_teach">Hvad er det Bibelen virkelig lærer?</string>
     <string name="book">Bog</string>
 	<string name="books">Bøger</string>
@@ -20,22 +17,25 @@
     <string name="callbook">Besøg</string>
     <string name="cancel">Fortryd</string>
     <string-array name="changelog">
-    	<item>Der foretages backup af data til enten din Google-konto eller til SD-kort</item>
-    	<item>Genbesøg vises nu sammen med afsat litteratur og kan redigeres.</item>
-    	<item>Når du kører fingeren til højre og venstre i fanebladet Tid, vises de enkelte måneder separat.</item>
-    	<item>Oversat til spansk, portugisisk, tysk, fransk og dansk (Tak til Dunnia Lempert, Ruben Reis, Manuel Haas, David V. og Flemming Jacobsen).</item>
-    </string-array>
+	    <item>Mange skærmbilleder er forbedret både æstetisk og funktionelt.</item> 
+	    <item>Der er tilføjet mulighed for afsætning af Vagttårnet ogamp; Vågn Op! som sæt.</item>
+	    <item>\'Bibelstudier\' har gennemgået store forandringer. Bibelstudier bliver nu talt, når de bliver genbesøgt.</item>
+	    <item>Indtastning af tider og genbesøg kan nu tilføjes noter.</item>
+	    <item>Backup-funktionen vil altid benytte SD-kort når det er muligt.</item>
+	    <item>Ny oversættelse: Italiensk (Tak til Stefano Rinolfi)</item>
+	</string-array>
     <string name="confirm">Bekræft</string>
+    <string name="combo">Vagttårnet ogamp; Vågn op!</string>
     <string name="comfort_brochure">Når man mister en han holder af</string>
     <string name="create_placement">Afsat litteratur</string>
     <string name="date">Dato</string>
     <string name="delete_call">Slet besøg</string>
+    <string name="delete_call_prompt">Vil du gerne slette alt afsat litteratur og besøg ved dette genbesøg?</string>
     <string name="delete_placement">Slet afsat litteratur</string>
     <string name="delete_rv">Slet besøg</string>
     <string name="delete_time">Slet tid</string>
     <string name="directions">Vis vej</string>
     <string name="edit">Rediger</string>
-    <string name="email_hint">Du kan sende en mail med din rapport ved at trykke på telefonens MENU tast.</string>
     <string name="enjoy_servicedroid">Synes du om ServiceDroid?</string>
     <string name="give_review"><![CDATA[Giv gerne en positiv <a href=\"market://details?id=com.monstarlab.servicedroid\">anmeldelse</a>.]]></string>
     <string name="hours">Timer</string>
@@ -68,6 +68,7 @@
         <item>December</item>
     </string-array>
 	<string name="name">Navn</string>
+	<string name="no">Nej</string>
 	<string name="no_calls">Tryk MENU for at oprette et nyt genbesøg.</string>
 	<string name="no_placements">Tryk MENU for at markere afsætning af litteratur.</string>
 	<string name="no_time">Tryk MENU for at registrere tid for denne måned.</string>	
@@ -88,6 +89,8 @@
 	<string name="service_year">Tjenesteår</string>
 	<string name="service_time_for">Tjenestetid for %s</string>
     <string name="sort">Sorter</string>
+    <string name="sorted_alpha">Alfabetisk</string>
+	<string name="sorted_time">Ældste af mine besøg</string>
     <string name="start_time">Start tid</string>
     <string name="stats">Rapport</string>
     <string name="stop_time">Stop tid</string>
@@ -99,4 +102,5 @@
     <string name="watchtower">Vagttårnet</string>
     <string name="whats_new">Hvad er nyt!</string>
 	<string name="year">År</string>
+	<string name="yes">Ja</string>
 </resources>

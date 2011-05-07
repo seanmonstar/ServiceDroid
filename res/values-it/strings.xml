@@ -20,16 +20,20 @@
     <string name="callbook">Nota</string>
     <string name="cancel">Cancella</string>
     <string-array name="changelog">
-    	<item>Le informazioni saranno salvate sul proprio account di Google o sulla memoria SD.</item>
-    	<item>Le visite ulteriori vengono ora gestite con la distribuzione delle riviste e sono editabili.</item>
-    	<item>Nella scheda delle Ore  pssibile cambiare il mese visualizzato scorrendo lo schermo a destra o sinistra.</item>
-    	<item>Translated into Spanish, Portuguese, German, French, Danish, and Italian (thanks to Dunnia Lempert, Ruben Reis, Manuel Haas, David V., Flemming Jacobsen, and Stefano R.).</item>
-    </string-array>
+	    <item>Molte schermate sono state migliorate esteticamente e a livello funzionale..</item> 
+	    <item>Aggiunta una assegnazione combinata di Torre di Guardia e Svegliatevi.</item>
+	    <item>Gli studi biblici hanno subito diversi cambiamenti: vengono ora registrati alle visite ulteriori. </item>
+	    <item>Si possono ora associare delle note anche alle ore di servizio e alle visite ulteriori.</item>
+	    <item>Per i backup verrà sempre utilizzata la scheda SD, quando disponibile.</item>
+	    <item>Nuove traduzioni: italiano (grazie a Stefano Rinolfi)</item>
+	</string-array>
     <string name="confirm">Confermare</string>
+    <string name="combo">Torre di Guardia e Svegliatevi!</string>
     <string name="comfort_brochure">Quando muore una persona cara</string>
     <string name="create_placement">Creare Itinerario delle riviste</string>
     <string name="date">Data</string>
     <string name="delete_call">Cancella Nota</string>
+    <string name="delete_call_prompt">Vuoi cancellare tutte le pubblicazioni e le visite ulteriori associate a questa nota?</string>
     <string name="delete_placement">Cancella Itinerario</string>
     <string name="delete_rv">Cancella Visita</string>
     <string name="delete_time">Cancella Ore</string>
@@ -89,6 +93,8 @@
 	<string name="service_year">Servizio Anno</string>
 	<string name="service_time_for">Tempo di servizio per %s</string>
     <string name="sort">Ordina</string>
+    <string name="sorted_alpha">Ordine alfabetico</string>
+	<string name="sorted_time"> Visite più vecchie</string>
     <string name="start_time">Avvia il tempo</string>
     <string name="stats">Statistiche</string>
     <string name="stop_time">Ferma il tempo</string>
@@ -100,4 +106,5 @@
     <string name="watchtower">Torre di Guardia</string>
     <string name="whats_new">Cosa c\'� di nuovo!</string>
 	<string name="year">Anno</string>
+	<string name="yes">Si</string>
 </resources>

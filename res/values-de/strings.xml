@@ -19,17 +19,21 @@
 	<string name="brochures">Broschüren</string>
     <string name="callbook">Gesprächsnotizen</string>
     <string name="cancel">Abbrechen</string>
-    <string-array name="changelog">
-    	<item>Die Daten können entweder auf die SD-Karte oder auf dein Google-Konto gesichert werden.</item>
-    	<item>Rückbesuche werden jetzt zusammen mit den Gesprächsnotizen angezeigt und sind editierbar.</item>
-    	<item>Durch Wischen nach links oder rechts kann bei der Predigtdienstzeit der Monat gewechselt werden.</item>
-    	<item>Übersetzt nach Spanisch, Portugiesisch und Deutsch (vielen Dank an  Dunnia Lempert, Ruben Reis, und Manuel Haas).</item>
-    </string-array>
+    <string-array name="changelog">  
+	    <item>Viele Darstellungen wurden ästhetisch und funktional verbessert.</item> 
+	    <item>Abgegebene Zeitschriften Wachtturm &amp; Erwachet! können in einem Arbeitsschritt dokumentiert werden.</item>
+	    <item>Dokumentation der Heimbibelstudien wurden grundlegend geändert. Sie werden nun zusammen mit Rückbesuchen dokumentiert.</item>
+	    <item>Zeit-Einträge und Rückbesuche können mit Anmerkungen versehen werden.</item>
+	    <item>Zur Datensicherung wird immer die SD-Karte verwendet, falls verfügbar.</item>
+	    <item>Erweiterte Sprachunterstützung: italienisch (vielen Dank an Stefano Rinolfi)</item>
+	</string-array>
     <string name="confirm">Bestätigen</string>
+    <string name="combo">Wachtturm &amp; Erwachet!</string>
     <string name="comfort_brochure">Wenn ein geliebter Mensch gestorben ist</string>
     <string name="create_placement">Neue Literatur</string>
     <string name="date">Datum</string>
     <string name="delete_call">Gespräch entfernen</string>
+    <string name="delete_call_prompt">Willst du alle Besuchs- und Literaturnotizen zu diesem Gespräch löschen?</string>
     <string name="delete_placement">Literatur entfernen</string>
     <string name="delete_rv">Besuch entfernen</string>
     <string name="delete_time">Predigtdienststunden löschen</string>
@@ -68,6 +72,7 @@
         <item>Dezember</item>
     </string-array>
 	<string name="name">Name</string>
+	<string name="no">Nein</string>
 	<string name="no_calls">MENÜ drücken um eine Gesprächsnotiz anzulegen.</string>
 	<string name="no_placements">MENÜ drücken um abgegebene Literatur zu speichern.</string>
 	<string name="no_time">MENÜ drücken um Predigtdienststunden für diesen Monat hinzuzufügen.</string>	
@@ -87,6 +92,8 @@
 	<string name="service_year">Dienstjahr</string>
 	<string name="service_time_for">Predigtdienststunden für %s</string>
     <string name="sort">sortieren</string>
+    <string name="sorted_alpha">Alphabetisch</string>
+	<string name="sorted_time">Ältester Besuch</string>
     <string name="start_time">Timer starten</string>
     <string name="stats">Übersicht</string>
     <string name="stop_time">Timer stoppen</string>
@@ -98,4 +105,5 @@
     <string name="watchtower">Wachtturm</string>
     <string name="whats_new">What\'s New!</string>
 	<string name="year">Jahr</string>
+	<string name="yes">Ja</string>
 </resources>

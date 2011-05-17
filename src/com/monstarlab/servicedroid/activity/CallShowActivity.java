@@ -57,7 +57,6 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	private static final int TYPE_COLUMN = 5;
 
 	private static final int DIALOG_PLACEMENT_ID = 0;
-	private static final int DIALOG_BIBLESTUDYDELETE_ID = 1;
 
 	private static final int EDIT_PLACEMENT_ID = 0;
 	private static final int DELETE_PLACEMENT_ID = 1;

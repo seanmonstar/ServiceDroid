@@ -10,7 +10,6 @@ import android.app.backup.BackupAgent;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
 public class ServiceDroidBackupAgent extends BackupAgent {
 

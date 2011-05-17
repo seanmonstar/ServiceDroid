@@ -58,26 +58,6 @@ public class Changelog {
 		}
 	}
 	
-	/*private static int isNewOrUpdated(Context c) {
-		SharedPreferences settings = c.getSharedPreferences(PREFS_NAME, 0);
-	    int lastVersion = settings.getInt(LAST_VERSION, -1);
-		
-	    return lastVersion == -1 ? STATUS_NEW : STATUS_UPDATED;
-	}*/
-	
-	/*private static int getVersion(Context c) {
-		int versionCode = 0;
-		try {
-			//current version
-	        PackageInfo packageInfo = c.getPackageManager().getPackageInfo(c.getPackageName(), 0);
-	        versionCode = packageInfo.versionCode; 
-		} catch (NameNotFoundException e) {
-			//then just return 0
-		}
-		
-		return versionCode;
-	}*/
-	
 	private static boolean hasSeenMessage(Context c) {
 		SharedPreferences settings = c.getSharedPreferences(PREFS_NAME, 0);
 		return settings.getInt(PREFS_CHANGELOG_VERSION, 0) >= CURRENT_VERSION;

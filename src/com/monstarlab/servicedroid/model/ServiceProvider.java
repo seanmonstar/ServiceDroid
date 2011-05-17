@@ -2,7 +2,6 @@ package com.monstarlab.servicedroid.model;
 
 import java.util.HashMap;
 
-import android.app.backup.BackupManager;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;

@@ -335,6 +335,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 				c.moveToNext();
 				while(!c.isAfterLast()) {
 					getContentResolver().delete(ContentUris.withAppendedId(getIntent().getData(), c.getInt(0)), null, null);
+					c.moveToNext();
 				}
 			}
 		}

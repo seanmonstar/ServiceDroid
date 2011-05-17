@@ -20,16 +20,20 @@
     <string name="callbook">Visites</string>
     <string name="cancel">Annuler</string>
     <string-array name="changelog">
-    	<item>Les données sont sauvegardées sur votre compte Google ou sur votre carte SD.</item>
-    	<item>Les nouvelles visites apparaissent désormais sur les fiches des personnes visitées et elles sont modifiables.</item>
-    	<item>Glisser l\'écran des Heures à droite ou à gauche change le mois affiché.</item>
-    	<item>Traduit en espagnol, portugais, allemand, français et danois (merci à Dunnia Lempert, Ruben Reis, Manuel Haas, David V., et Flemming Jacobsen).</item>
-    </string-array>
-    <string name="confirm">Veuillez confirmer</string>
+	    <item>Beaucoup de fenetres du programme ont été améliorées au niveau visuel et fonctionnel.</item> 
+	    <item>Il est désormais possible de faire un placement combiné de Tour de Garde et de Réveillez-vous.</item>
+		<item>Changement majeur dans le comptage des Etudes Bibliques. Les études sont maintenant enregistrées lors de l\'ajout d\'une visite.</item>
+		<item>Il est désormais possible d\'ajouter un commentaire sur les Temps et sur les enregistrements de visites.</item>
+		<item>Les sauvegardes utiliseront toujours la carte SD si elle est disponible.</item>
+		<item>Nouvelle traduction: Italien (Merci à Stefano Rinolfi)</item>
+	</string-array>
+    <string name="combo">Tour de garde &amp; Réveillez-vous!</string>
     <string name="comfort_brochure">Quand on perd un être cher</string>
+    <string name="confirm">Veuillez confirmer</string>
     <string name="create_placement">Nouveau placement</string>
     <string name="date">Date</string>
     <string name="delete_call">Supprimer visite</string>
+    <string name="delete_call_prompt">Supprimer tous les placements et visites associés à cette personne?</string>
     <string name="delete_placement">Supprimer placement</string>
     <string name="delete_rv">Supprimer nouvelle visite</string>
     <string name="delete_time">Supprimer temps</string>
@@ -68,6 +72,7 @@
         <item>Décembre</item>
     </string-array>
 	<string name="name">Nom</string>
+	<string name="no">Non</string>
 	<string name="no_calls">Appuyez sur MENU pour ajouter une visite.</string>
 	<string name="no_placements">Appuyez sur MENU pour ajouter un placement.</string>
 	<string name="no_time">Appuyez sur MENU pour ajouter des heures à ce mois.</string>	
@@ -88,6 +93,8 @@
 	<string name="service_year">Année de service</string>
 	<string name="service_time_for">Rapport de service pour %s</string>
     <string name="sort">Trier</string>
+    <string name="sorted_alpha">Ordre alphabétique</string>
+	<string name="sorted_time">Plus ancienne visite</string>
     <string name="start_time">Heure de début</string>
     <string name="stats">Statistiques</string>
     <string name="stop_time">Heure de fin</string>
@@ -99,4 +106,5 @@
     <string name="watchtower">Tour de Garde</string>
     <string name="whats_new">Quoi de neuf !</string>
 	<string name="year">Année</string>
+	<string name="yes">Oui</string>
 </resources>

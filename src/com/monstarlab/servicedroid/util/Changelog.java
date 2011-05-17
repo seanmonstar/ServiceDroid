@@ -23,8 +23,9 @@ public class Changelog {
 	//private static final int V_1_3_3 = 9; //just bug fixes, no changelog needed
 	//private static final int V_1_3_4 = 10; //just bug fixes, no changelog needed
 	//private static final int V_1_3_5 = 11; //just bug fixes, no changelog needed
+	private static final int V_1_4 = 12;
 	
-	private static final int CURRENT_VERSION = V_1_3;
+	private static final int CURRENT_VERSION = V_1_4;
 
 	private static final String PREFS_NAME = "Changelog";
 	private static final String PREFS_CHANGELOG_VERSION = "lastSeenChangelogVersion";
@@ -76,7 +77,7 @@ public class Changelog {
 		String[] features = c.getResources().getStringArray(R.array.changelog);
 		message.append("<html><body>");
 		
-		message.append("<b>v1.3.3</b>");
+		message.append("<b>v1.4.0</b>");
 		message.append("<ul>");
 		for(int i = 0; i < features.length; i++) {
 			message.append("<li>" + features[i] + "</li>");

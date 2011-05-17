@@ -24,6 +24,7 @@ public class Changelog {
 	//private static final int V_1_3_4 = 10; //just bug fixes, no changelog needed
 	//private static final int V_1_3_5 = 11; //just bug fixes, no changelog needed
 	private static final int V_1_4 = 12;
+	//private static final int V_1_4_1 = 13; //just bug fixes, no changelog needed
 	
 	private static final int CURRENT_VERSION = V_1_4;
 

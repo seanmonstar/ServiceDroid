@@ -21,6 +21,8 @@ public final class Models {
 		
 		public static final String DEFAULT_SORT_ORDER = "date ASC";
 		
+		public static final long MAX_LENGTH = (24 * 60 * 60) - 1;
+		
 		/**
 		 * 	type: date
 		 */

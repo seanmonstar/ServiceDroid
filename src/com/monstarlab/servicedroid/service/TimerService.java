@@ -167,6 +167,13 @@ public class TimerService extends Service {
 				showTimerNotification();
 			} 
 			
+			//if timer goes over 24 hours, go ahead and stop it.
+			if (mRunTime > TimeEntries.MAX_LENGTH) {
+				mRunTime = TimeEntries.MAX_LENGTH;
+				stopSelf();
+				return;
+			}
+			
 			mHandler.postDelayed(this, 15000); // every 15 seconds...
 		}
 	};

@@ -252,6 +252,9 @@ public class TimeEditActivity extends Activity {
 		int hrs = 0, mins = 0;
 		if (mLength > 0) {
 			hrs = TimeUtil.getHours(mLength);
+			if (hrs > 23) {
+				hrs = 23;
+			}
 			mins = TimeUtil.getMins(mLength);
 		}
 		

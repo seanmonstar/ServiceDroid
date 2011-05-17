@@ -20,16 +20,20 @@
     <string name="callbook">Datos de Revisitas</string>
     <string name="cancel">Cancelar</string>
     <string-array name="changelog">
-    	<item>La información es almacenada en su cuenta de Google o en su tarjeta SD.</item>
-    	<item>Las revisitas ahora aparecen junto con sus colocaciones de publicaciones y se pueden editar.</item>
-    	<item>Al deslizar su dedo de izquierda a derecha sobre su tiempo en la pantalla, permite el cambio del mes.</item>
-    	<item>Traducido al español, portugués, alemán, francés, y danés. (Agradecimientos a Dunnia Lempert, Ruben Reis, Manuel Haas, David V., y Flemming Jacobsen).</item>
+    	<item>Muchos diseños se han mejorado estéticamente y funcionalmente.</item> 
+	    <item>Se añadió una opción para colocar ambos la Atalaya y la Despertad al mismo tiempo/</item>
+	    <item>Se hiso un gran cambio a estudios. Estudios se registran cuando se registra una revisita. </item>
+	    <item>Entradas de tiempo y revisitas pueden tener notas.</item>
+	    <item>Las copias de seguridad siempre utilizaran la tarjeta SD cuando esté disponible.</item>
+	    <item>Nueva traducción: Italiano (gracias a Stefano Rinolfi)</item>
     </string-array>
     <string name="confirm">Confirmar</string>
+    <string name="combo">Atalaya y Despertad</string>
     <string name="comfort_brochure">Cuando muere un ser querido</string>
     <string name="create_placement">Cree Colocación de Literatura</string>
     <string name="date">Fecha</string>
     <string name="delete_call">Borre Revisita</string>
+    <string name="delete_call_prompt">Le gustaría borrar todas las visitas y literatura asociadas con esta revisita?</string>
     <string name="delete_placement">Borre Colocación</string>
     <string name="delete_time">Borre Tiempo</string>
     <string name="directions">Direcciones</string>	
@@ -83,16 +87,13 @@
     <string name="rv">Revisita</string>
     <string name="rvs">Revisitas</string>
     <string name="send">Enviar</string>
-	<string name="send_by">Enviado por….</string>
+	<string name="send_by">Enviado por...</string>
 	<string name="send_reminder">Envié su informe de servicio</string>
 	<string name="service_year">Año de Servicio</string>
 	<string name="service_time_for">Informe de Servicio para el  Mes de %s</string>
     <string name="sort">Ordene</string>
-	<string-array name="sort_by">
-		<item>Apellido</item>
-		<item>Ultima Visita</item>
-		<item>Distancia</item>
-	</string-array>
+	<string name="sorted_alpha">Alfabéticamente</string>
+	<string name="sorted_time">La visita más antigua</string>
     <string name="start_time">Empiece el Tiempo</string>
     <string name="stats">Estadística</string>
     <string name="stop_time">Pare el Tiempo</string>
@@ -104,4 +105,5 @@
     <string name="watchtower">Atalaya</string>
     <string name="whats_new">Que es nuevo</string>
 	<string name="year">Año</string>
+	<string name="yes">Sí</string>
 </resources>

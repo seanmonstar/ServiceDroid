@@ -58,6 +58,12 @@ public class BackupService extends Service {
 	}
 	
 	protected void handleCommand(Intent intent) {
+		if (intent == null) {
+			Log.e(TAG, "Intent was null. Need an intent to determine backup or restore action.");
+			stopSelf();
+			return;
+		}
+		
 		final String action = intent.getAction();
 		if (ACTION_BACKUP.equals(action)) {
 			onBackup();

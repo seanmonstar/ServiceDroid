@@ -141,7 +141,7 @@ public class TimerService extends Service {
 		if(mRunTime >= 60) {
 			ContentValues values = new ContentValues();
 			values.put(TimeEntries.LENGTH, mRunTime);
-			//values.put(TimeEntries.DATE, TimeUtil.getCurrentTimeSQLText());
+			values.put(TimeEntries.DATE, TimeUtil.getCurrentDateSQLText());
 			getContentResolver().update(ContentUris.withAppendedId(TimeEntries.CONTENT_URI, mEntryID), values, null, null);
 		} else {
 			

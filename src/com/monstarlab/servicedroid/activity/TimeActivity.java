@@ -196,7 +196,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		Date endOfMonth = cal.getTime();
 		
 		//end of month
-		args[1] = TimeUtil.getSQLTextFromDate(endOfMonth);
+		args[1] = TimeUtil.getSQLTextFromTime(endOfMonth);
 		
 		return args;
 	}

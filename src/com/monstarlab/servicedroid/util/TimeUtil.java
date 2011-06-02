@@ -184,4 +184,16 @@ public class TimeUtil {
 			.append(pad(d.getDate()))
 			.toString();
 	}
+	
+	public static String getSQLTextFromTime(Date d) {
+		return new StringBuilder()
+			.append(getSQLTextFromDate(d))
+			.append(" ")
+			.append(pad(d.getHours()))
+			.append(":")
+			.append(pad(d.getMinutes()))
+			.append(":")
+			.append(pad(d.getSeconds()))
+			.toString();
+	}
 }

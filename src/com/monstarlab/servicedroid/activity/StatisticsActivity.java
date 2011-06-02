@@ -285,7 +285,7 @@ public class StatisticsActivity extends Activity {
 		Date end = cal.getTime();
 		
 		//end of month
-		args[1] = TimeUtil.getSQLTextFromDate(end);
+		args[1] = TimeUtil.getSQLTextFromTime(end);
 		
 		return args;
 	}
@@ -436,7 +436,7 @@ public class StatisticsActivity extends Activity {
 		//place time entry of `mins` in next month
 		int minutes = TimeUtil.getMins(getHoursSum());
 		Calendar cal = Calendar.getInstance();
-		cal.set(mCurrentYear, mCurrentMonth - 1, 1);
+		cal.set(mCurrentYear, mCurrentMonth - 1, 1, 0, 0, 0);
 		cal.add(Calendar.MONTH, 1);
 		
 		Date nextMonth = cal.getTime();

@@ -22,6 +22,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.monstarlab.servicedroid.model.Models.Literature;
@@ -34,7 +35,7 @@ import com.monstarlab.servicedroid.R;
 
 
 
-public class StatisticsActivity extends Activity implements OnTouchListener {
+public class StatisticsActivity extends Activity {
 	
 	private static final String TAG = "StatisticsActivity";
 	
@@ -106,8 +107,6 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
         
         // Gesture detection
 	    mGestureDetector = new GestureDetector(new MyGestureDetector());
-	    View view = findViewById(R.id.statsscrollview);
-	    view.setOnTouchListener(this);
 
     }
 	
@@ -560,7 +559,16 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 		
 		return sb.toString();
 	}
-
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		boolean consumed = super.dispatchTouchEvent(ev);
+		mGestureDetector.onTouchEvent(ev);
+		
+		//older versions of Android won't let the GestureDetector
+		//fire its onFling unless this event is always consumed
+		return true;
+	}
 	
 	class MyGestureDetector extends SimpleOnGestureListener {
 	    @Override
@@ -577,6 +585,8 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	                //right
 	            	moveTimePeriodBackward();
 	            	fillData();
+	            } else {
+	            	return false;
 	            }
 	        } catch (Exception e) {
 	            // nothing
@@ -585,10 +595,5 @@ public class StatisticsActivity extends Activity implements OnTouchListener {
 	    }
 	    
 	}
-
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-        return mGestureDetector.onTouchEvent(event);
-    }
 	
 }

@@ -228,7 +228,7 @@ public class ReturnVisitActivity extends Activity {
 			
 			@Override
 			public void onDateSet(DatePicker view, int y, int m, int d) {
-				String date = y + "-" + TimeUtil.pad(m+1) + "-" + d;
+				String date = y + "-" + TimeUtil.pad(m+1) + "-" + TimeUtil.pad(d);
 				setDate(date);
 			}
 

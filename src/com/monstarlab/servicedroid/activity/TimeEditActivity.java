@@ -292,7 +292,7 @@ public class TimeEditActivity extends Activity {
 			
 			@Override
 			public void onDateSet(DatePicker view, int y, int m, int d) {
-				String date = y + "-" + pad(m+1) + "-" + d;
+				String date = y + "-" + pad(m+1) + "-" + pad(d);
 				setDate(date);
 			}
 

@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -31,7 +32,7 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servicedroid";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
@@ -235,10 +236,16 @@ public class ServiceProvider extends ContentProvider {
 				
 				db.execSQL("drop table " + BIBLE_STUDIES_TABLE);
 				
+			
+			case 6:
+				//for TimeEntries and ReturnVisits, I've been forgetting to pad the day.
+				//must make sure all dates have the day padded.
+				padTimeEntriesAndReturnVisits(db);
 				
+				
+				//-------------------
 				//these fall through on purpose
 				break;
-				
 			default:
 				Log.e(TAG, "Failed updating database to new version: no upgrade SQL exists.");
 				break;
@@ -249,7 +256,7 @@ public class ServiceProvider extends ContentProvider {
 		}
 		
 
-	    private void upgradeBibleStudies(SQLiteDatabase db) {
+	    private static void upgradeBibleStudies(SQLiteDatabase db) {
 	    	Cursor c = null;
 			try {
 				c = db.rawQuery("select * from " + BIBLE_STUDIES_TABLE, null);
@@ -279,6 +286,58 @@ public class ServiceProvider extends ContentProvider {
 					c.close();
 				}
 			}
+	    }
+	    
+	    private static void padDateFields(SQLiteDatabase db, String table, String field) {
+	    	Cursor c = null;
+	    	try {
+	    		c = db.rawQuery("select * from " + table, null);
+	    		if (c != null) {
+	    			c.moveToFirst();
+	    			int IDCol = c.getColumnIndex(BaseColumns._ID);
+	    			int dateCol = c.getColumnIndex(field);
+	    			
+	    			while (!c.isAfterLast()) {
+	    				
+	    				int _id = c.getInt(IDCol);
+	    				String origDate = c.getString(dateCol);
+	    				String[] args = new String[] { correctTimestamp(origDate), ""+_id };
+	    				
+	    				db.execSQL("update " + table + " set " + field + "=? where " + BaseColumns._ID + "=?", args);
+
+	    				c.moveToNext();
+	    			}
+	    		}
+	    	} catch (Exception e) {
+	    		Log.e(TAG, e.toString());
+	    	} finally {
+	    		if (c != null) {
+	    			c.close();
+	    		}
+	    	}
+	    }
+	    
+	    private static void padTimeEntriesAndReturnVisits(SQLiteDatabase db) {
+	    	padDateFields(db, TIME_ENTRIES_TABLE, TimeEntries.DATE);
+	    	padDateFields(db, RETURN_VISITS_TABLE, ReturnVisits.DATE);
+	    }
+	    
+	    private static String correctTimestamp(String date) {
+	    	int space = date.indexOf(" ");
+	    	if (space != -1) {
+	    		date = date.substring(0, date.indexOf(space));
+	    	}
+	    	
+	    	//2011-05-6
+	    	//0123456789
+	    	
+	    	String year = date.substring(0, 4);
+	    	String month = date.substring(5, 7);
+	    	int day = Integer.parseInt(date.substring(8));
+	    	
+	    	
+	    	
+	    	return year + "-" + month + "-" + TimeUtil.pad(day);
 	    }
     	
     }

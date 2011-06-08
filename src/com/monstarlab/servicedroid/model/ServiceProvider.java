@@ -327,7 +327,7 @@ public class ServiceProvider extends ContentProvider {
 	    private static String correctTimestamp(String date) {
 	    	int space = date.indexOf(" ");
 	    	if (space != -1) {
-	    		date = date.substring(0, date.indexOf(space));
+	    		date = date.substring(0, space);
 	    	}
 	    	
 	    	//2011-05-6

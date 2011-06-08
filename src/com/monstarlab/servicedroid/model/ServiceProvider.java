@@ -303,7 +303,9 @@ public class ServiceProvider extends ContentProvider {
 	    				String origDate = c.getString(dateCol);
 	    				String[] args = new String[] { correctTimestamp(origDate), ""+_id };
 	    				
-	    				db.execSQL("update " + table + " set " + field + "=? where " + BaseColumns._ID + "=?", args);
+	    				if (!origDate.equals(args[0])) {
+	    					db.execSQL("update " + table + " set " + field + "=? where " + BaseColumns._ID + "=?", args);
+	    				}
 
 	    				c.moveToNext();
 	    			}

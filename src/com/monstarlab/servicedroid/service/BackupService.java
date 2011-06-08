@@ -162,9 +162,9 @@ public class BackupService extends Service {
 				//read SDML from backup file
 				
 				boolean success = new BackupWorker().restore(getContentResolver(), readFromSDCard());
-				//if (!success) {
+				if (!success) {
 					notifyRestoreFailure();
-				//}
+				}
 				stopSelf();
 			}
 			

@@ -7,8 +7,14 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.activity.ServiceDroidActivity;
+import com.monstarlab.servicedroid.activity.StatisticsActivity;
 import com.monstarlab.servicedroid.model.BackupWorker;
+import com.monstarlab.servicedroid.util.TimeUtil;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -155,11 +161,42 @@ public class BackupService extends Service {
 				//find backup file on SD card
 				//read SDML from backup file
 				
-				new BackupWorker().restore(getContentResolver(), readFromSDCard());
+				boolean success = new BackupWorker().restore(getContentResolver(), readFromSDCard());
+				//if (!success) {
+					notifyRestoreFailure();
+				//}
 				stopSelf();
 			}
 			
 		}).start();
+	}
+	
+	protected void notifyRestoreFailure() {
+		final Context ctx = getApplicationContext();
+		final String text = getString(R.string.restore_failure);
+		mHandler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+				
+				CharSequence tickerText = "Restore failed";
+				long when = TimeUtil.getCurrentTime();
+				
+				Notification notification = new Notification(R.drawable.icon, tickerText, when);
+				Intent intent = new Intent(ctx, ServiceDroidActivity.class);
+				PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
+				
+				CharSequence contentText = text;
+				
+				notification.setLatestEventInfo(ctx, tickerText, contentText, pendingIntent);
+				
+				notification.flags |= Notification.FLAG_AUTO_CANCEL;
+				
+				nm.notify(2, notification);
+			}
+			
+		});
 	}
 	
 	protected String readFromSDCard() {

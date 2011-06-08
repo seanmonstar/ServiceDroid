@@ -61,6 +61,10 @@ public class ServiceDroidDocument {
 		}
 	}
 	
+	public boolean isValid() {
+		return mDoc != null;
+	}
+	
 	public int getSchema() {
 		String schema = mDoc.getDocumentElement().getAttribute("schema");
 		

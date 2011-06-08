@@ -78,13 +78,16 @@ public class BackupWorker {
 		c.close();
 	}
 	
-	public void restore(ContentResolver resolver, String xml) {
+	public boolean restore(ContentResolver resolver, String xml) {
 		//receive XML, so decode it
 		if (TextUtils.isEmpty(xml)) {
-			return;
+			return false;
 		}
 		
 		ServiceDroidDocument doc = new ServiceDroidDocument(xml);
+		if (!doc.isValid()) {
+			return false;
+		}
 		
 		mCallIDReplacements = new HashMap<String, String>();
 		mLiteratureIDReplacements = new HashMap<String, String>();
@@ -101,6 +104,8 @@ public class BackupWorker {
 		insertDataFromDocument(doc, RETURN_VISIT_TAG, resolver, ReturnVisits.CONTENT_URI);
 		insertDataFromDocument(doc, LITERATURE_TAG, resolver, Literature.CONTENT_URI);
 		insertDataFromDocument(doc, PLACEMENT_TAG, resolver, Placements.CONTENT_URI);
+		
+		return true;
 		
 	}
 	

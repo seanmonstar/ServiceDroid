@@ -15,16 +15,22 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class ServiceDroidDocument {
 
 	private static final String TAG = "ServiceDroidDocument";
 	
+	protected static final int SCHEMA_ATTRS = 1;
+	protected static final int SCHEMA_ELS = 2;
+	
 	protected Document mDoc;
+	protected int mSchema = 0;
 	
 	public ServiceDroidDocument() {
-		this("<ServiceDroid></ServiceDroid>");
+		this("<ServiceDroid schema=\"" + SCHEMA_ELS + "\"></ServiceDroid>");
 	}
 	
 	public ServiceDroidDocument(String xml) {
@@ -35,15 +41,33 @@ public class ServiceDroidDocument {
 			mDoc = builder.parse(new InputSource(new StringReader(xml)));
 			
 		} catch (ParserConfigurationException e) {
-			Log.e(TAG, "Failed building a blank document");
+			e.printStackTrace();
+			Log.e(TAG, "Failed parsing backup file.");
+			Log.e(TAG, e.toString());
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.e(TAG, "Failed building a blank document");
+			Log.e(TAG, "Failed parsing backup file.");
+			Log.e(TAG, e.toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Log.e(TAG, "Failed building a blank document");
+			Log.e(TAG, "Failed reading backup file from SD card.");
+			Log.e(TAG, e.toString());
+		} finally {
+			if (mDoc == null) {
+				
+			} else {
+				mSchema = getSchema();
+			}
+		}
+	}
+	
+	public int getSchema() {
+		String schema = mDoc.getDocumentElement().getAttribute("schema");
+		
+		if (TextUtils.isEmpty(schema)) {
+			return SCHEMA_ATTRS;
+		} else {
+			return Integer.parseInt(schema);
 		}
 	}
 	
@@ -51,7 +75,15 @@ public class ServiceDroidDocument {
 	public void addNode(String tagName, String[] attributes, String[] values) {
 		Element el = mDoc.createElement(tagName);
 		for (int i = 0; i < attributes.length; i++) {
-			el.setAttribute(attributes[i], values[i]);
+			//el.setAttribute(attributes[i], TextUtils.htmlEncode(values[i]));
+			String content = values[i];
+			if (content != null) {
+				Element attr = mDoc.createElement(attributes[i]);
+			
+				attr.setTextContent(TextUtils.htmlEncode(content));
+				el.appendChild(attr);
+			}
+			
 		}
 		mDoc.getDocumentElement().appendChild(el);
 	}
@@ -63,13 +95,49 @@ public class ServiceDroidDocument {
 	public String[][] getDataFromNode(String tagName, int index) {
 		Node node = mDoc.getElementsByTagName(tagName).item(index);
 		
+		switch (mSchema) {
+		case SCHEMA_ATTRS:
+			return getDataFromAttributes(node);
+		case SCHEMA_ELS:
+		default:
+			return getDataFromChildren(node);
+		}
+	}
+	
+	private String[][] getDataFromAttributes(Node node) {
 		NamedNodeMap attrs = node.getAttributes();
 		int numOfAttrs = attrs.getLength();
 		
 		String[][] data = new String[2][numOfAttrs];
 		for (int i = 0; i < numOfAttrs; i++) {
 			data[0][i] = attrs.item(i).getNodeName();
-			data[1][i] = attrs.item(i).getNodeValue();
+			data[1][i] = Html.fromHtml(attrs.item(i).getNodeValue()).toString();
+		}
+
+		return data;
+	}
+	
+	private String[][] getDataFromChildren(Node node) {
+		NodeList children = node.getChildNodes();
+		
+		// since getChildNodes returns ALL childNodes, include whitespace nodes,
+		// we need to do a first loop just to see how many ELEMENT nodes there are
+		int numOfChildEls = 0;
+		int length = children.getLength();
+		for (int i = 0; i < length; i++) {
+			if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
+				numOfChildEls++;
+			}
+		}
+		
+		
+		String[][] data = new String[2][numOfChildEls];
+		for (int i = 0; i < length; i++) {
+			Node child = children.item(i);
+			if (child.getNodeType() == Node.ELEMENT_NODE) {
+				data[0][i] = child.getNodeName();
+				data[1][i] = Html.fromHtml(child.getTextContent().trim()).toString();
+			}
 		}
 		
 		

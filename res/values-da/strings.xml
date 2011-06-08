@@ -25,7 +25,7 @@
 	    <item>Ny oversættelse: Italiensk (Tak til Stefano Rinolfi)</item>
 	</string-array>
     <string name="confirm">Bekræft</string>
-    <string name="combo">Vagttårnet ogamp; Vågn op!</string>
+    <string name="combo">Vagttårnet &amp; Vågn op!</string>
     <string name="comfort_brochure">Når man mister en han holder af</string>
     <string name="create_placement">Afsat litteratur</string>
     <string name="date">Dato</string>

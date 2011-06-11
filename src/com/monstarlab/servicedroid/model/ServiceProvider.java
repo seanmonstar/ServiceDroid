@@ -100,7 +100,7 @@ public class ServiceProvider extends ContentProvider {
     	sCallProjectionMap.put(Calls.NOTES, CALLS_TABLE + "." + Calls.NOTES);
     	sCallProjectionMap.put(Calls.DATE, CALLS_TABLE + "." + Calls.DATE);
     	sCallProjectionMap.put(Calls.TYPE, CALLS_TABLE + "." + Calls.TYPE);
-    	sCallProjectionMap.put(Calls.IS_STUDY, "((select count(return_visits._id) from return_visits where return_visits.call_id = calls._id and return_visits.date >= date('now', 'start of month')) > 0) as 'is_study'");
+    	sCallProjectionMap.put(Calls.IS_STUDY, "((select count(return_visits._id) from return_visits where return_visits.call_id = calls._id and return_visits.date >= date('now', 'start of month')) > 0) and return_visits.is_bible_study = 1 as 'is_study'");
     	sCallProjectionMap.put(Calls.LAST_VISITED, "coalesce((select return_visits.date from return_visits where return_visits.call_id = calls._id order by return_visits.date desc limit 1),calls.date) as 'last_visited'");
     	
     	sRVProjectionMap = new HashMap<String, String>();

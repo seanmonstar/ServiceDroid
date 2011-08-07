@@ -441,9 +441,11 @@ public class StatisticsActivity extends Activity {
 		
 		Date nextMonth = cal.getTime();
 		
+		// Save the all extra minutes into the next month
 		ContentValues values = new ContentValues();
 		values.put(TimeEntries.LENGTH, TimeUtil.toTimeInt(0, minutes));
 		values.put(TimeEntries.DATE, TimeUtil.getSQLTextFromDate(nextMonth));
+		values.put(TimeEntries.NOTE, getString(R.string.carry_over));
 		
 		getContentResolver().insert(TimeEntries.CONTENT_URI, values);
 

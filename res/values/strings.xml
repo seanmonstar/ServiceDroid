@@ -18,6 +18,7 @@
 	<string name="brochures">Brochures</string>
     <string name="callbook">Call Book</string>
     <string name="cancel">Cancel</string>
+    <string name="carry_over">Carried Over</string>
     <string-array name="changelog">
     	<item>Many views have been improved aesthetically and functionally.</item>
     	<item>Added a combination placement of Watchtower &amp; Awake.</item>

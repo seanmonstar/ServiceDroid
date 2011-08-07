@@ -74,8 +74,8 @@
     </string-array>
 	<string name="name">Name</string>
 	<string name="no">No</string>
-	<string name="no_calls">Press MENU to record a new Call.</string>
-	<string name="no_placements">Press MENU to record a placement.</string>
+	<string name="no_calls">This is the Call Book. All placements and return visits should be recorded on individual calls. The stats will keep count for you.</string>
+	<string name="no_placements">Press MENU to record a placement or return visit.</string>
 	<string name="no_time">Press MENU to record time for this month.</string>	
 	<string name="notes">Notes</string>
     <string name="ok">Cool!</string>

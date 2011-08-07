@@ -324,22 +324,24 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	
 	private void checkForTimer() {
 		Cursor c = getContentResolver().query(TimeEntries.CONTENT_URI, PROJECTION, TimeEntries.LENGTH + " is null or " + TimeEntries.LENGTH + "=0", null, null);
-		if(c.getCount() > 0) {
-			setIsTiming(true);
-			Intent i = new Intent(this, TimerService.class);
-			startService(i);
-			
-			//remove any extras
-			if(c.getCount() > 1) {
-				c.moveToFirst();
-				c.moveToNext();
-				while(!c.isAfterLast()) {
-					getContentResolver().delete(ContentUris.withAppendedId(getIntent().getData(), c.getInt(0)), null, null);
+		if (c != null) {
+			if(c.getCount() > 0) {
+				setIsTiming(true);
+				Intent i = new Intent(this, TimerService.class);
+				startService(i);
+				
+				//remove any extras
+				if(c.getCount() > 1) {
+					c.moveToFirst();
 					c.moveToNext();
+					while(!c.isAfterLast()) {
+						getContentResolver().delete(ContentUris.withAppendedId(getIntent().getData(), c.getInt(0)), null, null);
+						c.moveToNext();
+					}
 				}
 			}
+			c.close();
 		}
-		c.close();
 	}
 	
 	private void setIsTiming(boolean isTiming) {

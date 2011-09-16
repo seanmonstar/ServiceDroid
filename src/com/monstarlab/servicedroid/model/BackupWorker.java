@@ -132,9 +132,12 @@ public class BackupWorker {
 				
 				//CALL_ID and LITERATURE_ID should be replaced
 				if(key.equals(ReturnVisits.CALL_ID)) {
-					newID = mCallIDReplacements.get(key);
+					newID = mCallIDReplacements.get(value);
+					if (newID == null) {
+						newID = makeDeadCall(resolver, value);
+					}
 				} else if (key.equals(Placements.LITERATURE_ID)) {
-					newID = mLiteratureIDReplacements.get(key);
+					newID = mLiteratureIDReplacements.get(value);
 				}
 				
 				if (newID != null) {
@@ -156,6 +159,17 @@ public class BackupWorker {
 				}
 			}
 		}
+	}
+	
+	protected String makeDeadCall(ContentResolver resolver, String id) {
+		//this was an RV on a call that since got deleted
+		//so make and then delete a call
+		ContentValues values = new ContentValues();
+		Uri inserted = resolver.insert(Calls.CONTENT_URI, values);
+		resolver.delete(inserted, null, null);
+		String newID = inserted.getPathSegments().get(1);
+		mCallIDReplacements.put(id, newID);
+		return newID;
 	}
 	
 }

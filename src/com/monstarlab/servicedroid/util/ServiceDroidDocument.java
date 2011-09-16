@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -84,7 +85,7 @@ public class ServiceDroidDocument {
 			if (content != null) {
 				Element attr = mDoc.createElement(attributes[i]);
 			
-				attr.setTextContent(TextUtils.htmlEncode(content));
+				setTextContent(attr, TextUtils.htmlEncode(content));
 				el.appendChild(attr);
 			}
 			
@@ -140,12 +141,30 @@ public class ServiceDroidDocument {
 			Node child = children.item(i);
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				data[0][i] = child.getNodeName();
-				data[1][i] = Html.fromHtml(child.getTextContent().trim()).toString();
+				data[1][i] = Html.fromHtml(getTextContent(child).trim()).toString();
 			}
 		}
 		
 		
 		return data;
+	}
+	
+	protected String getTextContent(Node node) {
+		StringBuffer buffer = new StringBuffer();
+		NodeList childList = node.getChildNodes();
+		for (int i = 0; i < childList.getLength(); i++) {
+		    Node child = childList.item(i);
+		    if (child.getNodeType() == Node.TEXT_NODE)
+		    	buffer.append(child.getNodeValue());
+		    else if (child.getNodeType() == Node.ELEMENT_NODE)
+		    	buffer.append(getTextContent(child));
+		}
+		return buffer.toString();
+	}
+	
+	protected void setTextContent(Node node, String value) {
+		Text txt = mDoc.createTextNode(value);
+		node.appendChild(txt);
 	}
 	
 	protected String getStringFromNode(Node root) {

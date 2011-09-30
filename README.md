@@ -6,6 +6,16 @@ ServiceDroid is an Android application built to assist Jehovah's Witnesses doing
 Features
 -------
 
+_Version 1.4_
+
+* Design improvements
+* Added combination placement of Watchtower & Awake
+* Bible studies received a mahor change. They are now recorded when
+  making a return visit.
+* Time Entries and Return Visits can have notes.
+* Backup will always use the SD card when available.
+* New Translations: Italian (thanks to Stefano Rinolfi)
+
 _Version 1.3_
 
 * Back up your data to your Google account

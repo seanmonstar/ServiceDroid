@@ -217,7 +217,7 @@ public class BackupService extends Service {
 			// Restore failing, but there *might* be a restore file there,
 			// should we try again a little later? much later and we risk data
 			// contamination
-			Log.w(TAG, "error writing to file");
+			Log.e(TAG, "error reading ServiceDroidBackup.sdml");
 		}
 		return sb.toString();
 	}

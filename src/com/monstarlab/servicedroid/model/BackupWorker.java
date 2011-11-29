@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 /**
@@ -25,6 +26,8 @@ import android.text.TextUtils;
  *
  */
 public class BackupWorker {
+	
+	private static final String TAG = "BackupWorker";
 	
 	private static final String TIME_ENTRY_TAG = "TimeEntry";
 	private static final String CALL_TAG = "Call";
@@ -79,13 +82,15 @@ public class BackupWorker {
 	}
 	
 	public boolean restore(ContentResolver resolver, String xml) {
-		//receive XML, so decode it
 		if (TextUtils.isEmpty(xml)) {
-			return false;
+			// There is no file at first install, so this is a "success".
+			Log.i(TAG, "Backup file was empty (if existed).");
+			return true;
 		}
 		
 		ServiceDroidDocument doc = new ServiceDroidDocument(xml);
 		if (!doc.isValid()) {
+			Log.e(TAG, "Backup file is invalid XML.");
 			return false;
 		}
 		

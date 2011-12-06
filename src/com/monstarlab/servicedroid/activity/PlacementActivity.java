@@ -44,7 +44,7 @@ public class PlacementActivity extends Activity {
 	private static final String[] PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.TITLE, Literature.PUBLICATION, Literature.TYPE };
 	
-	private static final String[] YEARS = new String[] { "2012", 2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000" };
+	private static final String[] YEARS = new String[] { "2012", "2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000" };
 	private static final int DIALOG_CREATE_ID = 0;
 	private static final int DIALOG_DATE_ID = 1;
 	

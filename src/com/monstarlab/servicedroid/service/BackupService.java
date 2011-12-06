@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.activity.ServiceDroidActivity;
-import com.monstarlab.servicedroid.activity.StatisticsActivity;
 import com.monstarlab.servicedroid.model.BackupWorker;
 import com.monstarlab.servicedroid.util.TimeUtil;
 

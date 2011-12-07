@@ -115,6 +115,7 @@ public class StatisticsActivity extends Activity {
 		super.onResume();
 		
 		fillData();
+		toggleHintView();
 	}
 
 
@@ -558,6 +559,24 @@ public class StatisticsActivity extends Activity {
 		sb.append(getString(R.string.bible_studies) + ": " + getBibleStudies() + "\n");	
 		
 		return sb.toString();
+	}
+	
+	protected void toggleHintView() {
+		//show the email hint 2 days before then end of the month
+		// and 5 days from the start
+
+		int day = TimeUtil.getCurrentDay();
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MONTH, 1);
+		c.set(Calendar.DATE, 1);
+		c.add(Calendar.DATE, -1);
+
+		int lastDayOfMonth = c.get(Calendar.DATE);
+		if (day <= 5 || day > lastDayOfMonth - 2) {
+			View hintView = findViewById(R.id.hint);
+			hintView.setVisibility(View.VISIBLE);
+		}
+
 	}
 	
 	@Override

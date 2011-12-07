@@ -103,6 +103,7 @@
     <string name="time">Time</string>
     <string name="time_due">Your time is due!</string>
 	<string name="time_in_service">Time in service: %s</string>
+	<string name="time_period_hint">Swipe left or right to change the time period.</string>
 	<string name="timer_active">Service Timer Active</string>
     <string name="tips">Tips</string>
     <string name="watchtower">Watchtower</string>

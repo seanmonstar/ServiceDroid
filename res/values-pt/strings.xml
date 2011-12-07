@@ -101,6 +101,7 @@
     <string name="time">Tempo</string>
     <string name="time_due">O seu tempo é devido!</string>
 	<string name="time_in_service">Tempo no serviço: %s</string>
+	<string name="time_period_hint">Swipe esquerda ou direita para alterar o período de tempo.</string>
 	<string name="timer_active">Tempo activo no serviço</string>
     <string name="tips">Dicas</string>
     <string name="watchtower">A Sentinela</string>

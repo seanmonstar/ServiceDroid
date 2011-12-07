@@ -100,6 +100,7 @@
     <string name="time">Tiempo</string>
     <string name="time_due">¡Recuerde entregar su informe!</string>
 	<string name="time_in_service">Tiempo en el servicio: %s</string>
+	<string name="time_period_hint">Pase a la izquierda o derecha para cambiar el período de tiempo.</string>
 	<string name="timer_active">Cronometro Activo</string>
     <string name="tips">Sugerencias</string>
     <string name="watchtower">Atalaya</string>

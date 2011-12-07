@@ -100,6 +100,7 @@
     <string name="time">Zeit</string>
     <string name="time_due">Timer abgelaufen</string>
 	<string name="time_in_service">Predigtdienststunden: %s</string>
+	<string name="time_period_hint">Swipe nach links oder rechts ändern den Zeitraum.</string>
 	<string name="timer_active">Timer aktiviert</string>
     <string name="tips">Tipps</string>
     <string name="watchtower">Wachtturm</string>

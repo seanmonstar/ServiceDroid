@@ -101,6 +101,7 @@
     <string name="time">Temps</string>
     <string name="time_due">Souvenez-vous d\'envoyer votre rapport !</string>
 	<string name="time_in_service">Temps de prédication : %s</string>
+	<string name="time_period_hint">Glissez vers la gauche ou à droite pour changer la période de temps.</string>
 	<string name="timer_active">Chrono prédic actif</string>
     <string name="tips">Astuces</string>
     <string name="watchtower">Tour de Garde</string>

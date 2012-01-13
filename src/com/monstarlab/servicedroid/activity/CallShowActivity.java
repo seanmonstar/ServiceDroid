@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +32,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.compat.ActionBarActivity;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class CallShowActivity extends Activity implements OnItemClickListener {
+public class CallShowActivity extends ActionBarActivity implements OnItemClickListener {
 	
 	private static final String TAG = "CallShowActivity";
 	
@@ -285,23 +287,21 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        boolean result = super.onCreateOptionsMenu(menu);
+		MenuInflater menuInflater = getMenuInflater();
         
         switch(mCallType) {
 
         default:
-        	menu.add(0, MENU_EDIT, 1, R.string.edit).setIcon(android.R.drawable.ic_menu_edit);
-            menu.add(0, MENU_RETURN, 3, R.string.make_return).setIcon(android.R.drawable.ic_menu_myplaces);
-            menu.add(0, MENU_DIRECTIONS, 4, R.string.directions).setIcon(android.R.drawable.ic_menu_directions);
-            //falls through
+        	menuInflater.inflate(R.menu.call_show, menu);
+        	//falls through
             
         case Calls.TYPE_ANONYMOUS:
-        	menu.add(0, MENU_PLACEMENT, 2, R.string.placement).setIcon(android.R.drawable.ic_menu_agenda);
-        	//menu.add(0, MENU_DELETE, 4, R.string.delete).setIcon(android.R.drawable.ic_menu_delete);
+        	menuInflater.inflate(R.menu.call_show_anon, menu);
         	break;
         
         }
-        return result;
+        
+        return super.onCreateOptionsMenu(menu);
     }
 	
 	@Override
@@ -320,16 +320,16 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_EDIT:
+		case R.id.menu_edit:
 			editCall();
 			break;
-		case MENU_PLACEMENT:
+		case R.id.menu_placement:
 			showDialog(DIALOG_PLACEMENT_ID);
 			break;
-		case MENU_RETURN:
+		case R.id.menu_visit:
 			returnOnCall();
 			break;
-		case MENU_DIRECTIONS:
+		case R.id.menu_directions:
 			getDirections();
 			break;
 		}

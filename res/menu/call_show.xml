@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_edit"
+        android:title="@string/edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="1"
+        android:showAsAction="always" />
+    
+    <item android:id="@+id/menu_visit"
+        android:title="@string/make_return"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:orderInCategory="3"
+        android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/menu_directions"
+        android:title="@string/directions"
+        android:icon="@android:drawable/ic_menu_directions"
+        android:orderInCategory="4"
+        android:showAsAction="ifRoom" />
+</menu>

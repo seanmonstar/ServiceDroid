@@ -119,7 +119,6 @@ public class BackupService extends Service {
 		final String text = getString(R.string.backup_success, "/" + DIRECTORY + "/" + FILE_NAME);
 		mHandler.post(new Runnable() {
 
-			@Override
 			public void run() {
 				Toast.makeText(ctx, text, Toast.LENGTH_LONG).show();
 			}
@@ -175,7 +174,6 @@ public class BackupService extends Service {
 		final String text = getString(R.string.restore_failure);
 		mHandler.post(new Runnable() {
 
-			@Override
 			public void run() {
 				NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 				

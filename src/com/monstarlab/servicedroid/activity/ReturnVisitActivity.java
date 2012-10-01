@@ -93,7 +93,6 @@ public class ReturnVisitActivity extends Activity {
 		mDateBtn = (Button) findViewById(R.id.date);
 		mDateBtn.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				showDialog(DIALOG_DATE);
 			}
@@ -106,7 +105,6 @@ public class ReturnVisitActivity extends Activity {
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View view) {
 				finish();
 			}
@@ -116,7 +114,6 @@ public class ReturnVisitActivity extends Activity {
 		Button cancel = (Button) findViewById(R.id.cancel);
 		cancel.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View view) {
 				mIsCancelled = true;
 				finish();
@@ -226,7 +223,6 @@ public class ReturnVisitActivity extends Activity {
 		
 		return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 			
-			@Override
 			public void onDateSet(DatePicker view, int y, int m, int d) {
 				String date = y + "-" + TimeUtil.pad(m+1) + "-" + TimeUtil.pad(d);
 				setDate(date);

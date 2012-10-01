@@ -108,7 +108,6 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		mQuickAddBtn = (ImageButton)findViewById(R.id.btn_add);
 		mQuickAddBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				createEntry();
 			}
@@ -118,7 +117,6 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		mQuickStartBtn = (ImageButton)findViewById(R.id.btn_start);
 		mQuickStartBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				startTimer();
 			}
@@ -128,7 +126,6 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 		mQuickStopBtn = (ImageButton)findViewById(R.id.btn_stop);
 		mQuickStopBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				stopTimer();
 			}
@@ -404,7 +401,6 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	    
 	}
 
-	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		boolean gestureConsumed = mGestureDetector.onTouchEvent(event);
 		if (v instanceof ListView) {

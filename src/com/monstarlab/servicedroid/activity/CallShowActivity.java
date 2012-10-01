@@ -532,7 +532,6 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 
 
 
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 		if (pos < 0 || pos >= mHistoryMaps.size()) {
 			return; // sanity check. this shouldn't happen, tho :)

@@ -79,7 +79,6 @@ public class CallEditActivity extends Activity {
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View arg0) {
 				finish();
 			}
@@ -89,7 +88,6 @@ public class CallEditActivity extends Activity {
 		Button cancelButton = (Button) findViewById(R.id.cancel);
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				mIsCancelled = true;
 				finish();

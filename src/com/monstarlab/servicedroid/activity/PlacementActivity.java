@@ -126,7 +126,6 @@ public class PlacementActivity extends Activity {
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View view) {
 				finish();
 			}
@@ -135,7 +134,7 @@ public class PlacementActivity extends Activity {
 		
 		Button cancel = (Button) findViewById(R.id.cancel);
 		cancel.setOnClickListener(new View.OnClickListener() {
-			@Override
+
 			public void onClick(View view) {
 				mIsCancelled = true;
 				finish();
@@ -148,7 +147,6 @@ public class PlacementActivity extends Activity {
 		
 		mDateBtn.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View view) {
 				showDialog(DIALOG_DATE_ID);
 			}
@@ -304,7 +302,6 @@ public class PlacementActivity extends Activity {
 	private Dialog makeDateDialog() {
 		return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 			
-			@Override
 			public void onDateSet(DatePicker view, int year, int month, int day) {
 				mPlaceYear = year;
 				mPlaceMonth = month;
@@ -376,13 +373,11 @@ public class PlacementActivity extends Activity {
 	    
 	    mPublicationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				mMagazine = parent.getItemAtPosition(pos).toString();
 				saveSelectedLiterature();
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				
 			}
@@ -407,13 +402,11 @@ public class PlacementActivity extends Activity {
 	    mMonthSpinner.setAdapter(adapter);
 	    mMonthSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				mMonth = pos + 1;
 				saveSelectedLiterature();
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				
 			}
@@ -428,13 +421,11 @@ public class PlacementActivity extends Activity {
 	    mYearSpinner.setAdapter(adapter);
 	    mYearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				mYear = Integer.parseInt(parent.getItemAtPosition(pos).toString());
 				saveSelectedLiterature();
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				
 			}
@@ -452,7 +443,6 @@ public class PlacementActivity extends Activity {
 		mPublicationSpinner = (Spinner) findViewById(R.id.placement);
 		mPublicationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				String item = parent.getItemAtPosition(pos).toString();
 				int length = parent.getAdapter().getCount();
@@ -466,7 +456,6 @@ public class PlacementActivity extends Activity {
 				
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				
 			}

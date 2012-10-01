@@ -96,7 +96,6 @@ public class StatisticsActivity extends Activity {
         mQuickEmailBtn = (ImageButton)findViewById(R.id.btn_send);
         mQuickEmailBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				setupSendEmail();
 			}

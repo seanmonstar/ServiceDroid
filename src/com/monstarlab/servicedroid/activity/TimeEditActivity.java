@@ -97,7 +97,6 @@ public class TimeEditActivity extends Activity {
 		mDateBtn = (Button) findViewById(R.id.date);
 		mDateBtn.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View view) {
 
 				showDialog(DIALOG_DATE);
@@ -108,7 +107,6 @@ public class TimeEditActivity extends Activity {
 		mLengthBtn = (Button) findViewById(R.id.length);
 		mLengthBtn.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View view) {
 
 				showDialog(DIALOG_LENGTH);
@@ -122,7 +120,6 @@ public class TimeEditActivity extends Activity {
 		Button confirmButton = (Button) findViewById(R.id.confirm);
 		confirmButton.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View view) {
 
 				finish();
@@ -135,7 +132,6 @@ public class TimeEditActivity extends Activity {
 			
 			
 
-			@Override
 			public void onClick(View v) {
 				mIsCancelled = true;
 				finish();
@@ -260,7 +256,6 @@ public class TimeEditActivity extends Activity {
 		
 		return new TimeLengthPickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 			
-			@Override
 			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 				setLength(TimeUtil.toTimeInt(hourOfDay, minute));
 			}
@@ -290,7 +285,6 @@ public class TimeEditActivity extends Activity {
 		
 		return new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 			
-			@Override
 			public void onDateSet(DatePicker view, int y, int m, int d) {
 				String date = y + "-" + pad(m+1) + "-" + pad(d);
 				setDate(date);

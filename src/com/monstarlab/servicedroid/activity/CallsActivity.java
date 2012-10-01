@@ -76,7 +76,6 @@ public class CallsActivity extends ListActivity {
         mQuickAddBtn = (ImageButton)findViewById(R.id.btn_add);
         mQuickAddBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				createCall();
 			}

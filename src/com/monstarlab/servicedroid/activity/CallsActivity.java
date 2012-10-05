@@ -60,10 +60,9 @@ public class CallsActivity extends ListActivity {
 	private int mSortState;
 	private long mJustDeletedCall;
 
-	private boolean mIsAnonCall = false;
+	private boolean mHasAnonCall = false;
 	private Cursor mListCursor;
 
-	private ImageButton mQuickAddBtn;
 	private TextView mHeaderText;
 	
 	@Override
@@ -78,14 +77,6 @@ public class CallsActivity extends ListActivity {
         this.setContentView(R.layout.calls);
         
         mHeaderText = (TextView)findViewById(R.id.header);
-        mQuickAddBtn = (ImageButton)findViewById(R.id.btn_add);
-        mQuickAddBtn.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				createCall();
-			}
-        	
-        });
         
         // default sort state will be alphabetically, unless set otherwise
         loadSortState();
@@ -174,7 +165,8 @@ public class CallsActivity extends ListActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        menu.add(0, MENU_ADD, 1, R.string.add_call).setIcon(android.R.drawable.ic_menu_add);
+        getMenuInflater().inflate(R.menu.calls, menu);
+        
         return result;
     }
 	
@@ -197,20 +189,15 @@ public class CallsActivity extends ListActivity {
 		super.onPrepareOptionsMenu(menu);
 		
 		//menu depends on if how data is sorted
-		if(mSortState == SORT_ALPHA) {
-			menu.removeItem(MENU_SORT_ALPHA);
-			if(menu.findItem(MENU_SORT_TIME) == null) {
-				menu.add(0, MENU_SORT_TIME, 2, R.string.sort).setIcon(android.R.drawable.ic_menu_recent_history);
-			}
+		MenuItem sortItem = menu.findItem(R.id.menu_sort);
+		if (mSortState == SORT_ALPHA) {
+			sortItem.setIcon(android.R.drawable.ic_menu_recent_history);
 		} else if(mSortState == SORT_TIME){
-			menu.removeItem(MENU_SORT_TIME);
-			if(menu.findItem(MENU_SORT_ALPHA) == null) {
-				menu.add(0, MENU_SORT_ALPHA, 2, R.string.sort).setIcon(android.R.drawable.ic_menu_sort_alphabetically);
-			}
+			sortItem.setIcon(android.R.drawable.ic_menu_sort_alphabetically);
 		}
 		
 		//adding Anonymous Placements depends on Cursor
-        if(mIsAnonCall) {
+        if(mHasAnonCall) {
         	menu.removeItem(MENU_ADD_ANON_PLACEMENTS);
         } else {
         	if(menu.findItem(MENU_ADD_ANON_PLACEMENTS) == null) {
@@ -224,18 +211,11 @@ public class CallsActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_ADD:
+		case R.id.menu_add:
 			createCall();
 			break;
-		case MENU_SORT_ALPHA:
-			mSortState = SORT_ALPHA;
-			saveSortState();
-			fillData();
-			break;
-		case MENU_SORT_TIME:
-			mSortState = SORT_TIME;
-			saveSortState();
-			fillData();
+		case R.id.menu_sort:
+			toggleSortOrder();
 			break;
 		case MENU_ADD_ANON_PLACEMENTS:
 			createAnonCall();
@@ -244,9 +224,19 @@ public class CallsActivity extends ListActivity {
 		
 		return super.onOptionsItemSelected(item);
 	}
+	
+	protected void toggleSortOrder() {
+		if (mSortState == SORT_ALPHA) {
+			mSortState = SORT_TIME;
+		} else if (mSortState == SORT_TIME) {
+			mSortState = SORT_ALPHA;
+		}
+		saveSortState();
+		fillData();
+	}
 
 	protected void createAnonCall() {
-		if(!mIsAnonCall) {
+		if(!mHasAnonCall) {
 			ContentValues values = new ContentValues();
 			values.put(Calls.NAME, getString(R.string.anon_placement));
 			values.put(Calls.TYPE, Calls.TYPE_ANONYMOUS);
@@ -258,11 +248,11 @@ public class CallsActivity extends ListActivity {
 	}
 	
 	protected void getAnonCall() {
-		mIsAnonCall = false;
+		mHasAnonCall = false;
 		Cursor c = getContentResolver().query(getIntent().getData(), PROJECTION, Calls.TYPE + "=?", new String[] { ""+Calls.TYPE_ANONYMOUS }, null);
 		if (c != null) {
 			if(c.getCount() > 0) {
-				mIsAnonCall = true;
+				mHasAnonCall = true;
 			}
 			
 			c.close();

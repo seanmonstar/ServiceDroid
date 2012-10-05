@@ -3,6 +3,7 @@ package com.monstarlab.servicedroid.activity;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.monstarlab.servicedroid.compat.ActionBarActivity;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -33,7 +34,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class PlacementActivity extends Activity {
+public class PlacementActivity extends ActionBarActivity {
 	private static final String TAG = "PlacementActivity";
 	
 	private static final int STATE_INSERT = 0;

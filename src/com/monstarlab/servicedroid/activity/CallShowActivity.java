@@ -20,8 +20,10 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -239,6 +241,26 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 		int[] to = new int[]{ R.id.name, R.id.date, R.id.notes };
 		
 		SimpleAdapter adapter = new SimpleAdapter(this, mHistoryMaps, R.layout.placement_row, from, to) {
+			
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				View view = super.getView(position, convertView, parent);
+				
+				
+				// set the color of the sidebar based on item type
+				ImageView colorView = (ImageView) view.findViewById(R.id.color);
+				String type = ((HashMap<String, String>) mHistoryMaps.get(position)).get(HISTORY_LOG_TYPE);
+				int colorId = 0;
+				if (type == ReturnVisits.CONTENT_ITEM_TYPE) {
+					colorId = R.color.list_visit;
+				} else if (type == Placements.CONTENT_ITEM_TYPE) {
+					colorId = R.color.list_placement;
+				}
+				colorView.setImageResource(colorId);
+				
+				return view;
+			}
+			
 			@Override
         	public void setViewText(TextView v, String text) {
         		if (v.getId() == R.id.date) {

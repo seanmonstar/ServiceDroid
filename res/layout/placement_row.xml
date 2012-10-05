@@ -3,7 +3,13 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
        android:layout_width="fill_parent"
        android:layout_height="?android:attr/listPreferredItemHeight"
-       android:paddingLeft="14dip">
+       >
+       
+       <ImageView android:id="@+id/color"
+           android:src="@color/list_placement"
+           android:layout_width="5dip"
+           android:layout_height="fill_parent"
+           />
 
        <TextView android:id="@+id/date"
            android:layout_width="wrap_content"
@@ -28,6 +34,8 @@
            android:ellipsize="marquee"
            android:gravity="center_vertical|left"
            android:textColor="#fff"
+           android:text="John Doe"
+           android:paddingLeft="14dip"
        />
        
        <TextView android:id="@+id/notes"
@@ -43,5 +51,6 @@
            android:gravity="center_vertical|left"
            android:textColor="@android:color/secondary_text_dark_nodisable"
            android:textStyle="italic"
+           android:paddingLeft="14dip"
        />
 </RelativeLayout>

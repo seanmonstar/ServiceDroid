@@ -241,12 +241,13 @@ public class CallsActivity extends ListActivity {
 	protected void getAnonCall() {
 		mIsAnonCall = false;
 		Cursor c = getContentResolver().query(getIntent().getData(), PROJECTION, Calls.TYPE + "=?", new String[] { ""+Calls.TYPE_ANONYMOUS }, null);
-		
-		if(c.getCount() > 0) {
-			mIsAnonCall = true;
+		if (c != null) {
+			if(c.getCount() > 0) {
+				mIsAnonCall = true;
+			}
+			
+			c.close();
 		}
-		
-		c.close();
 		c = null;
 	}
 

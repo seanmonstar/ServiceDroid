@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.monstarlab.servicedroid.compat.ActionBarActivity;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
@@ -34,7 +35,7 @@ import com.monstarlab.servicedroid.R;
 
 
 
-public class StatisticsActivity extends Activity {
+public class StatisticsActivity extends ActionBarActivity {
 	
 	private static final String TAG = "StatisticsActivity";
 	

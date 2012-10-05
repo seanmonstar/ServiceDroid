@@ -30,13 +30,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.monstarlab.servicedroid.R;
+import com.monstarlab.servicedroid.compat.ActionBarActivity;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class CallShowActivity extends Activity implements OnItemClickListener {
+public class CallShowActivity extends ActionBarActivity implements OnItemClickListener {
 	
 	private static final String TAG = "CallShowActivity";
 	

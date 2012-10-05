@@ -21,6 +21,21 @@ public class TimeUtil {
 	public static final int HOUR = 3600;
 	public static final int MIN = 60;
 	
+	
+	// Month Constants, to be compared against .getCurrentMonth()
+	public static final int JANUARY = 1;
+	public static final int FEBRUARY = 2;
+	public static final int MARCH = 3;
+	public static final int APRIL = 4;
+	public static final int MAY = 5;
+	public static final int JUNE = 6;
+	public static final int JULY = 7;
+	public static final int AUGUST = 8;
+	public static final int SEPTEMBER = 9;
+	public static final int OCTOBER = 10;
+	public static final int NOVEMBER = 11;
+	public static final int DECEMBER = 12;
+	
 	public TimeUtil(Context ctx) {
 		mDateParser = new SimpleDateFormat("yyyy-MM-dd");
 		mDateTimeParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -106,6 +121,9 @@ public class TimeUtil {
 		}
 	}
 	
+	/*
+	 * returns Year after 2000. Ex: 12.
+	 */
 	public static int getCurrentYear() {
 		Calendar c = Calendar.getInstance();
 		return c.get(Calendar.YEAR);

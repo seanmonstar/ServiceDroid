@@ -44,9 +44,9 @@ public class PlacementActivity extends Activity {
 	private static final String[] PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.TITLE, Literature.PUBLICATION, Literature.TYPE };
 	
-	private static final String[] YEARS = new String[] { "2012", "2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000" };
 	private static final int DIALOG_CREATE_ID = 0;
 	private static final int DIALOG_DATE_ID = 1;
+
 	
 	private int mState;
 	private Uri mUri;
@@ -251,8 +251,6 @@ public class PlacementActivity extends Activity {
 				ContentValues values = new ContentValues();
 				values.put(Placements.LITERATURE_ID, publication);
 				
-				//TODO: Combo must either save 2 placements, or somehow be able to count as 2 in stats
-				
 				getContentResolver().update(mUri, values, null, null);
 				
 				Intent i = getIntent();
@@ -416,7 +414,8 @@ public class PlacementActivity extends Activity {
 	    
 	    
 	    mYearSpinner = (Spinner) findViewById(R.id.year);
-	    adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, YEARS);
+	    String[] years = getYearRange();
+	    adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, years);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    mYearSpinner.setAdapter(adapter);
 	    mYearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -432,9 +431,32 @@ public class PlacementActivity extends Activity {
 	    	
 		});
 	    
-	    int latestYear = TimeUtil.getCurrentYear();
+	    int latestYear = years.length;
+	    // Ex: [2013, 2012, 2011, 2010, ...
 		mYearSpinner.setSelection(latestYear - mYear);
 	    
+	}
+	
+	private String[] getYearRange() {
+		int latestYear = getLatestYear();
+		String[] years = new String[latestYear];		
+		
+		for (int i = 0; i < years.length; i++) {
+			years[i] = "20" + TimeUtil.pad(latestYear - i);
+		}
+		
+		return years;
+	}
+	
+	private int getLatestYear() {
+		int month = TimeUtil.getCurrentMonth();
+		int year = TimeUtil.getCurrentYear();
+		
+		if (month >= TimeUtil.OCTOBER) {
+			year += 1;
+		}
+		
+		return year;
 	}
 	
 	private void setupBookAndBrochureView() {

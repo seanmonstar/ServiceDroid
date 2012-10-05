@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -55,7 +56,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
     private int mCurrentYear = TimeUtil.getCurrentYear();
 	private TimeUtil mTimeHelper;
 	private Cursor mCursor;
-	private Boolean mTiming = false;
+	private Boolean mIsTiming = false;
 	//private Long mTimerStart;
 	//private Handler mTimer = new Handler();
 	//private TextView mTimerView;
@@ -83,14 +84,13 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 
 		setContentView(R.layout.time);
 		setHeaderText();
-		setupQuickButtons();
 		
 		mTimeHelper = new TimeUtil(this);
-		mTiming = TimerService.isRunning;
-		if(!mTiming) {
+		mIsTiming = TimerService.isRunning;
+		if(!mIsTiming) {
 			checkForTimer();
 		}
-		setIsTiming(mTiming);
+		setIsTiming(mIsTiming);
 		
 		fillData();
 		
@@ -104,35 +104,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	    
 	}
 	
-	protected void setupQuickButtons() {
-		mQuickAddBtn = (ImageButton)findViewById(R.id.btn_add);
-		mQuickAddBtn.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				createEntry();
-			}
-			
-		});
 		
-		mQuickStartBtn = (ImageButton)findViewById(R.id.btn_start);
-		mQuickStartBtn.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				startTimer();
-			}
-			
-		});
-		
-		mQuickStopBtn = (ImageButton)findViewById(R.id.btn_stop);
-		mQuickStopBtn.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				stopTimer();
-			}
-			
-		});
-	}
-	
 	public void fillData() {
 		 // Get this month's entries from the database and create the item list
 		mCursor = managedQuery(getIntent().getData(), PROJECTION, TimeEntries.LENGTH + " > 0 and " + TimeEntries.DATE + " between ? and ?", getTimePeriodArgs(mCurrentYear, mCurrentMonth), TimeEntries.DATE + " ASC");
@@ -202,47 +174,34 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		menu.add(0, INSERT_ID, 1, R.string.add_time)
-			.setShortcut('3', 'a')
-			.setIcon(android.R.drawable.ic_menu_add);
-		
-		//Start/Stop Time happens onPrepare
-		
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.time, menu);
 				
 		return true;
 	}
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		super.onPrepareOptionsMenu(menu);
+		boolean result = super.onPrepareOptionsMenu(menu);
 		
 		//menu depends on if user has start Service Timer
-		if(mTiming) {
-			menu.removeItem(START_ID);
-			if(menu.findItem(STOP_ID) == null) {
-				menu.add(0, STOP_ID, 2, R.string.stop_time).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-			}
+		MenuItem timer = menu.findItem(R.id.menu_timer);
+		if (mIsTiming) {
+			timer.setTitle(R.string.stop_time).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		} else {
-			menu.removeItem(STOP_ID);
-			if(menu.findItem(START_ID) == null) {
-				menu.add(0, START_ID, 2, R.string.start_time).setIcon(android.R.drawable.ic_menu_recent_history);
-			}
+			timer.setTitle(R.string.start_time).setIcon(android.R.drawable.ic_menu_recent_history);
 		}
-		return true;
+		return result;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
-		case INSERT_ID:
-			//this.startActivity(new Intent(Intent.ACTION_INSERT, this.getIntent().getData()));
+		case R.id.menu_add:
 			createEntry();
 			return true;
-		case START_ID:
-			startTimer();
-			return true;
-		case STOP_ID:
-			stopTimer();
+		case R.id.menu_timer:
+			toggleTimer();
 			return true;
 		}
 		
@@ -313,10 +272,18 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	}
 	
 	private void stopTimer() {
-		if(!mTiming) return;
+		if(!mIsTiming) return;
 		setIsTiming(false);
 		Intent i = new Intent(this, TimerService.class);
 		stopService(i);
+	}
+	
+	private void toggleTimer() {
+		if (mIsTiming) {
+			stopTimer();
+		} else {
+			startTimer();
+		}	
 	}
 	
 	private void checkForTimer() {
@@ -342,8 +309,8 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	}
 	
 	private void setIsTiming(boolean isTiming) {
-		mTiming = isTiming;
-		if (mTiming) {
+		mIsTiming = isTiming;
+		if (mIsTiming) {
 			mQuickStartBtn.setVisibility(View.GONE);
 			mQuickStopBtn.setVisibility(View.VISIBLE);
 		} else {

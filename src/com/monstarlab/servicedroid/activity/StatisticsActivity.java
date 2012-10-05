@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,11 +38,8 @@ public class StatisticsActivity extends Activity {
 	
 	private static final String TAG = "StatisticsActivity";
 	
-	private static final int MENU_MONTH = Menu.FIRST;
-	private static final int MENU_YEAR = Menu.FIRST + 1;
-	private static final int MENU_EMAIL = Menu.FIRST + 2;
-	private static final int MENU_SMS = Menu.FIRST + 3;
-	private static final int MENU_BACKUP = Menu.FIRST + 4;
+	private static final int TIME_PERIOD_MONTH = 0;
+	private static final int TIME_PERIOD_YEAR = 1;
 	
 	//private TimeUtil mTimeHelper;
 	
@@ -62,7 +60,7 @@ public class StatisticsActivity extends Activity {
 	
 	private int mCurrentMonth = TimeUtil.getCurrentMonth();
 	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
-	private int mTimeSpan = MENU_MONTH;
+	private int mTimeSpan = TIME_PERIOD_MONTH;
 	
 	private static int SERVICE_YEAR_START = 9;
 	
@@ -130,7 +128,7 @@ public class StatisticsActivity extends Activity {
 	}
 	
 	protected String getTimePeriodText() {
-		if(mTimeSpan == MENU_MONTH) {
+		if(mTimeSpan == TIME_PERIOD_MONTH) {
 			String[] months = getResources().getStringArray(R.array.months_array);
 			return months[mCurrentMonth-1] + " " + mCurrentYear;
 		} else {
@@ -231,7 +229,7 @@ public class StatisticsActivity extends Activity {
 	}
 	
 	protected void moveTimePeriodBackward() {
-		if(mTimeSpan == MENU_MONTH) {
+		if(mTimeSpan == TIME_PERIOD_MONTH) {
 			mCurrentMonth--;
 			if(mCurrentMonth <= 0) {
 				mCurrentMonth = 12;
@@ -243,7 +241,7 @@ public class StatisticsActivity extends Activity {
 	}
 	
 	protected void moveTimePeriodForward() {
-		if(mTimeSpan == MENU_MONTH) {
+		if(mTimeSpan == TIME_PERIOD_MONTH) {
 			mCurrentMonth++;
 			if(mCurrentMonth > 12) {
 				mCurrentMonth = 1;
@@ -259,7 +257,7 @@ public class StatisticsActivity extends Activity {
 	}
 	
 	protected String[] getTimePeriodArgs(int year, int month) {
-		if(mTimeSpan == MENU_YEAR) {
+		if(mTimeSpan == TIME_PERIOD_YEAR) {
 			month = SERVICE_YEAR_START; // service year is from Sept (9) - Aug (8)
 			year = year - 1; //year is always in the future
 		}
@@ -272,7 +270,7 @@ public class StatisticsActivity extends Activity {
 		Date start = cal.getTime();
 		args[0] = TimeUtil.getSQLTextFromDate(start);
 		
-		if(mTimeSpan == MENU_MONTH) {
+		if(mTimeSpan == TIME_PERIOD_MONTH) {
 			cal.add(Calendar.MONTH, 1);
 		} else {
 			cal.add(Calendar.YEAR, 1);
@@ -292,7 +290,7 @@ public class StatisticsActivity extends Activity {
 		mTimeSpan = span;
 		
 		//we need to make sure to move the Year around to show the correct service year
-		if(span == MENU_YEAR) {
+		if(span == TIME_PERIOD_YEAR) {
 			if(mCurrentMonth >= SERVICE_YEAR_START) {
 				mCurrentYear++;
 			}
@@ -305,33 +303,39 @@ public class StatisticsActivity extends Activity {
 		fillData();
 	}
 	
+	protected int getTimeSpan() {
+		return mTimeSpan;
+	}
+	
+	protected void toggleTimeSpan() {
+		if (getTimeSpan() == TIME_PERIOD_MONTH) {
+			setTimeSpan(TIME_PERIOD_YEAR);
+		} else if (getTimeSpan() == TIME_PERIOD_YEAR) {
+			setTimeSpan(TIME_PERIOD_MONTH);
+		}
+	}
+	
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);		
-		menu.add(0, MENU_EMAIL, 1, R.string.send).setIcon(android.R.drawable.ic_menu_send);
-		menu.add(0, MENU_SMS, 2, R.string.menu_sms).setIcon(android.R.drawable.ic_menu_upload);
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.stats, menu);
 		
-		menu.add(0, MENU_BACKUP, 4, R.string.backup).setIcon(android.R.drawable.ic_menu_save);
-		return result;
+		return super.onCreateOptionsMenu(menu);
     }
 	
-	
-	
+		
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean result = super.onPrepareOptionsMenu(menu);
 		
-		if(mTimeSpan == MENU_MONTH) {
-			menu.removeItem(MENU_MONTH);
-			if(menu.findItem(MENU_YEAR) == null) {
-				menu.add(0, MENU_YEAR, 3, R.string.service_year).setIcon(android.R.drawable.ic_menu_my_calendar);
-			}
+		MenuItem timePeriod = menu.findItem(R.id.menu_time_period);
+		if(mTimeSpan == TIME_PERIOD_MONTH) {
+			timePeriod.setIcon(android.R.drawable.ic_menu_my_calendar);
+			timePeriod.setTitle(R.string.service_year);
 		} else {
-			menu.removeItem(MENU_YEAR);
-			if(menu.findItem(MENU_MONTH) == null) {
-				menu.add(0, MENU_MONTH, 3, R.string.monthly).setIcon(android.R.drawable.ic_menu_month);
-			}
+			timePeriod.setTitle(R.string.monthly);
+			timePeriod.setIcon(android.R.drawable.ic_menu_month);
 		}
 		
 		return result;
@@ -346,22 +350,19 @@ public class StatisticsActivity extends Activity {
 		
 		switch(item.getItemId()) {
 		
-		case MENU_MONTH:
-			setTimeSpan(MENU_MONTH);
-			break;
-		case MENU_YEAR:
-			setTimeSpan(MENU_YEAR);
+		case R.id.menu_time_period:
+			toggleTimeSpan();
 			break;
 		
-		case MENU_EMAIL:
+		case R.id.menu_email:
 			setupSendEmail();
 			break;
 		
-		case MENU_SMS:
+		case R.id.menu_sms:
 			setupSendSMS();
 			break;	
 		
-		case MENU_BACKUP:
+		case R.id.menu_backup:
 			backupData();
 			break;
 		}

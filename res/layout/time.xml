@@ -19,47 +19,6 @@
 			android:paddingLeft="14dip"
 			android:paddingRight="14dip"
 			android:textAppearance="?android:attr/textAppearanceLarge" />
-		
-		<ImageView android:src="@drawable/action_bar_btn_border"
-			android:layout_width="1dip"
-			android:layout_height="fill_parent" />
-		
-		<ImageView android:src="@drawable/action_bar_btn_hightlight"
-			android:layout_width="1dip"
-			android:layout_height="fill_parent" />
-		
-		<ImageButton android:id="@+id/btn_add"
-			android:src="@drawable/button_add"
-			android:background="@drawable/action_bar_button"
-			android:scaleType="center"
-			android:layout_width="42dip"
-			android:layout_height="fill_parent"
-			android:layout_centerVertical="true" />
-		
-		<ImageView android:src="@drawable/action_bar_btn_border"
-			android:layout_width="1dip"
-			android:layout_height="fill_parent" />
-			
-		<ImageView android:src="@drawable/action_bar_btn_hightlight"
-			android:layout_width="1dip"
-			android:layout_height="fill_parent" />
-		
-		<ImageButton android:id="@+id/btn_start"
-			android:src="@android:drawable/ic_media_play"
-			android:background="@drawable/action_bar_button"
-			android:scaleType="center"
-			android:layout_width="42dip"
-			android:layout_height="fill_parent"
-			android:layout_centerVertical="true" />
-		
-		<ImageButton android:id="@+id/btn_stop"
-			android:src="@android:drawable/ic_media_pause"
-			android:background="@drawable/action_bar_button"
-			android:scaleType="center"
-			android:layout_width="42dip"
-			android:layout_height="fill_parent"
-			android:layout_centerVertical="true"
-			android:visibility="gone" />
 	
 	</LinearLayout>
         

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_add"
+        android:title="@string/add_time"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="1"
+        android:showAsAction="always" />
+    
+    <item android:id="@+id/menu_timer"
+        android:title="@string/start_time"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:orderInCategory="2"
+        android:showAsAction="always" />
+
+</menu>

@@ -103,6 +103,9 @@ public class CallEditActivity extends Activity {
 		if(mCursor != null) {
 			mCursor.moveToFirst(); //make sure we're on the only position
 			
+			// somehow, our Cursor has nothing, so accessing it would throw
+			if (mCursor.isAfterLast()) return;
+			
 			String name = mCursor.getString(NAME_COLUMN);
 			String address = mCursor.getString(ADDRESS_COLUMN);
 			String notes = mCursor.getString(NOTES_COLUMN);

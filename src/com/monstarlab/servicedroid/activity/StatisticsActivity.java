@@ -91,15 +91,6 @@ public class StatisticsActivity extends Activity {
         mBooksDisplay = (TextView)findViewById(R.id.books);
         mBibleStudiesDisplay = (TextView)findViewById(R.id.bible_studies);
         
-        mQuickEmailBtn = (ImageButton)findViewById(R.id.btn_send);
-        mQuickEmailBtn.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				setupSendEmail();
-			}
-        	
-        });
-        
         // Gesture detection
 	    mGestureDetector = new GestureDetector(new MyGestureDetector());
 

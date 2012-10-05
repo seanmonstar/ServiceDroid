@@ -7,6 +7,8 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,6 +53,9 @@ public class CallsActivity extends ListActivity {
 	
 	private static final int SORT_ALPHA = 0;
 	private static final int SORT_TIME = 1;
+	
+	private static final String PREFS_NAME = "Calls";
+	private static final String PREFS_SORT_KEY = "sortOrder";
 
 	private int mSortState;
 	private long mJustDeletedCall;
@@ -83,8 +88,8 @@ public class CallsActivity extends ListActivity {
         	
         });
         
-        //initial sort state will be alphabetically
-        mSortState = SORT_ALPHA;
+        // default sort state will be alphabetically, unless set otherwise
+        loadSortState();
         
         fillData();
         registerForContextMenu(getListView());
@@ -124,6 +129,17 @@ public class CallsActivity extends ListActivity {
 		setListAdapter(rvs);
 		
 		getAnonCall();
+	}
+	
+	protected void loadSortState() {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);		
+		mSortState = settings.getInt(PREFS_SORT_KEY, SORT_ALPHA);
+	}
+	
+	protected void saveSortState() {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		Editor editor = settings.edit();
+		editor.putInt(PREFS_SORT_KEY, mSortState);
 	}
 	
 	private Dialog makeDeleteCallDialog() {
@@ -213,10 +229,12 @@ public class CallsActivity extends ListActivity {
 			break;
 		case MENU_SORT_ALPHA:
 			mSortState = SORT_ALPHA;
+			saveSortState();
 			fillData();
 			break;
 		case MENU_SORT_TIME:
 			mSortState = SORT_TIME;
+			saveSortState();
 			fillData();
 			break;
 		case MENU_ADD_ANON_PLACEMENTS:

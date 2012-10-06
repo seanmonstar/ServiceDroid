@@ -200,6 +200,9 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 			placementsCursor.close();
 		}
 		
+		final String rvTitle = getString(R.string.rv);
+		final String bibleStudyTitle = getString(R.string.bible_study);
+		
 		if (rvCursor != null) {
 			if(rvCursor.getCount() > 0) {
 		
@@ -207,8 +210,7 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 				int dateIndex = rvCursor.getColumnIndex(ReturnVisits.DATE);
 				int studyIndex = rvCursor.getColumnIndex(ReturnVisits.IS_BIBLE_STUDY);
 				int noteIndex = rvCursor.getColumnIndex(ReturnVisits.NOTE);
-				String rvTitle = getString(R.string.rv);
-				String bibleStudyTitle = getString(R.string.bible_study);
+
 				
 				while (!rvCursor.isAfterLast()) {
 					HashMap<String, String> map = new HashMap<String, String>();
@@ -251,10 +253,15 @@ public class CallShowActivity extends Activity implements OnItemClickListener {
 				ImageView colorView = (ImageView) view.findViewById(R.id.color);
 				String type = ((HashMap<String, String>) mHistoryMaps.get(position)).get(HISTORY_LOG_TYPE);
 				int colorId = 0;
-				if (type == ReturnVisits.CONTENT_ITEM_TYPE) {
-					colorId = R.color.list_visit;
-				} else if (type == Placements.CONTENT_ITEM_TYPE) {
+				if (type == Placements.CONTENT_ITEM_TYPE) {
 					colorId = R.color.list_placement;
+				} else if (type == ReturnVisits.CONTENT_ITEM_TYPE) {
+					String title = ((HashMap<String, String>) mHistoryMaps.get(position)).get(HISTORY_LOG_TITLE);
+					if (title == bibleStudyTitle) {
+						colorId =  R.color.list_study;
+					} else {
+						colorId =  R.color.list_visit;
+					}
 				}
 				colorView.setImageResource(colorId);
 				

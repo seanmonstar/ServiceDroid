@@ -15,8 +15,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -24,11 +22,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class TimeEditActivity extends Activity {
+public class TimeEditActivity extends SherlockActivity {
 
 	private static final String TAG = "TimeEditActivity";
 	
@@ -91,6 +92,7 @@ public class TimeEditActivity extends Activity {
 		
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(R.layout.time_edit);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		mTimeHelper = new TimeUtil(this);
 		
@@ -217,6 +219,11 @@ public class TimeEditActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, TimeActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+			return true;
 		case MENU_DELETE:
 			setLength(0);
 			finish();

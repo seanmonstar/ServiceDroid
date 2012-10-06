@@ -3,7 +3,9 @@ package com.monstarlab.servicedroid.activity;
 import java.text.ParseException;
 import java.util.Date;
 
-import com.monstarlab.servicedroid.compat.ActionBarActivity;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -23,8 +25,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,7 +34,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class PlacementActivity extends ActionBarActivity {
+public class PlacementActivity extends SherlockActivity {
 	private static final String TAG = "PlacementActivity";
 	
 	private static final int STATE_INSERT = 0;
@@ -45,9 +45,9 @@ public class PlacementActivity extends ActionBarActivity {
 	private static final String[] PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.TITLE, Literature.PUBLICATION, Literature.TYPE };
 	
-	private static final String[] YEARS = new String[] { "2012", "2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000" };
 	private static final int DIALOG_CREATE_ID = 0;
 	private static final int DIALOG_DATE_ID = 1;
+
 	
 	private int mState;
 	private Uri mUri;
@@ -84,6 +84,7 @@ public class PlacementActivity extends ActionBarActivity {
 		if (Intent.ACTION_EDIT.equals(action)) {
 			mState = STATE_EDIT;
 			mUri = intent.getData();
+			mCallId = intent.getIntExtra(Calls._ID, 0);
 			retrievePlacementDetails(mUri);
 			
 		} else if (Intent.ACTION_INSERT.equals(action)) {
@@ -123,6 +124,7 @@ public class PlacementActivity extends ActionBarActivity {
 		} 
 		
 		setupDateButton();
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +143,8 @@ public class PlacementActivity extends ActionBarActivity {
 				finish();
 			}
 		});
+		
+		
 	}
 	
 	private void setupDateButton() {
@@ -252,8 +256,6 @@ public class PlacementActivity extends ActionBarActivity {
 				ContentValues values = new ContentValues();
 				values.put(Placements.LITERATURE_ID, publication);
 				
-				//TODO: Combo must either save 2 placements, or somehow be able to count as 2 in stats
-				
 				getContentResolver().update(mUri, values, null, null);
 				
 				Intent i = getIntent();
@@ -275,6 +277,13 @@ public class PlacementActivity extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, CallShowActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			Uri uri =  ContentUris.withAppendedId(Calls.CONTENT_URI, mCallId);
+			i.setData(uri);
+			startActivity(i);
+			return true;
 		case MENU_DELETE:
 			mLitID = 0;
 			finish();
@@ -417,7 +426,8 @@ public class PlacementActivity extends ActionBarActivity {
 	    
 	    
 	    mYearSpinner = (Spinner) findViewById(R.id.year);
-	    adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, YEARS);
+	    String[] years = getYearRange();
+	    adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, years);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    mYearSpinner.setAdapter(adapter);
 	    mYearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -433,9 +443,32 @@ public class PlacementActivity extends ActionBarActivity {
 	    	
 		});
 	    
-	    int latestYear = TimeUtil.getCurrentYear();
+	    int latestYear = years.length;
+	    // Ex: [2013, 2012, 2011, 2010, ...
 		mYearSpinner.setSelection(latestYear - mYear);
 	    
+	}
+	
+	private String[] getYearRange() {
+		int latestYear = getLatestYear();
+		String[] years = new String[latestYear];		
+		
+		for (int i = 0; i < years.length; i++) {
+			years[i] = "20" + TimeUtil.pad(latestYear - i);
+		}
+		
+		return years;
+	}
+	
+	private int getLatestYear() {
+		int month = TimeUtil.getCurrentMonth();
+		int year = TimeUtil.getCurrentYear();
+		
+		if (month >= TimeUtil.OCTOBER) {
+			year += 1;
+		}
+		
+		return year;
 	}
 	
 	private void setupBookAndBrochureView() {

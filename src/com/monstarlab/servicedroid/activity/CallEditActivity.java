@@ -12,11 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class CallEditActivity extends Activity {
+public class CallEditActivity extends SherlockActivity {
 
 	private static final String TAG = "CallEditActivity";
 	
@@ -68,6 +70,7 @@ public class CallEditActivity extends Activity {
 		}
 		
 		setContentView(R.layout.call_edit);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		mNameText = (EditText) findViewById(R.id.name);
 		mAddressText = (EditText) findViewById(R.id.address);
@@ -102,6 +105,9 @@ public class CallEditActivity extends Activity {
 		
 		if(mCursor != null) {
 			mCursor.moveToFirst(); //make sure we're on the only position
+			
+			// somehow, our Cursor has nothing, so accessing it would throw
+			if (mCursor.isAfterLast()) return;
 			
 			String name = mCursor.getString(NAME_COLUMN);
 			String address = mCursor.getString(ADDRESS_COLUMN);
@@ -151,6 +157,20 @@ public class CallEditActivity extends Activity {
 				i.setData(mUri);
 			}
 		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, CallShowActivity.class);
+			i.setData(mUri);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void deleteRV() {

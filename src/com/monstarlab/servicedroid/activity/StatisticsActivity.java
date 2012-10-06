@@ -14,9 +14,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -24,7 +21,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.monstarlab.servicedroid.compat.ActionBarActivity;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
@@ -35,7 +34,7 @@ import com.monstarlab.servicedroid.R;
 
 
 
-public class StatisticsActivity extends ActionBarActivity {
+public class StatisticsActivity extends SherlockActivity {
 	
 	private static final String TAG = "StatisticsActivity";
 	
@@ -81,8 +80,8 @@ public class StatisticsActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stats);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
-       // mTimeHelper = new TimeUtil(this);
         mTimePeriodDisplay = (TextView)findViewById(R.id.stats_timeperiod);
         
         mHoursDisplay = (TextView)findViewById(R.id.hours);
@@ -310,9 +309,7 @@ public class StatisticsActivity extends ActionBarActivity {
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.stats, menu);
-		
+		getSupportMenuInflater().inflate(R.menu.stats, menu);
 		return super.onCreateOptionsMenu(menu);
     }
 	
@@ -341,6 +338,12 @@ public class StatisticsActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {		
 		
 		switch(item.getItemId()) {
+		
+		case android.R.id.home:
+			Intent i = new Intent(this, ServiceDroidActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+			return true;
 		
 		case R.id.menu_time_period:
 			toggleTimeSpan();

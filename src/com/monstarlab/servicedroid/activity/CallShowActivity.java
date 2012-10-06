@@ -17,9 +17,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -31,15 +28,18 @@ import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.R;
-import com.monstarlab.servicedroid.compat.ActionBarActivity;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class CallShowActivity extends ActionBarActivity implements OnItemClickListener {
+public class CallShowActivity extends SherlockActivity implements OnItemClickListener {
 	
 	private static final String TAG = "CallShowActivity";
 	
@@ -102,6 +102,7 @@ public class CallShowActivity extends ActionBarActivity implements OnItemClickLi
 		
 		
 		setContentView(R.layout.call_show);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		mNameText = (TextView) findViewById(R.id.name);
 		mAddressText = (TextView) findViewById(R.id.address);
@@ -287,7 +288,7 @@ public class CallShowActivity extends ActionBarActivity implements OnItemClickLi
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
+		MenuInflater menuInflater = getSupportMenuInflater();
         
         switch(mCallType) {
 
@@ -320,6 +321,11 @@ public class CallShowActivity extends ActionBarActivity implements OnItemClickLi
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, ServiceDroidActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+			return true;
 		case R.id.menu_edit:
 			editCall();
 			break;
@@ -470,6 +476,7 @@ public class CallShowActivity extends ActionBarActivity implements OnItemClickLi
 	private void editPlacement(long id) {
 		Uri uri = ContentUris.withAppendedId(Placements.CONTENT_URI, id);
 		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, PlacementActivity.class);
+		i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
         startActivity(i);
 	}
 	
@@ -483,6 +490,7 @@ public class CallShowActivity extends ActionBarActivity implements OnItemClickLi
 	private void editReturnVisit(long id) {
 		Uri uri = ContentUris.withAppendedId(ReturnVisits.CONTENT_URI, id);
 		Intent i = new Intent(Intent.ACTION_EDIT, uri, this, ReturnVisitActivity.class);
+		i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
         startActivity(i);
 	}
 	
@@ -522,7 +530,7 @@ public class CallShowActivity extends ActionBarActivity implements OnItemClickLi
 	}
 	
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
+	public boolean onContextItemSelected(android.view.MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		
 		int pos = info.position;

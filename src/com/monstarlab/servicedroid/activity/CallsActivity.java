@@ -14,8 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
@@ -27,13 +25,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class CallsActivity extends ListActivity {
+public class CallsActivity extends SherlockListActivity {
 	
 	private static final String TAG = "CallsActivity";
 	
@@ -74,7 +75,8 @@ public class CallsActivity extends ListActivity {
 			intent.setData(Calls.CONTENT_URI);
 		}
         
-        this.setContentView(R.layout.calls);
+        setContentView(R.layout.calls);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         mHeaderText = (TextView)findViewById(R.id.header);
         
@@ -165,8 +167,7 @@ public class CallsActivity extends ListActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.calls, menu);
-        
+        getSupportMenuInflater().inflate(R.menu.calls, menu);        
         return result;
     }
 	
@@ -211,6 +212,11 @@ public class CallsActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, ServiceDroidActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+			return true;
 		case R.id.menu_add:
 			createCall();
 			break;
@@ -290,7 +296,7 @@ public class CallsActivity extends ListActivity {
 	}
 	
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
+	public boolean onContextItemSelected(android.view.MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		
 		switch(item.getItemId()) {

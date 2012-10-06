@@ -3,7 +3,10 @@ package com.monstarlab.servicedroid.activity;
 import java.text.ParseException;
 import java.util.Date;
 
-import com.monstarlab.servicedroid.compat.ActionBarActivity;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
@@ -23,8 +26,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,7 +35,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class PlacementActivity extends ActionBarActivity {
+
+public class PlacementActivity extends SherlockActivity {
+
 	private static final String TAG = "PlacementActivity";
 	
 	private static final int STATE_INSERT = 0;
@@ -86,6 +89,7 @@ public class PlacementActivity extends ActionBarActivity {
 		if (Intent.ACTION_EDIT.equals(action)) {
 			mState = STATE_EDIT;
 			mUri = intent.getData();
+			mCallId = intent.getIntExtra(Calls._ID, 0);
 			retrievePlacementDetails(mUri);
 			
 		} else if (Intent.ACTION_INSERT.equals(action)) {
@@ -125,6 +129,7 @@ public class PlacementActivity extends ActionBarActivity {
 		} 
 		
 		setupDateButton();
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +148,8 @@ public class PlacementActivity extends ActionBarActivity {
 				finish();
 			}
 		});
+		
+		
 	}
 	
 	private void setupDateButton() {
@@ -275,6 +282,13 @@ public class PlacementActivity extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, CallShowActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			Uri uri =  ContentUris.withAppendedId(Calls.CONTENT_URI, mCallId);
+			i.setData(uri);
+			startActivity(i);
+			return true;
 		case MENU_DELETE:
 			mLitID = 0;
 			finish();

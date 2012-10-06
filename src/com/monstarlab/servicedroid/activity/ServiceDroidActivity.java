@@ -1,5 +1,6 @@
 package com.monstarlab.servicedroid.activity;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.service.ReminderService;
 import com.monstarlab.servicedroid.util.Changelog;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class ServiceDroidActivity extends Activity implements View.OnClickListener {
+
+public class ServiceDroidActivity extends SherlockActivity implements View.OnClickListener {
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -3,7 +3,6 @@ package com.monstarlab.servicedroid.activity;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.ListActivity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -12,11 +11,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -29,12 +26,15 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.service.TimerService;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class TimeActivity extends ListActivity implements OnTouchListener {
+public class TimeActivity extends SherlockListActivity implements OnTouchListener {
 	
 	private static final String TAG = "TimeActivity";
 	
@@ -84,6 +84,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 
 		setContentView(R.layout.time);
 		setHeaderText();
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		mTimeHelper = new TimeUtil(this);
 		mIsTiming = TimerService.isRunning;
@@ -172,12 +173,9 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.time, menu);
-				
-		return true;
+		boolean result = super.onCreateOptionsMenu(menu);
+		getSupportMenuInflater().inflate(R.menu.time, menu);
+		return result;
 	}
 	
 	@Override
@@ -197,6 +195,11 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, ServiceDroidActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
+			return true;
 		case R.id.menu_add:
 			createEntry();
 			return true;
@@ -220,7 +223,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	}
 	
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
+	public boolean onContextItemSelected(android.view.MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		switch(item.getItemId()) {
 		
@@ -310,13 +313,7 @@ public class TimeActivity extends ListActivity implements OnTouchListener {
 	
 	private void setIsTiming(boolean isTiming) {
 		mIsTiming = isTiming;
-		if (mIsTiming) {
-			mQuickStartBtn.setVisibility(View.GONE);
-			mQuickStopBtn.setVisibility(View.VISIBLE);
-		} else {
-			mQuickStartBtn.setVisibility(View.VISIBLE);
-			mQuickStopBtn.setVisibility(View.GONE);
-		}
+		invalidateOptionsMenu();
 	}
 	
 	protected void moveTimePeriodBackward() {

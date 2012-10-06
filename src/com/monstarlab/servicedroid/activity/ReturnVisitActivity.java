@@ -3,12 +3,13 @@ package com.monstarlab.servicedroid.activity;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
@@ -25,7 +26,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ReturnVisitActivity extends Activity {
+public class ReturnVisitActivity extends SherlockActivity {
 	
 	private static final String TAG = "CallShowActivity";
 	
@@ -60,7 +61,8 @@ public class ReturnVisitActivity extends Activity {
 		final String action = intent.getAction();
 		if (Intent.ACTION_EDIT.equals(action)) {
 			mState = STATE_EDIT;
-			mUri = intent.getData();			
+			mUri = intent.getData();
+			mCallId = intent.getIntExtra(Calls._ID, 0);
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
 			mCallId = intent.getIntExtra(Calls._ID, 0);
@@ -89,6 +91,7 @@ public class ReturnVisitActivity extends Activity {
 		}
 		
 		setContentView(R.layout.return_visit);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		mDateBtn = (Button) findViewById(R.id.date);
 		mDateBtn.setOnClickListener(new View.OnClickListener() {
@@ -229,6 +232,21 @@ public class ReturnVisitActivity extends Activity {
 			}
 
 		}, year, month, day);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent i = new Intent(this, CallShowActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			Uri uri =  ContentUris.withAppendedId(Calls.CONTENT_URI, mCallId);
+			i.setData(uri);
+			startActivity(i);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
 	private String getDate() {

@@ -139,6 +139,7 @@ public class CallsActivity extends ListActivity {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		Editor editor = settings.edit();
 		editor.putInt(PREFS_SORT_KEY, mSortState);
+		editor.commit();
 	}
 	
 	private Dialog makeDeleteCallDialog() {

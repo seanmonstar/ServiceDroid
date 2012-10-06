@@ -41,6 +41,8 @@ public class PlacementActivity extends Activity {
 
 	private static final int MENU_DELETE = Menu.FIRST;
 	
+	private static final int YEAR_CUTOFF = 1999;
+	
 	private static final String[] PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.TITLE, Literature.PUBLICATION, Literature.TYPE };
 	
@@ -431,18 +433,22 @@ public class PlacementActivity extends Activity {
 	    	
 		});
 	    
-	    int latestYear = years.length;
+	    int yearsDiff = mYear - YEAR_CUTOFF;
 	    // Ex: [2013, 2012, 2011, 2010, ...
-		mYearSpinner.setSelection(latestYear - mYear);
+		mYearSpinner.setSelection(years.length - yearsDiff);
 	    
 	}
 	
 	private String[] getYearRange() {
 		int latestYear = getLatestYear();
-		String[] years = new String[latestYear];		
+		
+		// 2013 - 2000
+		int numOfYears = latestYear - YEAR_CUTOFF; 
+		
+		String[] years = new String[numOfYears];		
 		
 		for (int i = 0; i < years.length; i++) {
-			years[i] = "20" + TimeUtil.pad(latestYear - i);
+			years[i] = "" + (latestYear - i);
 		}
 		
 		return years;

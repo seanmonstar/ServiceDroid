@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -63,11 +64,7 @@ public class StatisticsActivity extends SherlockActivity {
 	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
 	private int mTimeSpan = TIME_PERIOD_MONTH;
 	
-	private static int SERVICE_YEAR_START = 9;
-	
-	private int mSendMethod = 0;
-	private static final int SEND_EMAIL = 0;
-	private static final int SEND_SMS = 1;
+	private static int SERVICE_YEAR_START = 9; // Month, September
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -78,6 +75,8 @@ public class StatisticsActivity extends SherlockActivity {
     private GestureDetector mGestureDetector;
 
 	private ShareActionProvider mShareProvider;
+
+	private Button mExtraTimeBtn;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +95,17 @@ public class StatisticsActivity extends SherlockActivity {
         
         // Gesture detection
 	    mGestureDetector = new GestureDetector(new MyGestureDetector());
+	   
+        
+        mExtraTimeBtn = (Button)findViewById(R.id.round_or_carry);
+        mExtraTimeBtn.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				promptExtraTime();
+			}
+        	
+        });
     }
 	
 	
@@ -119,6 +128,18 @@ public class StatisticsActivity extends SherlockActivity {
 		mBrochuresDisplay.setText(getBrochures());
 		mBooksDisplay.setText(getBooks());
 		mBibleStudiesDisplay.setText(getBibleStudies());
+		
+		toggleExtraTimeButton();
+		setShareIntent();
+	}
+	
+	protected void toggleExtraTimeButton() {
+		// Extra Time, and on Monthly view. No need when looking at Service Year
+		if (getTimeSpan() == TIME_PERIOD_MONTH && hasExtraTime()) {
+			mExtraTimeBtn.setVisibility(View.VISIBLE);
+		} else {
+			mExtraTimeBtn.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	protected String getTimePeriodText() {
@@ -315,6 +336,7 @@ public class StatisticsActivity extends SherlockActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.stats, menu);
 		mShareProvider = (ShareActionProvider) menu.findItem(R.id.menu_send).getActionProvider();
+		setShareIntent();
 		return super.onCreateOptionsMenu(menu);
     }
 	
@@ -367,21 +389,11 @@ public class StatisticsActivity extends SherlockActivity {
 	       .setPositiveButton(getString(R.string.round_time_prompt_round), new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	        	   roundUpTime();
-	        	   if (mSendMethod == SEND_EMAIL) {
-		        	   sendEmail();
-	        	   } else if (mSendMethod == SEND_SMS) {
-	        		   sendSMS();
-	        	   }
 	           }
 	       })
 	       .setNegativeButton(getString(R.string.round_time_prompt_carry), new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 		           carryOverTime();
-		           if (mSendMethod == SEND_EMAIL) {
-		        	   sendEmail();
-	        	   } else if (mSendMethod == SEND_SMS) {
-	        		   sendSMS();
-	        	   }
 	           }
 	       });
 		return builder.create();
@@ -401,7 +413,7 @@ public class StatisticsActivity extends SherlockActivity {
 		values.put(TimeEntries.DATE, TimeUtil.getSQLTextFromDate(lastDayOfMonth));
 		
 		getContentResolver().insert(TimeEntries.CONTENT_URI, values);
-		
+		fillData();
 	}
 
 	protected void carryOverTime() {
@@ -454,56 +466,22 @@ public class StatisticsActivity extends SherlockActivity {
 		}
 		cursor.close();
 		cursor = null;
-	}
-
-	protected void setupSendEmail() {
 		
-		if(shouldRoundTime()) {
-			//offer to round or carry over
-			mSendMethod = SEND_EMAIL;
-			showDialog(DIALOG_ROUND_ID);
-		} else {
-			sendEmail();
-		}
-
+		fillData();
+	}
+	
+	protected void promptExtraTime() {
+		showDialog(DIALOG_ROUND_ID);
 	}
 	
 	private void setShareIntent() {
-		Intent i = new Intent(Intent.ACTION_SEND, Uri.parse("content://com.android.email.provider"));
-		i.setType("text/plain");
-		i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.service_time_for, mCurrentMonth + "/" + mCurrentYear));  
-		i.putExtra(Intent.EXTRA_TEXT, getStatsTextForTimePeriod());
-		startActivity(Intent.createChooser(i, getString(R.string.send_by)));
-	}
-	
-	protected void sendEmail() {
-		Intent i = new Intent(Intent.ACTION_SEND, Uri.parse("content://com.android.email.provider"));
-		//i.setType("text/plain"); //use this line for testing in the emulator  
-		i.setType("message/rfc822"); //for device
-		i.putExtra(Intent.EXTRA_EMAIL, new String[] {});  
-		i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.service_time_for, mCurrentMonth + "/" + mCurrentYear));  
-		i.putExtra(Intent.EXTRA_TEXT, getStatsTextForTimePeriod());
-		startActivity(Intent.createChooser(i, getString(R.string.send_by)));
-	}
-	
-	protected void setupSendSMS() {
-		if(shouldRoundTime()) {
-			//offer to round or carry over
-			mSendMethod = SEND_SMS;
-			showDialog(DIALOG_ROUND_ID);
-		} else {
-			sendSMS();
-			mSendMethod = SEND_EMAIL;
+		if (mShareProvider != null) {
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("text/plain");
+			i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.service_time_for, mCurrentMonth + "/" + mCurrentYear));  
+			i.putExtra(Intent.EXTRA_TEXT, getStatsTextForTimePeriod());
+			mShareProvider.setShareIntent(i);
 		}
-	}
-	
-	protected void sendSMS() {
-		String smsText = getStatsTextForTimePeriod();
-		
-		Uri uri = Uri.parse("sms:"); 
-		Intent intent = new Intent(Intent.ACTION_SENDTO, uri); 
-		intent.putExtra("sms_body", smsText);   
-		startActivity(intent);
 	}
 	
 	protected void backupData() {
@@ -511,7 +489,7 @@ public class StatisticsActivity extends SherlockActivity {
 		startService(i);
 	}
 	
-	protected boolean shouldRoundTime() {
+	protected boolean hasExtraTime() {
 		int seconds = getHoursSum();
 		int hours = TimeUtil.getHours(seconds);
 		int minutes = TimeUtil.getMins(seconds);

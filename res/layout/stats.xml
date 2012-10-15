@@ -26,6 +26,7 @@
 		android:layout_height="1dip"
 		android:layout_weight="1"
 		android:fillViewport="true"> 
+	    
 		<TableLayout 
 			android:id="@+id/statstable" 
 			android:layout_width="fill_parent" 
@@ -33,6 +34,13 @@
 			android:padding="14dip"
 			android:stretchColumns="0,1"
 			android:gravity="center_vertical|center_horizontal">
+			
+		    <Button
+			    android:id="@+id/round_or_carry"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="@string/round_or_carry"
+			    android:drawableRight="@drawable/btn_carry" />
 			
 			<TableRow>
 				<TextView android:text="@string/hours" 

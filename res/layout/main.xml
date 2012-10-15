@@ -1,24 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dip">
+    
+    <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+	    >
 
-    <Button
-        android:id="@+id/time"
-        android:layout_width="87dp"
-        android:layout_height="89dp"
-        android:background="@drawable/clock" />
+	    <ImageButton
+	        android:id="@+id/time"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:src="@drawable/btn_time"
+	        android:contentDescription="@string/time" />
+	    
+	    <ImageButton
+	        android:id="@+id/calls"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:src="@drawable/btn_callbook"
+	        android:contentDescription="@string/callbook" />
+	    
+    </LinearLayout>
     
-    <Button
-        android:id="@+id/calls"
-        android:layout_width="87dp"
-        android:layout_height="89dp"
-        android:background="@drawable/home" />
+    <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1">
     
-    <Button
-        android:id="@+id/stats"
-        android:layout_width="87dp"
-        android:layout_height="89dp"
-        android:background="@drawable/calendar" />
+	    <ImageButton
+	        android:id="@+id/stats"
+	        android:layout_width="0dip"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:src="@drawable/btn_stats"
+	        android:contentDescription="@string/stats" />
+	    
+	    <Button
+	        android:id="@+id/noop"
+	        android:layout_width="0dip"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:visibility="invisible"/>
+	    
+    </LinearLayout>
 
 </LinearLayout>

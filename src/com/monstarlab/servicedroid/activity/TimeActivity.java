@@ -185,9 +185,9 @@ public class TimeActivity extends SherlockListActivity implements OnTouchListene
 		//menu depends on if user has start Service Timer
 		MenuItem timer = menu.findItem(R.id.menu_timer);
 		if (mIsTiming) {
-			timer.setTitle(R.string.stop_time).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+			timer.setTitle(R.string.stop_time).setIcon(R.drawable.menu_pause);
 		} else {
-			timer.setTitle(R.string.start_time).setIcon(android.R.drawable.ic_menu_recent_history);
+			timer.setTitle(R.string.start_time).setIcon(R.drawable.menu_play);
 		}
 		return result;
 	}

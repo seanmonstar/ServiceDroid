@@ -6,11 +6,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import android.annotation.TargetApi;
 import android.app.backup.BackupAgent;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
 import android.os.ParcelFileDescriptor;
 
+@TargetApi(8)
 public class ServiceDroidBackupAgent extends BackupAgent {
 
 	private static final String APP_DATA_KEY = "alldata";

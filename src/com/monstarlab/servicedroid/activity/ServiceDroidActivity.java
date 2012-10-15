@@ -3,9 +3,7 @@ package com.monstarlab.servicedroid.activity;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.service.ReminderService;
-import com.monstarlab.servicedroid.util.Changelog;
 
-import android.app.Activity;
 import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +21,6 @@ public class ServiceDroidActivity extends SherlockActivity implements View.OnCli
         findViewById(R.id.time).setOnClickListener(this);
         findViewById(R.id.calls).setOnClickListener(this);
         findViewById(R.id.stats).setOnClickListener(this);
-        
-        showWhatsNew();
         
         //setup reminders
         setupReminderService();
@@ -60,10 +56,5 @@ public class ServiceDroidActivity extends SherlockActivity implements View.OnCli
 		Intent i = new Intent(this, ReminderService.class);
 		startService(i);
 	}
-	
-	private void showWhatsNew() {
-		Changelog.showFirstTime(this);
-	}
 
-	
 }

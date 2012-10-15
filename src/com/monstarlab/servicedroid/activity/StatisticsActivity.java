@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
@@ -75,6 +76,8 @@ public class StatisticsActivity extends SherlockActivity {
 	private static final int DIALOG_ROUND_ID = 1;
 	
     private GestureDetector mGestureDetector;
+
+	private ShareActionProvider mShareProvider;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -291,6 +294,7 @@ public class StatisticsActivity extends SherlockActivity {
 			}
 		}
 		
+		//invalidateOptionsMenu();
 		fillData();
 	}
 	
@@ -310,28 +314,10 @@ public class StatisticsActivity extends SherlockActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.stats, menu);
+		mShareProvider = (ShareActionProvider) menu.findItem(R.id.menu_send).getActionProvider();
 		return super.onCreateOptionsMenu(menu);
     }
 	
-		
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		boolean result = super.onPrepareOptionsMenu(menu);
-		
-		MenuItem timePeriod = menu.findItem(R.id.menu_time_period);
-		if(mTimeSpan == TIME_PERIOD_MONTH) {
-			timePeriod.setIcon(android.R.drawable.ic_menu_my_calendar);
-			timePeriod.setTitle(R.string.service_year);
-		} else {
-			timePeriod.setTitle(R.string.monthly);
-			timePeriod.setIcon(android.R.drawable.ic_menu_month);
-		}
-		
-		return result;
-	}
-
-	  
- 
 
 
 	@Override
@@ -347,14 +333,6 @@ public class StatisticsActivity extends SherlockActivity {
 		
 		case R.id.menu_time_period:
 			toggleTimeSpan();
-			break;
-		
-		case R.id.menu_email:
-			setupSendEmail();
-			break;
-		
-		case R.id.menu_sms:
-			setupSendSMS();
 			break;	
 		
 		case R.id.menu_backup:
@@ -488,6 +466,14 @@ public class StatisticsActivity extends SherlockActivity {
 			sendEmail();
 		}
 
+	}
+	
+	private void setShareIntent() {
+		Intent i = new Intent(Intent.ACTION_SEND, Uri.parse("content://com.android.email.provider"));
+		i.setType("text/plain");
+		i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.service_time_for, mCurrentMonth + "/" + mCurrentYear));  
+		i.putExtra(Intent.EXTRA_TEXT, getStatsTextForTimePeriod());
+		startActivity(Intent.createChooser(i, getString(R.string.send_by)));
 	}
 	
 	protected void sendEmail() {

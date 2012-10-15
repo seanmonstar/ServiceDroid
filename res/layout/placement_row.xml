@@ -33,7 +33,6 @@
            android:singleLine="true"
            android:ellipsize="marquee"
            android:gravity="center_vertical|left"
-           android:textColor="#fff"
            android:text="John Doe"
            android:paddingLeft="14dip"
        />

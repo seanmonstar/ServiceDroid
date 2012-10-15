@@ -322,7 +322,7 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent i = new Intent(this, ServiceDroidActivity.class);
+			Intent i = new Intent(this, CallsActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(i);
 			return true;

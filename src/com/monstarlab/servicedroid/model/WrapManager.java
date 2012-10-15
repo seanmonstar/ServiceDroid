@@ -1,8 +1,10 @@
 package com.monstarlab.servicedroid.model;
 
+import android.annotation.TargetApi;
 import android.app.backup.BackupManager;
 import android.content.Context;
 
+@TargetApi(8)
 public class WrapManager {
 
 	private BackupManager mBackupManager;

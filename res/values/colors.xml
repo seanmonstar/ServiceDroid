@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="list_placement">#ffa500</color>
-    <color name="list_visit">#55a</color>
-    <color name="list_study">#33c</color>
+    <color name="list_placement">#fb3</color>
+    <color name="list_visit">#33b5e5</color>
+    <color name="list_study">#9c0</color>
 </resources>

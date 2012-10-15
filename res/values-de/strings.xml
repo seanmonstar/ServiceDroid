@@ -19,14 +19,6 @@
 	<string name="brochures">Broschüren</string>
     <string name="callbook">Gesprächsnotizen</string>
     <string name="cancel">Abbrechen</string>
-    <string-array name="changelog">  
-	    <item>Viele Darstellungen wurden ästhetisch und funktional verbessert.</item> 
-	    <item>Abgegebene Zeitschriften Wachtturm &amp; Erwachet! können in einem Arbeitsschritt dokumentiert werden.</item>
-	    <item>Dokumentation der Heimbibelstudien wurden grundlegend geändert. Sie werden nun zusammen mit Rückbesuchen dokumentiert.</item>
-	    <item>Zeit-Einträge und Rückbesuche können mit Anmerkungen versehen werden.</item>
-	    <item>Zur Datensicherung wird immer die SD-Karte verwendet, falls verfügbar.</item>
-	    <item>Erweiterte Sprachunterstützung: italienisch (vielen Dank an Stefano Rinolfi)</item>
-	</string-array>
     <string name="confirm">Bestätigen</string>
     <string name="combo">Wachtturm &amp; Erwachet!</string>
     <string name="comfort_brochure">Wenn ein geliebter Mensch gestorben ist</string>

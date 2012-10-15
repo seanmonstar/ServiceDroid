@@ -19,14 +19,6 @@
 	<string name="brochures">Brochures</string>
     <string name="callbook">Visites</string>
     <string name="cancel">Annuler</string>
-    <string-array name="changelog">
-	    <item>Beaucoup de fenetres du programme ont été améliorées au niveau visuel et fonctionnel.</item> 
-	    <item>Il est désormais possible de faire un placement combiné de Tour de Garde et de Réveillez-vous.</item>
-		<item>Changement majeur dans le comptage des Etudes Bibliques. Les études sont maintenant enregistrées lors de l\'ajout d\'une visite.</item>
-		<item>Il est désormais possible d\'ajouter un commentaire sur les Temps et sur les enregistrements de visites.</item>
-		<item>Les sauvegardes utiliseront toujours la carte SD si elle est disponible.</item>
-		<item>Nouvelle traduction: Italien (Merci à Stefano Rinolfi)</item>
-	</string-array>
     <string name="combo">Tour de garde &amp; Réveillez-vous!</string>
     <string name="comfort_brochure">Quand on perd un être cher</string>
     <string name="confirm">Veuillez confirmer</string>

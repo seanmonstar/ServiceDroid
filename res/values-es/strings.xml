@@ -19,14 +19,6 @@
 	<string name="brochures">Folletos</string>
     <string name="callbook">Datos de Revisitas</string>
     <string name="cancel">Cancelar</string>
-    <string-array name="changelog">
-    	<item>Muchos diseños se han mejorado estéticamente y funcionalmente.</item> 
-	    <item>Se añadió una opción para colocar ambos la Atalaya y la Despertad al mismo tiempo/</item>
-	    <item>Se hiso un gran cambio a estudios. Estudios se registran cuando se registra una revisita. </item>
-	    <item>Entradas de tiempo y revisitas pueden tener notas.</item>
-	    <item>Las copias de seguridad siempre utilizaran la tarjeta SD cuando esté disponible.</item>
-	    <item>Nueva traducción: Italiano (gracias a Stefano Rinolfi)</item>
-    </string-array>
     <string name="confirm">Confirmar</string>
     <string name="combo">Atalaya y Despertad</string>
     <string name="comfort_brochure">Cuando muere un ser querido</string>

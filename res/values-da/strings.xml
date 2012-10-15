@@ -16,14 +16,6 @@
 	<string name="brochures">Brochurer</string>
     <string name="callbook">Besøg</string>
     <string name="cancel">Fortryd</string>
-    <string-array name="changelog">
-	    <item>Mange skærmbilleder er forbedret både æstetisk og funktionelt.</item> 
-	    <item>Der er tilføjet mulighed for afsætning af Vagttårnet ogamp; Vågn Op! som sæt.</item>
-	    <item>\'Bibelstudier\' har gennemgået store forandringer. Bibelstudier bliver nu talt, når de bliver genbesøgt.</item>
-	    <item>Indtastning af tider og genbesøg kan nu tilføjes noter.</item>
-	    <item>Backup-funktionen vil altid benytte SD-kort når det er muligt.</item>
-	    <item>Ny oversættelse: Italiensk (Tak til Stefano Rinolfi)</item>
-	</string-array>
     <string name="confirm">Bekræft</string>
     <string name="combo">Vagttårnet &amp; Vågn op!</string>
     <string name="comfort_brochure">Når man mister en han holder af</string>

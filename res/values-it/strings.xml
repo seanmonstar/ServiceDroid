@@ -19,14 +19,6 @@
 	<string name="brochures">Opuscoli</string>
     <string name="callbook">Nota</string>
     <string name="cancel">Cancella</string>
-    <string-array name="changelog">
-	    <item>Molte schermate sono state migliorate esteticamente e a livello funzionale..</item> 
-	    <item>Aggiunta una assegnazione combinata di Torre di Guardia e Svegliatevi.</item>
-	    <item>Gli studi biblici hanno subito diversi cambiamenti: vengono ora registrati alle visite ulteriori. </item>
-	    <item>Si possono ora associare delle note anche alle ore di servizio e alle visite ulteriori.</item>
-	    <item>Per i backup verrà sempre utilizzata la scheda SD, quando disponibile.</item>
-	    <item>Nuove traduzioni: italiano (grazie a Stefano Rinolfi)</item>
-	</string-array>
     <string name="confirm">Confermare</string>
     <string name="combo">Torre di Guardia e Svegliatevi!</string>
     <string name="comfort_brochure">Quando muore una persona cara</string>

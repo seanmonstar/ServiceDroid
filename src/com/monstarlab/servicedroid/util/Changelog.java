@@ -78,7 +78,7 @@ public class Changelog {
 	private static String getMessage(Context c) {
 		StringBuilder message = new StringBuilder();
 		
-		String[] features = c.getResources().getStringArray(R.array.changelog);
+		/*String[] features = c.getResources().getStringArray(R.array.changelog);
 		message.append("<html><body>");
 		
 		message.append("<b>v1.4.0</b>");
@@ -93,7 +93,7 @@ public class Changelog {
 		message.append("<li>" + c.getString(R.string.give_review) + "</li>");
 		message.append("</ul>");
 		
-		message.append("</body></html>");
+		message.append("</body></html>");*/
 		return message.toString();
 	}
 	

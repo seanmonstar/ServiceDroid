@@ -8,7 +8,7 @@
   android:paddingLeft="4dip"
   android:paddingRight="4dip"
   android:paddingBottom="1dip"
-  android:background="#555555">
+  android:background="#ccc">
   
 	<Button android:id="@+id/confirm" 
 		android:layout_height="wrap_content"

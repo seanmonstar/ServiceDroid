@@ -189,20 +189,12 @@ public class CallsActivity extends SherlockListActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		
-		//menu depends on if how data is sorted
-		MenuItem sortItem = menu.findItem(R.id.menu_sort);
-		if (mSortState == SORT_ALPHA) {
-			sortItem.setIcon(android.R.drawable.ic_menu_recent_history);
-		} else if(mSortState == SORT_TIME){
-			sortItem.setIcon(android.R.drawable.ic_menu_sort_alphabetically);
-		}
-		
 		//adding Anonymous Placements depends on Cursor
         if(mHasAnonCall) {
         	menu.removeItem(MENU_ADD_ANON_PLACEMENTS);
         } else {
         	if(menu.findItem(MENU_ADD_ANON_PLACEMENTS) == null) {
-        		menu.add(0, MENU_ADD_ANON_PLACEMENTS, 3, R.string.anon_placement).setIcon(android.R.drawable.ic_menu_add);
+        		menu.add(0, MENU_ADD_ANON_PLACEMENTS, 3, R.string.anon_placement).setIcon(R.drawable.menu_add);
         	}
         }
 		

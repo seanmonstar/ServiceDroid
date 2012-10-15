@@ -19,14 +19,6 @@
 	<string name="brochures">Brochuras</string>
     <string name="callbook">Livro de Visitas</string>
     <string name="cancel">Cancelar</string>
-    <string-array name="changelog">
-	   <item>Várias vistas foram melhoradas esteticamente e estão mais funcionais.</item>
-	   <item>Foi adicionada a colocação combinada de A Sentinela &amp; Despertai!.</item>
-	   <item>Os Estudos Bíblicos receberam maiores melhoramentos. Os Estudos Bíblicos são agora gravados ao fazer uma revisita.</item>
-	   <item>As Entradas de Tempo e Revisitas podem ter notas.</item>
-	   <item>As cópias de seguranaça sempre usarão o cartão de memória quando disponível.</item>
-	   <item>Novas Traduções: Italiano (agradecimentos para: Stefano Rinolfi)</item>
-	</string-array>
     <string name="confirm">Confirmar</string>
     <string name="combo">A Sentinela &amp; Despertai!</string>
     <string name="comfort_brochure">Quando Morre Alguém Que Amamos</string>

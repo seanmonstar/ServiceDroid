@@ -9,8 +9,7 @@ package com.monstarlab.servicedroid;
 
 public final class R {
     public static final class array {
-        public static final int changelog=0x7f0b0000;
-        public static final int months_array=0x7f0b0001;
+        public static final int months_array=0x7f0b0000;
     }
     public static final class attr {
         /**  Specified if we are forcing an action item overflow menu. 
@@ -817,23 +816,23 @@ containing a value of this type.
         public static final int abs__tab_selected_holo=0x7f020052;
         public static final int abs__tab_selected_pressed_holo=0x7f020053;
         public static final int abs__tab_unselected_pressed_holo=0x7f020054;
-        public static final int action_bar=0x7f020055;
-        public static final int action_bar_border=0x7f020056;
-        public static final int action_bar_btn_border=0x7f020057;
-        public static final int action_bar_btn_hightlight=0x7f020058;
-        public static final int action_bar_button=0x7f020059;
-        public static final int actionbar_compat_item=0x7f02005a;
-        public static final int actionbar_compat_item_focused=0x7f02005b;
-        public static final int actionbar_compat_item_pressed=0x7f02005c;
-        public static final int actionbar_shadow=0x7f02005d;
-        public static final int book=0x7f02005e;
-        public static final int button_add=0x7f02005f;
-        public static final int calendar=0x7f020060;
-        public static final int clock=0x7f020061;
-        public static final int home=0x7f020062;
-        public static final int ic_home=0x7f020063;
-        public static final int ic_launcher=0x7f020064;
-        public static final int icon=0x7f020065;
+        public static final int book=0x7f020055;
+        public static final int button_add=0x7f020056;
+        public static final int calendar=0x7f020057;
+        public static final int clock=0x7f020058;
+        public static final int header_bar=0x7f020059;
+        public static final int home=0x7f02005a;
+        public static final int icon=0x7f02005b;
+        public static final int menu_add=0x7f02005c;
+        public static final int menu_calendar=0x7f02005d;
+        public static final int menu_delete=0x7f02005e;
+        public static final int menu_directions=0x7f02005f;
+        public static final int menu_edit=0x7f020060;
+        public static final int menu_pause=0x7f020061;
+        public static final int menu_placement=0x7f020062;
+        public static final int menu_play=0x7f020063;
+        public static final int menu_sort=0x7f020064;
+        public static final int menu_visit=0x7f020065;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f040027;
@@ -895,16 +894,15 @@ containing a value of this type.
         public static final int magazine=0x7f04003e;
         public static final int magazines=0x7f040048;
         public static final int menu_add=0x7f040053;
-        public static final int menu_backup=0x7f040058;
+        public static final int menu_backup=0x7f040057;
         public static final int menu_directions=0x7f040051;
         public static final int menu_edit=0x7f04004f;
-        public static final int menu_email=0x7f040055;
         public static final int menu_placement=0x7f040052;
         public static final int menu_refresh=0x7f040014;
-        public static final int menu_sms=0x7f040056;
+        public static final int menu_send=0x7f040055;
         public static final int menu_sort=0x7f040054;
-        public static final int menu_time_period=0x7f040057;
-        public static final int menu_timer=0x7f040059;
+        public static final int menu_time_period=0x7f040056;
+        public static final int menu_timer=0x7f040058;
         public static final int menu_visit=0x7f040050;
         public static final int month=0x7f040040;
         public static final int name=0x7f04002c;

@@ -19,14 +19,6 @@
     <string name="callbook">Call Book</string>
     <string name="cancel">Cancel</string>
     <string name="carry_over">Carried Over</string>
-    <string-array name="changelog">
-    	<item>Many views have been improved aesthetically and functionally.</item>
-    	<item>Added a combination placement of Watchtower &amp; Awake.</item>
-    	<item>Bible studies received a major change. Bible studies are now recorded when making a return visit.</item>
-    	<item>Time Entries and Return Visits can have notes.</item>
-    	<item>Backups will always use the SD card when available.</item>
-    	<item>New translations: Italian (thanks to Stefano Rinolfi)</item>
-    </string-array>
     <string name="combo">Watchtower &amp; Awake!</string>
     <string name="confirm">Save</string>
     <string name="comfort_brochure">When Someone You Love Dies</string>
@@ -76,7 +68,7 @@
 	<string name="no">No</string>
 	<string name="no_calls">This is the Call Book. All placements and return visits should be recorded on individual calls. The stats will keep count for you.</string>
 	<string name="no_placements">Press MENU to record a placement or return visit.</string>
-	<string name="no_time">Press MENU to record time for this month.</string>	
+	<string name="no_time">Add time for this month, or start the timer.</string>	
 	<string name="notes">Notes</string>
     <string name="ok">Cool!</string>
     <string name="other">Other...</string>

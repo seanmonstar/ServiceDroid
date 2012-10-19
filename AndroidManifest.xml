@@ -40,6 +40,10 @@
 		<activity android:name=".activity.StatisticsActivity"
 			android:label="@string/stats">
 		</activity>
+		
+		<provider android:name=".model.ServiceProvider"
+		    android:authorities="com.monstarlab.servicedroid">
+		</provider>
 
 		<service android:name=".service.ReminderService"></service>
 		<service android:name=".service.TimerService"></service>
@@ -56,7 +60,7 @@
 
 	</application>
 	
-	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="16" />
+	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="16" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 

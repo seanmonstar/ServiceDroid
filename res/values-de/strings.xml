@@ -9,9 +9,6 @@
     <string name="bible">Bibel</string>
     <string name="bible_studies">Heimbibelstudien</string>
     <string name="bible_study">Heimbibelstudium</string>
-    <string name="bible_study_prompt">Willst du das Studium nur als beendet kennzeichnen oder komplett löschen?</string>
-	<string name="bible_study_prompt_delete">Komplett löschen</string>
-	<string name="bible_study_prompt_finish">Als beendet kennzeichnen</string>
 	<string name="bible_teach">Was lehrt die Bibel wirklich?</string>
     <string name="book">Buch</string>
 	<string name="books">Bücher</string>

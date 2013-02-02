@@ -29,8 +29,6 @@
     <string name="delete_placement">Borre Colocación</string>
     <string name="delete_time">Borre Tiempo</string>
     <string name="directions">Direcciones</string>	
-	<string name="distance_unknown">Distancia no conocida</string>
-	<string name="distance_unit">mi.</string>
     <string name="edit">Editar</string>
     <string name="enjoy_servicedroid">Esta disfrutando de ServiceDroid?</string>
     <string name="give_review"><![CDATA[Considere ofrecer un buen <a href=\"market://details?id=com.monstarlab.servicedroid\">comentario</a>.]]></string>

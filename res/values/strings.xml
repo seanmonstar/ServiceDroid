@@ -34,6 +34,9 @@
     <string name="date">Date</string>
     <string name="delete_call">Delete Call</string>
     <string name="delete_call_prompt">Would you like to delete all placements and visits associated with this call?</string>
+    <string name="delete_call_title">Delete Related Data?</string>
+    <string name="delete_call_prompt_yes">Delete Related Data</string>
+    <string name="delete_call_prompt_no">Call Only</string>
     <string name="delete_placement">Delete Placement</string>
     <string name="delete_rv">Delete Visit</string>
     <string name="delete_time">Delete Time</string>

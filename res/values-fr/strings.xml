@@ -9,9 +9,6 @@
     <string name="bible">Bible</string>
     <string name="bible_studies">Études</string>
     <string name="bible_study">Étude</string>
-    <string name="bible_study_prompt">Voulez-vous marquez cette étude comme terminée, ou bien la supprimer ?</string>
-	<string name="bible_study_prompt_delete">Supprimer</string>
-	<string name="bible_study_prompt_finish">Terminée</string>
 	<string name="bible_teach">Qu\'enseigne réellement la bible ?</string>
     <string name="book">Livre</string>
 	<string name="books">Livress</string>

@@ -9,9 +9,6 @@
     <string name="bible">Bíblia</string>
     <string name="bible_studies">Estudos Bíblicos</string>
     <string name="bible_study">Estudo Bíblico</string>
-    <string name="bible_study_prompt">Deseja marcar como concluído, ou apagar todos os registos deste estudo?</string>
-	<string name="bible_study_prompt_delete">Remover</string>
-	<string name="bible_study_prompt_finish">Terminou</string>
 	<string name="bible_teach">O Que a Bíblia Realmente Ensina?</string>
     <string name="book">Livro</string>
 	<string name="books">Livros</string>

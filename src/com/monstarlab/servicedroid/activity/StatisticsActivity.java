@@ -497,7 +497,7 @@ public class StatisticsActivity extends SherlockActivity {
 		//make sure Hours greater than 1. don't want to bother someone if they're submitting under an hour
 		//since the Society points out that infirm publishers can still report as small as 15 minutes.
 		//asking them to round or carry over every time would be discouraging...
-		if(minutes > 0 && hours > 1) {
+		if(minutes > 0 && hours >= 1) {
 			return true;
 		}
 		

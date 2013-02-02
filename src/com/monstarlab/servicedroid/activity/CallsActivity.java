@@ -138,15 +138,15 @@ public class CallsActivity extends SherlockListActivity {
 	private Dialog makeDeleteCallDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		//builder.setTitle(getString(R.string.placement));
-		builder.setMessage(getString(R.string.delete_call_prompt))
+		builder.setTitle(getString(R.string.delete_call_title))
+			.setMessage(getString(R.string.delete_call_prompt))
 	       .setCancelable(false)
-	       .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+	       .setPositiveButton(R.string.delete_call_prompt_yes, new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               deleteCallRelatedData();
 	           }
 	       })
-	       .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+	       .setNegativeButton(R.string.delete_call_prompt_no, new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	                //do nothing
 	           }

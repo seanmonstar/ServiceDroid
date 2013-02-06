@@ -202,6 +202,48 @@ public final class Models {
 		
 	}
 	
+	public static final class Tags implements BaseColumns {
+		
+		private Tags() {}
+		
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/tags");
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.tags";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.tags";
+		
+		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+		
+		/**
+		 * 	type: varchar
+		 */
+		public static final String TITLE = "title";
+		
+	}
 	
+	public static final class Taggings implements BaseColumns {
+		
+		private Taggings() {}
+		
+		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/taggings");
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.taggings";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.monstarlab.taggings";
+		
+		public static final String DEFAULT_SORT_ORDER = "_id ASC";
+		
+		/**
+		 * 	type: int
+		 */
+		public static final String CALL_ID = "call_id";
+		
+		/**
+		 * 	type: int
+		 */
+		public static final String TAG_ID = "tag_id";
+		
+	}
+		
 	
 }

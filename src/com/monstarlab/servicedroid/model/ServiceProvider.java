@@ -20,9 +20,11 @@ import android.util.Log;
 
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
+import com.monstarlab.servicedroid.model.Models.Taggings;
 import com.monstarlab.servicedroid.model.Models.Literature;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
+import com.monstarlab.servicedroid.model.Models.Tags;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.service.BackupService;
 import com.monstarlab.servicedroid.util.TimeUtil;
@@ -40,12 +42,16 @@ public class ServiceProvider extends ContentProvider {
     private static final String RETURN_VISITS_TABLE = "return_visits";
     private static final String LITERATURE_TABLE = "literature";
     private static final String PLACEMENTS_TABLE = "placements";
+    private static final String TAGS_TABLE = "tags";
+    private static final String TAGGINGS_TABLE = "taggings";
     
     private static HashMap<String, String> sTimeProjectionMap;
     private static HashMap<String, String> sCallProjectionMap;
     private static HashMap<String, String> sRVProjectionMap;
     private static HashMap<String, String> sLiteratureProjectionMap;
     private static HashMap<String, String> sPlacementProjectionMap;
+    private static HashMap<String, String> sTagsProjectionMap;
+    private static HashMap<String, String> sTaggingsProjectionMap;
 
 	private static boolean sUseManager;
     
@@ -65,6 +71,10 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACEMENTS_DETAILS = 14;
     private static final int PLACEMENTS_DETAILS_ID = 15;
     private static final int BIBLE_STUDIES = 16;
+    private static final int TAGS = 17;
+    private static final int TAGS_ID = 18;
+    private static final int TAGGINGS = 19;
+    
     
     private static final UriMatcher sUriMatcher;
     
@@ -86,6 +96,8 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", PLACEMENTS_DETAILS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details/#", PLACEMENTS_DETAILS_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "tags", TAGS);
+    	sUriMatcher.addURI(Models.AUTHORITY, "tags/#", TAGS_ID);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -125,6 +137,15 @@ public class ServiceProvider extends ContentProvider {
     	sPlacementProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
     	sPlacementProjectionMap.put(Literature.TYPE, LITERATURE_TABLE + "." + Literature.TYPE);
     	sPlacementProjectionMap.put(Literature.WEIGHT, LITERATURE_TABLE + "." + Literature.WEIGHT);
+    	
+    	sTagsProjectionMap = new HashMap<String, String>();
+    	sTagsProjectionMap.put(Tags._ID, TAGS_TABLE + "." + Tags._ID);
+    	sTagsProjectionMap.put(Tags.TITLE, TAGS_TABLE + "." + Tags.TITLE);
+    	
+    	sTaggingsProjectionMap = new HashMap<String, String>();
+    	sTaggingsProjectionMap.put(Taggings._ID, TAGGINGS_TABLE + "." + Taggings._ID);
+    	sTaggingsProjectionMap.put(Taggings.CALL_ID, TAGGINGS_TABLE + "." + Taggings.CALL_ID);
+    	sTaggingsProjectionMap.put(Taggings.TAG_ID, TAGGINGS_TABLE + "." + Taggings.TAG_ID);
     	
     	try {
     		WrapManager.checkAvailable();
@@ -178,6 +199,15 @@ public class ServiceProvider extends ContentProvider {
 			    + Placements.DATE + " date default current_timestamp,"
 			    + Placements.CALL_ID + " integer references calls(id),"
 			    + Placements.LITERATURE_ID + " integer references literature(id))");
+			
+			db.execSQL("create table " +  TAGS_TABLE + " (" 
+					+ Tags._ID + " integer primary key autoincrement,"
+				    + Tags.TITLE + " varchar(256))");
+			
+			db.execSQL("create table " +  TAGGINGS_TABLE + " (" 
+					+ Taggings._ID + " integer primary key autoincrement,"
+				    + Taggings.CALL_ID + " integer references calls(id),"
+				    + Taggings.TAG_ID + " integer references tags(id))");
 			
 			//some default books
 			ContentValues values = new ContentValues();
@@ -242,9 +272,19 @@ public class ServiceProvider extends ContentProvider {
 				//must make sure all dates have the day padded.
 				padTimeEntriesAndReturnVisits(db);
 				
+			case 7:
+				db.execSQL("create table " +  TAGS_TABLE + " (" 
+						+ Tags._ID + " integer primary key autoincrement,"
+					    + Tags.TITLE + " varchar(256))");
+				
+				db.execSQL("create table " +  TAGGINGS_TABLE + " (" 
+						+ Taggings._ID + " integer primary key autoincrement,"
+					    + Taggings.CALL_ID + " integer references calls(id),"
+					    + Taggings.TAG_ID + " integer references tags(id))");
+				
 				
 				//-------------------
-				//these fall through on purpose
+				//those above fall through on purpose
 				break;
 			default:
 				Log.e(TAG, "Failed updating database to new version: no upgrade SQL exists.");

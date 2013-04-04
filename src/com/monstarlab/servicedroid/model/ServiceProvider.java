@@ -34,7 +34,7 @@ public class ServiceProvider extends ContentProvider {
 	private static final String TAG = "ServiceProvider";
 	
 	private static final String DATABASE_NAME = "servicedroid";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     
     private static final String TIME_ENTRIES_TABLE = "time_entries";
     private static final String CALLS_TABLE = "calls";
@@ -447,6 +447,15 @@ public class ServiceProvider extends ContentProvider {
 			count = db.delete(LITERATURE_TABLE, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : ""), whereArgs);
 			break;
 			
+		case TAGS_ID:
+			String tagId = uri.getPathSegments().get(1);
+			where = Tags._ID + "=" + tagId + (!TextUtils.isEmpty(where) ? " AND ( " + where + ")" : "");
+			//falls through
+		case TAGS:
+			count = db.delete(TAGS_TABLE, where, whereArgs);
+			//TODO: CASCADE delete the CallsToTags table
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -484,6 +493,11 @@ public class ServiceProvider extends ContentProvider {
 			return Literature.CONTENT_TYPE;
 		case LITERATURE_ID:
 			return Literature.CONTENT_ITEM_TYPE;
+			
+		case TAGS:
+			return Tags.CONTENT_TYPE;
+		case TAGS_ID:
+			return Tags.CONTENT_ITEM_TYPE;
 			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -526,9 +540,17 @@ public class ServiceProvider extends ContentProvider {
 			nullColumn = Literature.TITLE;
 			contentUri = Literature.CONTENT_URI;
 			break;
+		
+		case TAGS:
+			tableName = TAGS_TABLE;
+			nullColumn = Tags.TITLE;
+			contentUri = Tags.CONTENT_URI;
+			break;
+		
+		
 			
 		default:
-			throw new IllegalArgumentException("Unknown URI + "+uri);
+			throw new IllegalArgumentException("Unknown URI: "+uri);
 		}
 		
 		
@@ -673,6 +695,18 @@ public class ServiceProvider extends ContentProvider {
 				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
 			}
 			break;
+			
+		case TAGS_ID:
+			qb.appendWhere(Tags._ID + "=" + uri.getPathSegments().get(1));
+			//falls through
+		case TAGS:
+			qb.setTables(TAGS_TABLE);
+			qb.setProjectionMap(sTagsProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = Tags.DEFAULT_SORT_ORDER;
+			}
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -726,6 +760,14 @@ public class ServiceProvider extends ContentProvider {
 		case LITERATURE_ID:
 			String litId = uri.getPathSegments().get(1);
 			count = db.update(LITERATURE_TABLE, values, Literature._ID + "=" + litId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
+			break;
+			
+		case TAGS:
+			count = db.update(TAGS_TABLE, values, where, whereArgs);
+			break;
+		case TAGS_ID:
+			String tagId = uri.getPathSegments().get(1);
+			count = db.update(TAGS_TABLE, values, Tags._ID + "=" + tagId + (!TextUtils.isEmpty(where) ? " AND ( " + where + " )" : ""), whereArgs);
 			break;
 			
 		default:

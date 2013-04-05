@@ -26,7 +26,7 @@ public class ServiceDroidActivity extends TabActivity implements TabHost.OnTabCh
         setupReturnVisitsActivity();
         setupStatisticsActivity();
         
-        showWhatsNew();
+        //showWhatsNew();
         
         //setup reminders
         setupReminderService();

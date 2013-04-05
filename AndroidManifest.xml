@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.monstarlab.servicedroid" android:versionName="1.4.5" android:versionCode="17">
+	package="com.monstarlab.servicedroid" android:versionName="1.4.6" android:versionCode="20">
+	
+	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="14" android:maxSdkVersion="6" />
+    
 	<application android:icon="@drawable/icon" android:label="@string/app_name" 
 		android:backupAgent=".model.ServiceDroidBackupAgent">
 		<meta-data android:name="com.google.android.backup.api_key"
@@ -56,8 +59,7 @@
 		</receiver>
 
 	</application>
-	
-	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="14" />
+
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 

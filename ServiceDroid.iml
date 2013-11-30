@@ -71,7 +71,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="support-v4-19.0.0" level="project" />
     <orderEntry type="library" exported="" name="ComActionbarsherlockActionbarsherlock440.aar" level="project" />
-    <orderEntry type="library" exported="" name="android-numberpicker-1.0.0" level="project" />
   </component>
 </module>
 

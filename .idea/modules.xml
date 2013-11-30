@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ServiceDroid.iml" filepath="$PROJECT_DIR$/ServiceDroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../Downloads/JakeWharton-ActionBarSherlock-4.2.0-0-g90939dc/JakeWharton-ActionBarSherlock-e5c2d1c/library/library.iml" filepath="$PROJECT_DIR$/../../../Downloads/JakeWharton-ActionBarSherlock-4.2.0-0-g90939dc/JakeWharton-ActionBarSherlock-e5c2d1c/library/library.iml" />
+    </modules>
+  </component>
+</project>
+

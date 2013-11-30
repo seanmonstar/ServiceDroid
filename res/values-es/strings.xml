@@ -90,6 +90,8 @@
 	<string name="time_period_hint">Pase a la izquierda o derecha para cambiar el período de tiempo.</string>
 	<string name="timer_active">Cronometro Activo</string>
     <string name="tips">Sugerencias</string>
+    <string name="tract">Tratado</string>
+    <string name="tracts">Tratados</string>
     <string name="watchtower">Atalaya</string>
     <string name="whats_new">Que es nuevo</string>
 	<string name="year">Año</string>

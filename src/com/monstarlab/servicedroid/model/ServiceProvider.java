@@ -65,6 +65,7 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACEMENTS_DETAILS = 14;
     private static final int PLACEMENTS_DETAILS_ID = 15;
     private static final int BIBLE_STUDIES = 16;
+    private static final int PLACED_TRACTS = 17;
     
     private static final UriMatcher sUriMatcher;
     
@@ -84,6 +85,7 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/magazines", PLACED_MAGAZINES);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/brochures", PLACED_BROCHURES);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
+        sUriMatcher.addURI(Models.AUTHORITY, "placements/tracts", PLACED_TRACTS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", PLACEMENTS_DETAILS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details/#", PLACEMENTS_DETAILS_ID);
     	
@@ -203,6 +205,8 @@ public class ServiceProvider extends ContentProvider {
 			values.put(Literature.TYPE, Literature.TYPE_BROCHURE);
 			values.put(Literature.PUBLICATION, mContext.getString(R.string.comfort_brochure));
 			db.insert(LITERATURE_TABLE, Literature.TITLE, values);
+
+            //TODO: some default tracts!
 		}
 
 		@Override
@@ -626,6 +630,16 @@ public class ServiceProvider extends ContentProvider {
 				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
 			}
 			break;
+
+        case PLACED_TRACTS:
+            qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON ("
+                    + PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND "
+                    + LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_TRACT +")");
+            qb.setProjectionMap(sPlacementProjectionMap);
+            if(TextUtils.isEmpty(orderBy)) {
+                orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
+            }
+            break;
 			
 		case PLACEMENTS_DETAILS_ID:
 			qb.appendWhere(PLACEMENTS_TABLE+"."+Placements._ID + "=" + uri.getPathSegments().get(2));

@@ -13,7 +13,7 @@ import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
 import com.monstarlab.servicedroid.R;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -128,7 +128,7 @@ public class PlacementActivity extends SherlockActivity {
 			setupMagazineView();
 			
 		} else  {
-			setupBookAndBrochureView();
+			setupBookTractAndBrochureView();
 		} 
 		
 		setupDateButton();
@@ -241,7 +241,7 @@ public class PlacementActivity extends SherlockActivity {
 				
 				
 			} else {
-				updateBookAndBrochureSpinner();
+				updateBookTractAndBrochureSpinner();
 			}
 			
 		}
@@ -363,7 +363,7 @@ public class PlacementActivity extends SherlockActivity {
 	        public void onClick(DialogInterface dialog, int whichButton) {
 			    String value = input.getText().toString();
 			    createLiterature(value);
-			    updateBookAndBrochureSpinner();
+			    updateBookTractAndBrochureSpinner();
 	        }
         });
 
@@ -502,7 +502,7 @@ public class PlacementActivity extends SherlockActivity {
 		return year;
 	}
 	
-	private void setupBookAndBrochureView() {
+	private void setupBookTractAndBrochureView() {
 		setContentView(R.layout.place_book);
 		
 		mPublicationSpinner = (Spinner) findViewById(R.id.placement);
@@ -528,7 +528,7 @@ public class PlacementActivity extends SherlockActivity {
 		});
 	}
 	
-	private void updateBookAndBrochureSpinner() {
+	private void updateBookTractAndBrochureSpinner() {
 		Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature.TYPE + "=?", new String[] { ""+mPlacementType }, null);
 		if(c != null) {
 			int length = c.getCount() + 1;
@@ -539,8 +539,8 @@ public class PlacementActivity extends SherlockActivity {
 				c.moveToFirst();
 				String title = null;
 				while(!c.isAfterLast()) {
-					title = c.getString(2);
-					publications[index] = title; // 2 == PUBLICATION
+					title = c.getString(2); // 2 == PUBLICATION
+					publications[index] = title;
 					if(!TextUtils.isEmpty(mBook) && mBook.equals(title)) {
 						selectedIndex = index;
 					}

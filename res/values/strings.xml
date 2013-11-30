@@ -103,6 +103,8 @@
 	<string name="time_period_hint">Swipe left or right to change the time period.</string>
 	<string name="timer_active">Service Timer Active</string>
     <string name="tips">Tips</string>
+    <string name="tract">Tract</string>
+    <string name="tracts">Tracts</string>
     <string name="watchtower">Watchtower</string>
     <string name="whats_new">What\'s New!</string>
 	<string name="year">Year</string>

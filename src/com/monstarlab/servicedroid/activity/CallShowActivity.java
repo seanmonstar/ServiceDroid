@@ -357,10 +357,16 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 	}
 	
 	protected Dialog makePlacementDialog() {
-		final CharSequence[] items = { getString(R.string.magazine), getString(R.string.brochure), getString(R.string.book) };
+		final CharSequence[] items = {
+                getString(R.string.magazine),
+                getString(R.string.brochure),
+                getString(R.string.book),
+                getString(R.string.tract)
+        };
 		final int MAGAZINE = 0;
 		final int BROCHURE = 1;
 		final int BOOK = 2;
+        final int TRACT = 3;
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
@@ -377,6 +383,9 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 		        case BOOK:
 		        	makeBookPlacement();
 		        	break;
+                case TRACT:
+                    makeTractPlacement();
+                    break;
 		        default:
 		        	break;
 		        }
@@ -385,48 +394,35 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 		return builder.create();
 
 	}
+
+    protected void makePlacement(int type) {
+        Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
+
+        if(mCallCursor != null) {
+            mCallCursor.moveToFirst();
+            //adding Call ID so we know what Call to associate the placement with
+            i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
+        }
+
+        i.putExtra("type", type);
+        startActivity(i);
+    }
 	
 	protected void makeBookPlacement() {
-		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
-		
-		if(mCallCursor != null) {
-			mCallCursor.moveToFirst();
-			//adding Call ID so we know what Call to associate the placement with
-			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
-		}
-		
-		i.putExtra("type", Literature.TYPE_BOOK);
-		startActivity(i);
-		
+		makePlacement(Literature.TYPE_BOOK);
 	}
 
 	protected void makeBrochurePlacement() {
-		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
-		
-		if(mCallCursor != null) {
-			mCallCursor.moveToFirst();
-			//adding Call ID so we know what Call to associate the placement with
-			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
-		}
-		
-		i.putExtra("type", Literature.TYPE_BROCHURE);
-		startActivity(i);
-		
+		makePlacement(Literature.TYPE_BROCHURE);
 	}
 
 	protected void makeMagazinePlacement() {
-		Intent i = new Intent(Intent.ACTION_INSERT, Placements.CONTENT_URI, this, PlacementActivity.class);
-		
-		if(mCallCursor != null) {
-			mCallCursor.moveToFirst();
-			//adding Call ID so we know what Call to associate the placement with
-			i.putExtra(Calls._ID, mCallCursor.getInt(ID_COLUMN));
-		}
-		
-		i.putExtra("type", Literature.TYPE_MAGAZINE);
-		startActivity(i);
-		
-	}
+        makePlacement(Literature.TYPE_MAGAZINE);
+    }
+
+    protected void makeTractPlacement() {
+       makePlacement(Literature.TYPE_TRACT);
+    }
 
 
 	protected void returnOnCall() {

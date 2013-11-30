@@ -73,7 +73,7 @@ public class ServiceProvider extends ContentProvider {
     private static final int BIBLE_STUDIES = 16;
     private static final int TAGS = 17;
     private static final int TAGS_ID = 18;
-    private static final int TAGGINGS = 19;
+    private static final int TAGGED = 19;
     
     
     private static final UriMatcher sUriMatcher;
@@ -98,6 +98,7 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details/#", PLACEMENTS_DETAILS_ID);
     	sUriMatcher.addURI(Models.AUTHORITY, "tags", TAGS);
     	sUriMatcher.addURI(Models.AUTHORITY, "tags/#", TAGS_ID);
+    	sUriMatcher.addURI(Models.AUTHORITY, "calls/tagged", TAGGED);
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -706,6 +707,14 @@ public class ServiceProvider extends ContentProvider {
 				orderBy = Tags.DEFAULT_SORT_ORDER;
 			}
 			break;
+			
+		case TAGGED:
+		  qb.setTables(CALLS_TABLE+ " INNER JOIN " + TAGGINGS_TABLE + " ON ("
+		      + CALLS_TABLE + "." + Calls._ID + " = " + TAGGINGS_TABLE + "." + Taggings.CALL_ID + ")");
+		  qb.setProjectionMap(sCallProjectionMap);
+		  if(TextUtils.isEmpty(orderBy)) {
+		    orderBy = CALLS_TABLE + "." + Calls.DEFAULT_SORT_ORDER;
+		  }
 			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);

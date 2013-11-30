@@ -148,11 +148,13 @@ public class CallsActivity extends SherlockFragmentActivity
 	@Override
 	public void onTagChecked(int id, String name) {
 		mCheckedTags.put(id, name);
+		mCallsFragment.filter(mCheckedTags);
 	}
 	
 	@Override
 	public void onTagUnchecked(int id, String name) {
 		mCheckedTags.remove(id);
+		mCallsFragment.filter(mCheckedTags);
 	}
 	
 }

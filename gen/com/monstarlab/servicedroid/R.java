@@ -1068,7 +1068,7 @@ containing a value of this type.
         public static final int statsscrollview=0x7f040053;
         public static final int statstable=0x7f040054;
         public static final int tabMode=0x7f040003;
-        public static final int tag_checked=0x7f04005d;
+        public static final int tag_checkbox=0x7f04005d;
         public static final int tag_title=0x7f04005e;
         public static final int time=0x7f040045;
         public static final int title=0x7f040049;
@@ -1258,16 +1258,17 @@ containing a value of this type.
         public static final int start_time=0x7f09005e;
         public static final int stats=0x7f09005f;
         public static final int stop_time=0x7f090060;
-        public static final int time=0x7f090061;
-        public static final int time_due=0x7f090062;
-        public static final int time_in_service=0x7f090063;
-        public static final int time_period_hint=0x7f090064;
-        public static final int timer_active=0x7f090065;
-        public static final int tips=0x7f090066;
-        public static final int watchtower=0x7f090067;
-        public static final int whats_new=0x7f090068;
-        public static final int year=0x7f090069;
-        public static final int yes=0x7f09006a;
+        public static final int tags_empty=0x7f090061;
+        public static final int time=0x7f090062;
+        public static final int time_due=0x7f090063;
+        public static final int time_in_service=0x7f090064;
+        public static final int time_period_hint=0x7f090065;
+        public static final int timer_active=0x7f090066;
+        public static final int tips=0x7f090067;
+        public static final int watchtower=0x7f090068;
+        public static final int whats_new=0x7f090069;
+        public static final int year=0x7f09006a;
+        public static final int yes=0x7f09006b;
     }
     public static final class style {
         public static final int DialogWindowTitle_Sherlock=0x7f0a0036;

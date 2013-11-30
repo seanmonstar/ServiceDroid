@@ -1,5 +1,7 @@
 package com.monstarlab.servicedroid.fragment;
 
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -9,6 +11,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -34,6 +37,7 @@ import com.monstarlab.servicedroid.activity.ServiceDroidActivity;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
+import com.monstarlab.servicedroid.model.Models.Taggings;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
 public class CallsFragment extends SherlockListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -55,6 +59,9 @@ public class CallsFragment extends SherlockListFragment implements LoaderManager
 	private static final int CURSOR_ANON = 2;
 	
 	private static final Uri CONTENT_URI = Calls.CONTENT_URI;
+	private static final Uri TAGGED_CONTENT_URI = Calls.TAGGED_CONTENT_URI;
+	
+	private HashMap<Integer, String> mTags;
 	
 	private static final String[] PROJECTION = new String[] { 
 		Calls._ID,
@@ -330,12 +337,20 @@ public class CallsFragment extends SherlockListFragment implements LoaderManager
 		//super.onListItemClick(l, v, position, id);
 		mCallbacks.onEditCall(id);
 	}
+	
+	public void filter(HashMap<Integer, String> tags) {
+	  mTags = tags;
+	  fillData();
+	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		if (id == CURSOR_ALL) {
+	  
+	  if (id == CURSOR_ALL) {
+	    Uri uri = CONTENT_URI;
 			String sortBy = null;
 			String sortText = getString(R.string.sorted_alpha);
+			String query = null;
 			if(mSortState == SORT_ALPHA) {
 				sortBy = Calls.NAME;
 			} else if (mSortState == SORT_TIME) {
@@ -344,7 +359,15 @@ public class CallsFragment extends SherlockListFragment implements LoaderManager
 			}
 			mHeaderText.setText(sortText);
 			
-			return new CursorLoader(getActivity(), CONTENT_URI, PROJECTION, null, null, sortBy);
+			if (mTags != null && mTags.size() > 0) {
+			  // where tags IN 3,5,9
+			  // (select taggings.tag_id from taggings where call_id=?)
+			  StringBuilder sb = new StringBuilder();
+			  query = Taggings.TAG_ID + " IN (" + TextUtils.join(",", mTags.keySet()) + ")";			  
+			  uri = TAGGED_CONTENT_URI;
+			}
+			
+			return new CursorLoader(getActivity(), uri, PROJECTION, query, null, sortBy);
 		} else if (id == CURSOR_ANON) {
 			return new CursorLoader(getActivity(), CONTENT_URI, PROJECTION, Calls.TYPE + "=?", new String[] { ""+Calls.TYPE_ANONYMOUS }, null);
 		}

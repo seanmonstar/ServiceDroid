@@ -10,10 +10,17 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.app.LoaderManager;
@@ -29,9 +36,10 @@ import com.monstarlab.servicedroid.model.Models.Tags;
 import com.monstarlab.servicedroid.model.Models.TimeEntries;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
-public class TagsFragment extends SherlockListFragment {
+public class TagsFragment extends SherlockListFragment implements OnItemClickListener {
+  
+  private static final String TAG = "TagsFragment";
 
-	//TODO: create view
 	private Cursor mCursor;
 	private static final String[] PROJECTION = new String[] { Tags._ID, Tags.TITLE };
 	
@@ -45,6 +53,9 @@ public class TagsFragment extends SherlockListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
+		setEmptyText(getString(R.string.tags_empty));
+		getListView().setOnItemClickListener(this);
+		getListView().setItemsCanFocus(true);
 		fillData();
 	}
 	
@@ -88,29 +99,35 @@ public class TagsFragment extends SherlockListFragment {
 		getActivity().getContentResolver().update(uri, values, null, null);
 	}
 	
+	public void onCheckboxClick(View view) {
+	  CheckBox checkbox = (CheckBox) view;
+	  if (checkbox.isChecked()) {
+	    
+	  }
+	}
+	
 	//TODO: show a Toast in CallsFragment of what current filter is
 	
 	protected class TagsAdapter extends SimpleCursorAdapter {
 		
-		private LayoutInflater mInflater;
+		//private LayoutInflater mInflater;
 		
 		public TagsAdapter(Context context, int layout, Cursor c,
 				String[] from, int[] to) {
 			super(context, layout, c, from, to);
 			// TODO Auto-generated constructor stub
 			
-			mInflater = LayoutInflater.from(context);
+			//mInflater = LayoutInflater.from(context);
 		}
 		
-		@Override
+		/*@Override
 		public View getView(int position, View convertView, ViewGroup parent) {		
 			ViewHolder holder;
 			
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = mInflater.inflate(R.layout.tag_row, null);
-				holder.checkbox = (CheckBox) convertView.findViewById(R.id.tag_checked);
-				holder.title = (TextView) convertView.findViewById(R.id.tag_title);
+				holder.title = (CheckedTextView) convertView.findViewById(R.id.tag_title);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -123,9 +140,8 @@ public class TagsFragment extends SherlockListFragment {
 		}
 		
 		class ViewHolder {
-			public CheckBox checkbox;
-			public TextView title;
-		}
+			public CheckedTextView title;
+		}*/
 		
 	}
 	
@@ -140,5 +156,12 @@ public class TagsFragment extends SherlockListFragment {
 		@Override
 		public void onTagUnchecked(int id, String name) {}
 	};
+
+  @Override
+  public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+    if (view instanceof CheckedTextView) {
+      Log.d(TAG, "checked text view");
+    }
+  }
 
 }

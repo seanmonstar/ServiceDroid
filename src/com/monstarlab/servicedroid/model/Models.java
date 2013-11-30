@@ -44,6 +44,7 @@ public final class Models {
 		private Calls() {}
 		
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/calls");
+		public static final Uri TAGGED_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/calls/tagged");
 		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.call";
 		

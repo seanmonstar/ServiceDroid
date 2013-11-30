@@ -96,6 +96,7 @@
     <string name="start_time">Start Time</string>
     <string name="stats">Stats</string>
     <string name="stop_time">Stop Time</string>
+    <string name="tags_empty">Use tags to organize calls however you\'d like. Tag some "city", or "sunday", or "evening", or whichever else is meaningful to you.</string>
     <string name="time">Time</string>
     <string name="time_due">Your time is due!</string>
 	<string name="time_in_service">Time in service: %s</string>

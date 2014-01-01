@@ -13,7 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2837cdb7-0aad-49b5-8ebc-0128845fb068" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/StatisticsActivity.java" afterPath="$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/StatisticsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/stats.xml" afterPath="$PROJECT_DIR$/res/layout/stats.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
     </list>
     <ignored path="ServiceDroid.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,10 +86,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1065">
+            <state line="36" column="45" selection-start="1548" selection-end="1548" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1065">
               <folding />
             </state>
           </provider>
@@ -104,24 +104,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StatisticsActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="StatisticsActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/StatisticsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="25" selection-start="4235" selection-end="4235" vertical-scroll-proportion="0.0" vertical-offset="703" max-vertical-offset="8565">
+            <state line="510" column="41" selection-start="15128" selection-end="15128" vertical-scroll-proportion="6.0320964" vertical-offset="991" max-vertical-offset="8685">
               <folding>
-                <element signature="e#5188#5220#0" expanded="true" />
-                <element signature="e#11765#11802#0" expanded="true" />
-                <element signature="e#11860#11903#0" expanded="true" />
-                <element signature="e#12091#12134#0" expanded="true" />
-                <element signature="e#13473#13503#0" expanded="true" />
-                <element signature="e#15072#15144#0" expanded="true" />
-                <element signature="e#16023#16089#0" expanded="true" />
-                <element signature="e#16104#16129#0" expanded="true" />
-                <element signature="e#16171#16200#0" expanded="true" />
-                <element signature="e#16246#16275#0" expanded="true" />
-                <element signature="e#16396#16421#0" expanded="true" />
-                <element signature="e#16463#16486#0" expanded="true" />
-                <element signature="e#16526#16559#0" expanded="true" />
+                <element signature="e#5217#5249#0" expanded="true" />
+                <element signature="e#11794#11831#0" expanded="true" />
+                <element signature="e#11889#11932#0" expanded="true" />
+                <element signature="e#12120#12163#0" expanded="true" />
+                <element signature="e#13502#13532#0" expanded="true" />
+                <element signature="e#15366#15438#0" expanded="true" />
+                <element signature="e#16317#16383#0" expanded="true" />
+                <element signature="e#16398#16423#0" expanded="true" />
+                <element signature="e#16465#16494#0" expanded="true" />
+                <element signature="e#16540#16569#0" expanded="true" />
+                <element signature="e#16690#16715#0" expanded="true" />
+                <element signature="e#16757#16780#0" expanded="true" />
+                <element signature="e#16820#16853#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -130,7 +130,7 @@
       <file leaf-file-name="stats.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/stats.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="84" column="45" selection-start="2980" selection-end="2980" vertical-scroll-proportion="-30.6" vertical-offset="495" max-vertical-offset="2400">
+            <state line="59" column="44" selection-start="1996" selection-end="1996" vertical-scroll-proportion="-15.6" vertical-offset="495" max-vertical-offset="2400">
               <folding>
                 <element signature="e#1352#1376#0" expanded="true" />
                 <element signature="e#1476#1491#0" expanded="true" />
@@ -145,15 +145,6 @@
           </provider>
           <provider editor-type-id="android-designer">
             <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="106" column="18" selection-start="5494" selection-end="5494" vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="1770">
-              <folding />
-            </state>
           </provider>
         </entry>
       </file>
@@ -576,12 +567,13 @@
       <list>
         <option value="$PROJECT_DIR$/src/com/monstarlab/servicedroid/model/Models.java" />
         <option value="$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/CallShowActivity.java" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/res/values-es/strings.xml" />
         <option value="$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/PlacementActivity.java" />
         <option value="$PROJECT_DIR$/res/layout/stats.xml" />
-        <option value="$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/StatisticsActivity.java" />
         <option value="$PROJECT_DIR$/src/com/monstarlab/servicedroid/model/ServiceProvider.java" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/StatisticsActivity.java" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
       </list>
     </option>
   </component>
@@ -706,6 +698,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="values-es" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ServiceDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ServiceDroid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1001,16 +1011,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/monstarlab/servicedroid/model/ServiceProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="208" column="40" selection-start="10505" selection-end="10505" vertical-scroll-proportion="-10.88" vertical-offset="2473" max-vertical-offset="10935">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/monstarlab/servicedroid/service/ReminderService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="70" selection-start="564" selection-end="564" vertical-scroll-proportion="0.1884058" vertical-offset="0" max-vertical-offset="1080">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="45" selection-start="1548" selection-end="1548" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1065">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/source/r/debug/com/monstarlab/servicedroid/R.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1030" column="30" selection-start="66238" selection-end="66238" vertical-scroll-proportion="0.34102306" vertical-offset="15035" max-vertical-offset="53535">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="18" selection-start="5494" selection-end="5494" vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="1770">
+        <state line="7" column="56" selection-start="357" selection-end="357" vertical-scroll-proportion="0.10144927" vertical-offset="0" max-vertical-offset="1785">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/stats.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="45" selection-start="2980" selection-end="2980" vertical-scroll-proportion="-30.6" vertical-offset="495" max-vertical-offset="2400">
+        <state line="59" column="44" selection-start="1996" selection-end="1996" vertical-scroll-proportion="-15.6" vertical-offset="495" max-vertical-offset="2400">
           <folding>
             <element signature="e#1352#1376#0" expanded="true" />
             <element signature="e#1476#1491#0" expanded="true" />
@@ -1029,36 +1067,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/monstarlab/servicedroid/activity/StatisticsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="25" selection-start="4235" selection-end="4235" vertical-scroll-proportion="0.0" vertical-offset="703" max-vertical-offset="8565">
+        <state line="510" column="41" selection-start="15128" selection-end="15128" vertical-scroll-proportion="6.0320964" vertical-offset="991" max-vertical-offset="8685">
           <folding>
-            <element signature="e#5188#5220#0" expanded="true" />
-            <element signature="e#11765#11802#0" expanded="true" />
-            <element signature="e#11860#11903#0" expanded="true" />
-            <element signature="e#12091#12134#0" expanded="true" />
-            <element signature="e#13473#13503#0" expanded="true" />
-            <element signature="e#15072#15144#0" expanded="true" />
-            <element signature="e#16023#16089#0" expanded="true" />
-            <element signature="e#16104#16129#0" expanded="true" />
-            <element signature="e#16171#16200#0" expanded="true" />
-            <element signature="e#16246#16275#0" expanded="true" />
-            <element signature="e#16396#16421#0" expanded="true" />
-            <element signature="e#16463#16486#0" expanded="true" />
-            <element signature="e#16526#16559#0" expanded="true" />
+            <element signature="e#5217#5249#0" expanded="true" />
+            <element signature="e#11794#11831#0" expanded="true" />
+            <element signature="e#11889#11932#0" expanded="true" />
+            <element signature="e#12120#12163#0" expanded="true" />
+            <element signature="e#13502#13532#0" expanded="true" />
+            <element signature="e#15366#15438#0" expanded="true" />
+            <element signature="e#16317#16383#0" expanded="true" />
+            <element signature="e#16398#16423#0" expanded="true" />
+            <element signature="e#16465#16494#0" expanded="true" />
+            <element signature="e#16540#16569#0" expanded="true" />
+            <element signature="e#16690#16715#0" expanded="true" />
+            <element signature="e#16757#16780#0" expanded="true" />
+            <element signature="e#16820#16853#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/monstarlab/servicedroid/model/ServiceProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="208" column="40" selection-start="10505" selection-end="10505" vertical-scroll-proportion="-10.88" vertical-offset="2473" max-vertical-offset="10935">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1065">
-          <folding />
         </state>
       </provider>
     </entry>

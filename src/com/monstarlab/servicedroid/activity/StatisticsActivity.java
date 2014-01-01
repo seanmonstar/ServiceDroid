@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -500,7 +501,15 @@ public class StatisticsActivity extends SherlockActivity {
 	}
 	
 	protected void promptExtraTime() {
-		showDialog(DIALOG_ROUND_ID);
+        int seconds = getHoursSum();
+        int minutes = TimeUtil.getMins(seconds);
+
+        if (minutes >= 45) {
+		    showDialog(DIALOG_ROUND_ID);
+        } else {
+            carryOverTime();
+            Toast.makeText(this, R.string.auto_carried_over, Toast.LENGTH_LONG).show();;
+        }
 	}
 	
 	private void setShareIntent() {

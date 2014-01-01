@@ -58,7 +58,7 @@ public class StatisticsActivity extends SherlockActivity {
 	private TextView mBrochuresDisplay;
 	private TextView mBooksDisplay;
 	private TextView mBibleStudiesDisplay;
-	private ImageButton mQuickEmailBtn;
+    private TextView mTractsDisplay;
 	
 	private int mCurrentMonth = TimeUtil.getCurrentMonth();
 	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
@@ -92,6 +92,7 @@ public class StatisticsActivity extends SherlockActivity {
         mBrochuresDisplay = (TextView)findViewById(R.id.brochures);
         mBooksDisplay = (TextView)findViewById(R.id.books);
         mBibleStudiesDisplay = (TextView)findViewById(R.id.bible_studies);
+        mTractsDisplay = (TextView) findViewById(R.id.tracts);
         
         // Gesture detection
 	    mGestureDetector = new GestureDetector(new MyGestureDetector());
@@ -128,6 +129,7 @@ public class StatisticsActivity extends SherlockActivity {
 		mBrochuresDisplay.setText(getBrochures());
 		mBooksDisplay.setText(getBooks());
 		mBibleStudiesDisplay.setText(getBibleStudies());
+        mTractsDisplay.setText(getTracts());
 		
 		toggleExtraTimeButton();
 		setShareIntent();
@@ -167,7 +169,7 @@ public class StatisticsActivity extends SherlockActivity {
 
 
 	protected String getBooks() {
-		Cursor c = getContentResolver().query(Placements.BOOKS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		Cursor c = getContentResolver().query(Placements.BOOKS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {
             c.moveToFirst();
@@ -185,7 +187,7 @@ public class StatisticsActivity extends SherlockActivity {
 
 
 	protected String getBrochures() {
-		Cursor c = getContentResolver().query(Placements.BROCHURES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		Cursor c = getContentResolver().query(Placements.BROCHURES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {
             c.moveToFirst();
@@ -200,10 +202,26 @@ public class StatisticsActivity extends SherlockActivity {
 		return ""+sum;
 	}
 
+    protected String getTracts() {
+        Cursor c = getContentResolver().query(Placements.TRACTS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+        int sum = 0;
+        if(c != null) {
+            c.moveToFirst();
+            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
+            while(!c.isAfterLast()) {
+                sum += c.getInt(qtyCol);
+                c.moveToNext();
+            }
+            c.close();
+            c = null;
+        }
+        return ""+sum;
+    }
+
 
 
 	protected String getMagazines() {
-		Cursor c = getContentResolver().query(Placements.MAGAZINES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		Cursor c = getContentResolver().query(Placements.MAGAZINES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {
 			c.moveToFirst();
@@ -524,6 +542,7 @@ public class StatisticsActivity extends SherlockActivity {
 		sb.append(getString(R.string.hours) + ": " + getHours() + "\n");
 		sb.append(getString(R.string.magazines) + ": " + getMagazines() + "\n");
 		sb.append(getString(R.string.brochures) + ": " + getBrochures() + "\n");
+        sb.append(getString(R.string.tracts) + ": " + getTracts() + "\n");
 		sb.append(getString(R.string.books) + ": " + getBooks() + "\n");
 		sb.append(getString(R.string.rvs) + ": " + getRVs() + "\n");
 		sb.append(getString(R.string.bible_studies) + ": " + getBibleStudies() + "\n");	

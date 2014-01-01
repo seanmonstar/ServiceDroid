@@ -360,8 +360,8 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 		final CharSequence[] items = {
                 getString(R.string.magazine),
                 getString(R.string.brochure),
-                getString(R.string.book),
-                getString(R.string.tract)
+                getString(R.string.tract),
+                getString(R.string.book)
         };
 		final int MAGAZINE = 0;
 		final int BROCHURE = 1;

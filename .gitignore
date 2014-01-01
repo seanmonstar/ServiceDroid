@@ -1,6 +1,6 @@
 bin/*
 gen/*
 .gradle
-.idea
+.idea/
 build/
 gradle/

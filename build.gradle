@@ -1,0 +1,136 @@
+import java.util.regex.Pattern
+
+buildscript {
+    repositories {
+        mavenCentral()
+        //maven { url 'http://download.crashlytics.com/maven' }
+
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.7.+'
+        //classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+
+    }
+}
+apply plugin: 'android'
+//apply plugin: 'crashlytics'
+
+repositories {
+    mavenCentral()
+    //maven { url 'http://download.crashlytics.com/maven' }
+
+}
+
+dependencies {
+
+	//compile 'com.crashlytics.android:crashlytics:1.+'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+	compile 'com.android.support:support-v4:19.+'
+
+    //instrumentTestCompile files('libs/espresso-1.0-SNAPSHOT-bundled.jar')
+
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 19
+
+        //testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+
+            renderscript.srcDirs = ['src']
+
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("C:\\Users\\Sean\\.android\\debug.keystore")
+        }
+        release {
+            storeFile file("D:\\Users\\Sean\\Dropbox\\android\\keystore\\sean_android_key.keystore")
+            storePassword "boo"
+            keyAlias "sean_android_key"
+            keyPassword "boo"
+        }
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix "-dev"
+            zipAlign = true
+        }
+        release {
+            //runProguard true
+            //proguardFile file('proguard-project.txt')
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+task('increaseVersionName') << {
+    def manifestFile = file('AndroidManifest.xml')
+    def patternBuildNumber = Pattern.compile("versionName=\"(\\d+\\.\\d+\\.\\d+\\.)(\\d+)(-.+)?\"")
+    def manifestText = manifestFile.getText()
+    def matcherBuilderNumber = patternBuildNumber.matcher(manifestText)
+    matcherBuilderNumber.find()
+    def versionName = matcherBuilderNumber.group(1)
+    def buildNumber = Integer.parseInt(matcherBuilderNumber.group(2))
+    def buildType = matcherBuilderNumber.group(3)
+    def manifestContent = matcherBuilderNumber.replaceAll("versionName=\"" + versionName + (++buildNumber) + ((buildType == null) ? "" : buildType) + "\"");
+    manifestFile.write(manifestContent)
+}
+
+task('increaseVersionCode') << {
+    def manifestFile = file('AndroidManifest.xml')
+    def patternBuildNumber = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcherBuilderNumber = patternBuildNumber.matcher(manifestText)
+    matcherBuilderNumber.find()
+    def versionCode = Integer.parseInt(matcherBuilderNumber.group(1)) + 1;
+    def manifestContent = matcherBuilderNumber.replaceAll("versionCode=\"${versionCode}\"");
+    manifestFile.write(manifestContent)
+}
+
+task('askForPasswords') << {
+    // Must create String because System.readPassword() returns char[]
+    // (and assigning that below fails silently)
+    def storePw = new String(System.console().readPassword("Keystore password: "))
+    def keyPw  = new String(System.console().readPassword("Key password: "))
+
+    android.signingConfigs.release.storePassword = storePw
+    android.signingConfigs.release.keyPassword = keyPw
+}
+
+android.applicationVariants.all { variant ->
+    variant.generateBuildConfig.dependsOn "increaseVersionName"
+    if (variant.buildType.name == 'release' || variant.buildType.name == 'beta') {
+        variant.generateBuildConfig.dependsOn "increaseVersionCode"
+    }
+}
+
+tasks.whenTaskAdded { theTask ->
+    if (theTask.name.equals("packageRelease")) {
+        theTask.dependsOn "askForPasswords"
+    }
+}

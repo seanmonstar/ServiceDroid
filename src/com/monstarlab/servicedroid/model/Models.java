@@ -161,6 +161,12 @@ public final class Models {
 		 * 	type: date
 		 */
 		public static final String LITERATURE_ID = "literature_id";
+
+
+        /**
+         *  type: int
+         */
+        public static final String QUANTITY = "quantity";
 		
 	}
 	
@@ -199,7 +205,7 @@ public final class Models {
 		 *  type: int
 		 */
 		public static final String WEIGHT = "weight";
-		
+
 	}
 	
 	

@@ -49,7 +49,7 @@ public class StatisticsActivity extends SherlockActivity {
 	private static String[] BibleStudiesProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.CALL_ID };
 	private static String[] TimeProjection = new String[] { TimeEntries._ID, TimeEntries.DATE, TimeEntries.LENGTH };
 	private static String[] RVProjection = new String[] { ReturnVisits._ID, ReturnVisits.DATE, ReturnVisits.CALL_ID };
-	private static String[] PlacementsProjection = new String[] { Placements._ID, Placements.DATE, Literature.WEIGHT };
+	private static String[] PlacementsProjection = new String[] { Placements._ID, Placements.DATE, Placements.QUANTITY, Literature.WEIGHT };
 	
 	private TextView mTimePeriodDisplay;
 	private TextView mHoursDisplay;
@@ -170,8 +170,13 @@ public class StatisticsActivity extends SherlockActivity {
 		Cursor c = getContentResolver().query(Placements.BOOKS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {
-			sum = c.getCount();
-			c.close();
+            c.moveToFirst();
+            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
+            while(!c.isAfterLast()) {
+                sum += c.getInt(qtyCol);
+                c.moveToNext();
+            }
+            c.close();
 			c = null;
 		}
 		return ""+sum;
@@ -183,7 +188,12 @@ public class StatisticsActivity extends SherlockActivity {
 		Cursor c = getContentResolver().query(Placements.BROCHURES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(ReturnVisits.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {
-			sum = c.getCount();
+            c.moveToFirst();
+            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
+            while(!c.isAfterLast()) {
+                sum += c.getInt(qtyCol);
+                c.moveToNext();
+            }
 			c.close();
 			c = null;
 		}
@@ -198,8 +208,9 @@ public class StatisticsActivity extends SherlockActivity {
 		if(c != null) {
 			c.moveToFirst();
 			int weightCol = c.getColumnIndex(Literature.WEIGHT);
+            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
 			while(!c.isAfterLast()) {
-				sum += c.getInt(weightCol);
+				sum +=  c.getInt(qtyCol) * c.getInt(weightCol);
 				c.moveToNext(); 
 			}
 			c.close();
@@ -497,7 +508,7 @@ public class StatisticsActivity extends SherlockActivity {
 		//make sure Hours greater than 1. don't want to bother someone if they're submitting under an hour
 		//since the Society points out that infirm publishers can still report as small as 15 minutes.
 		//asking them to round or carry over every time would be discouraging...
-		if(minutes > 0 && hours >= 1) {
+		if(hours > 0 && minutes > 0) {
 			return true;
 		}
 		

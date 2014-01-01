@@ -50,7 +50,7 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 	
 	
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE  };
-	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE };
+	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE, Placements.QUANTITY };
 	private static final String[] RETURN_VISITS_PROJECTION = new String[]{ ReturnVisits._ID, ReturnVisits.CALL_ID, ReturnVisits.DATE, ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.NOTE };
 	
 	private static final int ID_COLUMN = 0;
@@ -189,11 +189,13 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 				placementsCursor.moveToFirst();
 				int publicationIndex = placementsCursor.getColumnIndex(Literature.PUBLICATION);
 				int dateIndex = placementsCursor.getColumnIndex(Placements.DATE);
+                int quantityIndex = placementsCursor.getColumnIndex(Placements.QUANTITY);
 				
 				while (!placementsCursor.isAfterLast()) {
 					HashMap<String, String> map = new HashMap<String, String>();
 					map.put(HISTORY_LOG_TITLE, placementsCursor.getString(publicationIndex));
 					map.put(HISTORY_LOG_DATE, placementsCursor.getString(dateIndex));
+                    map.put(HISTORY_LOG_NOTE, "" + placementsCursor.getInt(quantityIndex));
 					map.put(HISTORY_LOG_TYPE, Placements.CONTENT_ITEM_TYPE);
 					map.put(HISTORY_LOG_ID, placementsCursor.getString(0));
 					mHistoryMaps.add(map);

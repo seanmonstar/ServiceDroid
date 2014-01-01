@@ -76,6 +76,7 @@
     <string name="ok">Cool!</string>
     <string name="other">Other...</string>
     <string name="placement">Placement</string>
+    <string name="quantity">Quantity</string>
     <string name="require_brochure">What Does God Require of Us?</string>
     <string name="restore_failure">Contact the developer.</string>
     <string name="return_visit_success">You made a return visit on %s.</string>

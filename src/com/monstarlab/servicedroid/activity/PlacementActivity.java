@@ -24,7 +24,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,7 +49,7 @@ public class PlacementActivity extends SherlockActivity {
 	
 	private static final int YEAR_CUTOFF = 1999;
 	
-	private static final String[] PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE };
+	private static final String[] PROJECTION = new String[] { Placements._ID, Placements.CALL_ID, Placements.LITERATURE_ID, Placements.DATE, Placements.QUANTITY };
 	private static final String[] LITERATURE_PROJECTION = new String[] { Literature._ID, Literature.TITLE, Literature.PUBLICATION, Literature.TYPE };
 	
 	private static final int DIALOG_CREATE_ID = 0;
@@ -63,6 +65,7 @@ public class PlacementActivity extends SherlockActivity {
 	private Spinner mPublicationSpinner;
 	private Spinner mMonthSpinner;
 	private Spinner mYearSpinner;
+    private EditText mQuantityText;
 	
 	private String mMagazine;
 	private String mBook;
@@ -130,6 +133,24 @@ public class PlacementActivity extends SherlockActivity {
 		
 		setupDateButton();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mQuantityText = (EditText) findViewById(R.id.quantity);
+        mQuantityText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveQuantity();
+            }
+        });
 		
 		Button confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +234,7 @@ public class PlacementActivity extends SherlockActivity {
 					mPlaceDay = TimeUtil.getCurrentDay();
 				}
 				updateDateButton();
+                mQuantityText.setText("" + mCursor.getInt(mCursor.getColumnIndex(Placements.QUANTITY)));
 			}
 			
 			if (mPlacementType == Literature.TYPE_MAGAZINE) {
@@ -607,6 +629,29 @@ public class PlacementActivity extends SherlockActivity {
 			mLitID = newId;
 		}
 	}
+
+    protected void saveQuantity() {
+        ContentValues values = new ContentValues();
+        int quantity = Integer.parseInt(mQuantityText.getText().toString());
+        quantity = Math.max(quantity, 1);
+
+        values.put(Placements.QUANTITY, quantity);
+        getContentResolver().update(mUri, values, null, null);
+    }
+
+    public void decrementQuantity(View view) {
+        int count = Integer.parseInt(mQuantityText.getText().toString());
+        if (count > 1) {
+            count--;
+            mQuantityText.setText("" + count);
+        }
+    }
+
+    public void incrementQuantity(View view) {
+        int count = Integer.parseInt(mQuantityText.getText().toString());
+        count++;
+        mQuantityText.setText("" + count);
+    }
 
 	private void deleteEntry() {
 		if(mCursor != null) {

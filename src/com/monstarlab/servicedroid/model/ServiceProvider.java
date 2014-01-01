@@ -120,6 +120,7 @@ public class ServiceProvider extends ContentProvider {
     	sPlacementProjectionMap = new HashMap<String, String>();
     	sPlacementProjectionMap.put(Placements._ID, PLACEMENTS_TABLE + "." + Placements._ID);
     	sPlacementProjectionMap.put(Placements.DATE, PLACEMENTS_TABLE + "." + Placements.DATE);
+        sPlacementProjectionMap.put(Placements.QUANTITY, PLACEMENTS_TABLE + "." + Placements.QUANTITY);
     	sPlacementProjectionMap.put(Placements.CALL_ID, PLACEMENTS_TABLE + "." + Placements.CALL_ID);
     	sPlacementProjectionMap.put(Placements.LITERATURE_ID, PLACEMENTS_TABLE + "." + Placements.LITERATURE_ID);
     	sPlacementProjectionMap.put(Literature.PUBLICATION, LITERATURE_TABLE + "." + Literature.PUBLICATION);
@@ -176,6 +177,7 @@ public class ServiceProvider extends ContentProvider {
 			db.execSQL("create table " +  PLACEMENTS_TABLE + " (" 
 				+ Placements._ID + " integer primary key autoincrement,"
 			    + Placements.DATE + " date default current_timestamp,"
+                + Placements.QUANTITY + " integer default 1,"
 			    + Placements.CALL_ID + " integer references calls(id),"
 			    + Placements.LITERATURE_ID + " integer references literature(id))");
 			
@@ -242,7 +244,10 @@ public class ServiceProvider extends ContentProvider {
 				//must make sure all dates have the day padded.
 				padTimeEntriesAndReturnVisits(db);
 				
-				
+            case 7:
+                // adding quantity to placements
+                db.execSQL("alter table " + PLACEMENTS_TABLE + " add column " + Placements.QUANTITY + " integer default 1");
+
 				//-------------------
 				//these fall through on purpose
 				break;

@@ -148,7 +148,11 @@ public class PlacementActivity extends SherlockActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                saveQuantity();
+                if (s.length() == 0) {
+                    mQuantityText.setText("0");
+                } else {
+                    saveQuantity();
+                }
             }
         });
 		
@@ -631,12 +635,14 @@ public class PlacementActivity extends SherlockActivity {
 	}
 
     protected void saveQuantity() {
-        ContentValues values = new ContentValues();
         int quantity = Integer.parseInt(mQuantityText.getText().toString());
-        quantity = Math.max(quantity, 1);
-
-        values.put(Placements.QUANTITY, quantity);
-        getContentResolver().update(mUri, values, null, null);
+        if (quantity < 1) {
+            mQuantityText.setText("1");
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(Placements.QUANTITY, quantity);
+            getContentResolver().update(mUri, values, null, null);
+        }
     }
 
     public void decrementQuantity(View view) {

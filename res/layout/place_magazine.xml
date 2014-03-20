@@ -90,6 +90,10 @@
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:numeric="integer"
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:selectAllOnFocus="true"
+                    android:digits="0123456789"
                     android:layout_weight="1"/>
                 <Button
                     android:layout_width="wrap_content"

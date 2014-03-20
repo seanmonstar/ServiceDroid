@@ -365,8 +365,9 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
         };
 		final int MAGAZINE = 0;
 		final int BROCHURE = 1;
-		final int BOOK = 2;
-        final int TRACT = 3;
+        final int TRACT = 2;
+        final int BOOK = 3;
+
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		

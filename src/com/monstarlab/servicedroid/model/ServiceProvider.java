@@ -11,6 +11,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -250,7 +251,11 @@ public class ServiceProvider extends ContentProvider {
 				
             case 7:
                 // adding quantity to placements
-                db.execSQL("alter table " + PLACEMENTS_TABLE + " add column " + Placements.QUANTITY + " integer default 1");
+                try {
+                    db.execSQL("alter table " + PLACEMENTS_TABLE + " add column " + Placements.QUANTITY + " integer default 1");
+                } catch (SQLiteException e) {
+                    Log.e(TAG, "failed adding quantity column. probably because it already exists", e);
+                }
 
 				//-------------------
 				//these fall through on purpose

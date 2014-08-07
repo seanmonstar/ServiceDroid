@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_call">Nabezoek toevoegen</string>
+    <string name="add_time">Tijdstip toevoegen</string>
+    <string name="address">Adres</string>
+    <string name="anon_placement">Anoniem verspreide lectuur</string>
+    <string name="app_name">ServiceDroid</string>
+    <string name="auto_carried_over">Extra minuten zijn automatisch meegenomen naar de volgende maand.</string>
+    <string name="awake">Ontwaakt!</string>
+    <string name="backup">Backup</string>
+    <string name="backup_success">Gegevens succesvol gebackupt naar \"%s\" op SD-kaart.</string>
+    <string name="bible">Bijbel</string>
+    <string name="bible_studies">Bijbelstudies</string>
+    <string name="bible_study">Bijbelstudie</string>
+	<string name="bible_teach">Wat leert de Bijbel echt?</string>
+    <string name="book">Boek</string>
+	<string name="books">Boeken</string>
+	<string name="brochure">Brochure</string>
+	<string name="brochures">Brochures</string>
+    <string name="callbook">Nabezoeken</string>
+    <string name="cancel">Annuleren</string>
+    <string name="carry_over">Meegenomen</string>
+    <string name="combo">Wachttoren &amp; Ontwaakt!</string>
+    <string name="confirm">Opslaan</string>
+    <string name="comfort_brochure">When Someone You Love Dies</string>
+    <string name="create_placement">Create Placement</string>
+    <string name="date">Datum</string>
+    <string name="delete_call">Nabezoek toevoegen</string>
+    <string name="delete_call_prompt">Alle verspreide lectuur en nabezoek-momenten verwijderen voor dit nabezoek?</string>
+    <string name="delete_call_title">Gerelateerde gegevens verwijderen?</string>
+    <string name="delete_call_prompt_yes">Ja, ook gerelateerde gegevens</string>
+    <string name="delete_call_prompt_no">Nee, alleen nabezoek</string>
+    <string name="delete_placement">Verspreide lectuur verwijderen</string>
+    <string name="delete_rv">Verwijder nabezoek</string>
+    <string name="delete_time">Delete Time</string>
+    <string name="directions">Navigatie</string>
+    <string name="edit">Bewerken</string>
+    <string name="email_hint">Je kunt je velddienstbericht e-mailen door op de MENU toets van de telefoon te drukken. </string>
+    <string name="enjoy_servicedroid">Bevalt ServiceDroid?</string>
+    <string name="give_review"><![CDATA[Overweeg een <a href=\"market://details?id=com.monstarlab.servicedroid\">review</a> te schrijven.]]></string>
+    <string name="hours">Uren</string>
+	<string name="hr">uur</string>
+	<string name="hrs">uur</string>
+	<string name="is_bible_study">%s is nu een bijbelstudie.</string>
+	<string name="isnt_bible_study">%s is niet langer een bijbelstudie.</string>
+	<string name="issue">Uitgave</string>
+	<string name="last_visited">Laatst bezocht: %s</string>
+	<string name="length">Tijd in velddienst</string>
+	<string name="magazine">Tijdschrift</string>
+	<string name="magazines">Tijdschriften</string>
+	<string name="make_return">Teruggeweest op</string>
+	<string name="menu_sms">SMS</string>
+	<string name="min">min</string>
+	<string name="mins">minuten</string>
+	<string name="month">Maand</string>
+	<string name="monthly">Maandelijks</string>
+	<string-array name="months_array">
+        <item>Januari</item>
+        <item>Februari</item>
+        <item>Maart</item>
+        <item>April</item>
+        <item>Mei</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>Augustus</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+	<string name="name">Naam</string>
+	<string name="no">Nee</string>
+	<string name="no_calls">Dit is de lijst met nabezoeken. Alle verspreide lectuur en nabezoek-momenten worden bijbehouden per nabezoek. De aantallen worden voor je bijgehouden. </string>
+	<string name="no_placements">Druk op MENU om een nabezoek-moment of verspreide lectuur toe te voegen.</string>
+	<string name="no_time">Voeg velddienst-tijd toe, of start de stopwatch.</string>	
+	<string name="notes">Notities</string>
+    <string name="ok">Leuk!</string>
+    <string name="other">Anders...</string>
+    <string name="placement">Verspreide lectuur</string>
+    <string name="quantity">Hoeveelheid</string>
+    <string name="require_brochure">Wat verlangt God van ons?</string>
+    <string name="restore_failure">Neem contact op met de ontwikkelaar.</string>
+    <string name="return_visit_success">Je hebt een nabezoek gebracht op %s.</string>
+    <string name="round_or_carry">Extra tijd</string>
+    <string name="round_time_prompt">Tijd naar boven afronden of minuten meenemen naar volgende maand?</string>
+	<string name="round_time_prompt_carry">Meenemen</string>
+	<string name="round_time_prompt_round">Afronden</string>
+    <string name="rv">Nabezoek-moment</string>
+    <string name="rvs">Nabezoek-momenten</string>
+    <string name="send">E-mail</string>
+	<string name="send_by">Verzenden via...</string>
+	<string name="send_reminder">Verstuur je velddienstbericht</string>
+	<string name="service_year">Dienstjaar</string>
+	<string name="service_time_for">Velddienstbericht voor %s</string>
+    <string name="sort">Sorteer</string>
+    <string name="sorted_alpha">Alfabetisch</string>
+    <string name="sorted_time">Oudste nabezoek</string>
+    <string name="start_time">Start Stopwatch</string>
+    <string name="stats">Aantallen</string>
+    <string name="stop_time">Stop Stopwatch</string>
+    <string name="time">Tijd</string>
+    <string name="time_due">Je tijd is om!</string>
+	<string name="time_in_service">Time in de dienst: %s</string>
+	<string name="time_period_hint">Swipe naar lings of rechts om de tijdsperiode aan te passen.</string>
+	<string name="timer_active">Stopwatch voor velddiensttijd actief</string>
+    <string name="tips">Tips</string>
+    <string name="tract">Tractaat</string>
+    <string name="tracts">Tractaten</string>
+    <string name="watchtower">Wachttoren</string>
+    <string name="whats_new">Wat is nieuw?</string>
+	<string name="year">Jaar</string>
+	<string name="yes">Ja</string>
+</resources>

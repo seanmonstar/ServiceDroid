@@ -6,6 +6,15 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.Contents;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.MetadataChangeSet;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.activity.ServiceDroidActivity;
 import com.monstarlab.servicedroid.model.BackupWorker;
@@ -17,13 +26,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-public class BackupService extends Service {
+public class BackupService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	
 	public static final String ACTION_BACKUP = "Backup";
 	public static final String ACTION_BACKUP_IMMEDIATELY = "BackupImmediately";
@@ -38,7 +49,12 @@ public class BackupService extends Service {
 	
 	private static final boolean DO_NOTIFY = true;
 	private static final boolean DONT_NOTIFY = false;
-	
+
+    private GoogleApiClient mGoogleApiClient;
+    protected static final int RESOLVE_CONNECTION_REQUEST_CODE = 1;
+
+    private static boolean USE_DRIVE = false;
+
 	private Handler mHandler = new Handler();
 	private Runnable mScheduler = new Runnable() {
 		public void run() {
@@ -48,7 +64,12 @@ public class BackupService extends Service {
 	
 	@Override
 	public void onCreate() {
-		
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Drive.API)
+                .addScope(Drive.SCOPE_APPFOLDER)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 	}
 	
 	@Override
@@ -68,6 +89,7 @@ public class BackupService extends Service {
 			stopSelf();
 			return;
 		}
+        mGoogleApiClient.connect();
 		
 		final String action = intent.getAction();
 		if (ACTION_BACKUP.equals(action)) {
@@ -96,15 +118,11 @@ public class BackupService extends Service {
 		new Thread(new Runnable() {
 			
 			public void run() {
-				//find backup file on SD card
-				//write SDML to backup file, overwriting if need be
-				writeToSDCard(new BackupWorker().backup(getContentResolver()));
-				
-				if (notifyOnSuccess) {
-					notifySuccess();
-				}
-				
-				stopSelf();
+				if (USE_DRIVE) {
+
+                } else {
+                    backupToSDCard(notifyOnSuccess);
+                }
 			}
 			
 		}).start();
@@ -126,7 +144,25 @@ public class BackupService extends Service {
 		});
 		
 	}
-	
+
+    protected void backupToSDCard(boolean notify) {
+        //find backup file on SD card
+        //write SDML to backup file, overwriting if need be
+        writeToSDCard(new BackupWorker().backup(getContentResolver()));
+
+        if (notify) {
+            notifySuccess();
+        }
+
+        stopSelf();
+    }
+
+    protected void backupToGoogleDrive(boolean notify) {
+        writeToGoogleDrive(new BackupWorker().backup(getContentResolver()));
+
+
+    }
+
 	protected void writeToSDCard(String raw) {
 		File root = Environment.getExternalStorageDirectory();
 		File dir = new File(root, DIRECTORY);
@@ -144,6 +180,42 @@ public class BackupService extends Service {
 			Log.w(TAG, "error writing to file");
 		}
 	}
+
+    protected void writeToGoogleDrive(final String raw) {
+        Drive.DriveApi.newContents(mGoogleApiClient).setResultCallback(new ResultCallback<DriveApi.ContentsResult>() {
+            @Override
+            public void onResult(DriveApi.ContentsResult contentsResult) {
+                Contents contents = contentsResult.getContents();
+
+                try {
+                    contents.getOutputStream().write(raw.getBytes());
+                } catch (IOException e) {
+                    Log.e(TAG, "writing contents failed", e);
+                    return;
+                }
+                MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                        .setTitle("ServiceDroidBackup.sdbackup")
+                        .setMimeType("text/plain")
+                        .build();
+                Drive.DriveApi.getAppFolder(mGoogleApiClient)
+                        .createFile(mGoogleApiClient, changeSet, contents)
+                        .setResultCallback(writeCallback);
+            }
+        });
+
+    }
+
+    private ResultCallback writeCallback = new ResultCallback() {
+        @Override
+        public void onResult(Result result) {
+            if (result.getStatus().isSuccess()) {
+                Log.i(TAG, "BACKUP COMPLETE");
+            } else {
+                Log.e(TAG, "BACKUP EXPLODED");
+            }
+            stopSelf();
+        }
+    };
 	
 	protected void onRestore() {
 		// no need to schedule Restore, in fact we want it done ASAP
@@ -218,7 +290,28 @@ public class BackupService extends Service {
 		}
 		return sb.toString();
 	}
-	
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        USE_DRIVE = true;
+        Log.i(TAG, "GoogleApiClient onConnected");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        if (connectionResult.hasResolution()) {
+            Log.w(TAG, "Google Drive failed, but there is resolution: " + connectionResult);
+        } else {
+            //GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+            Log.e(TAG, "Google Drive failed! " + connectionResult);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.i(TAG, "GoogleApiClient connection suspended");
+    }
 	
 	@Override
 	public IBinder onBind(Intent arg0) {

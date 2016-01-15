@@ -28,9 +28,7 @@
     <string name="delete_time">Predigtdienststunden löschen</string>
     <string name="directions">Navigation</string>
     <string name="edit">Bearbeiten</string>
-    <string name="email_hint">Du kannst deinen Bericht per Email senden, indem du die MENÜ-Taste deines Telefons drückst.</string>
-    <string name="enjoy_servicedroid">Viel Spaß mit ServiceDroid?</string>
-    <string name="give_review"><![CDATA[Positive <a href=\"market://details?id=com.monstarlab.servicedroid\">Bewertungen</a> werden sehr geschätzt.]]></string>
+    <string name="extra_minutes">Extra Minuten</string>
     <string name="hours">Stunden</string>
 	<string name="hr">St</string>
 	<string name="hrs">St</string>
@@ -67,7 +65,10 @@
 	<string name="no_time">MENÜ drücken um Predigtdienststunden für diesen Monat hinzuzufügen.</string>	
 	<string name="notes">Bemerkungen</string>
     <string name="ok">Cool!</string>
+    <string name="other">Andere</string>
     <string name="placement">Literatur</string>
+    <string name="placements">Literaturen</string>
+    <string name="quantity">Menge</string>
     <string name="require_brochure">Was erwartet Gott von uns?</string>
     <string name="return_visit_success">Du hast bei %s einen Rückbesuch gemacht.</string>
     <string name="round_time_prompt">Möchtest du deine Zeit aufrunden, oder die übrigen Minuten in den nächsten Monat übernehmen?</string>
@@ -92,6 +93,8 @@
 	<string name="time_period_hint">Swipe nach links oder rechts ändern den Zeitraum.</string>
 	<string name="timer_active">Timer aktiviert</string>
     <string name="tips">Tipps</string>
+    <string name="video">Video</string>
+    <string name="videos">Videos</string>
     <string name="watchtower">Wachtturm</string>
     <string name="whats_new">What\'s New!</string>
 	<string name="year">Jahr</string>

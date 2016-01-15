@@ -55,11 +55,13 @@ public class StatisticsActivity extends SherlockActivity {
 	private TextView mTimePeriodDisplay;
 	private TextView mHoursDisplay;
 	private TextView mRvsDisplay;
-	private TextView mMagsDisplay;
-	private TextView mBrochuresDisplay;
-	private TextView mBooksDisplay;
+	//private TextView mMagsDisplay;
+	//private TextView mBrochuresDisplay;
+	//private TextView mBooksDisplay;
 	private TextView mBibleStudiesDisplay;
-    private TextView mTractsDisplay;
+    //private TextView mTractsDisplay;
+    private TextView mPlacementsDisplay;
+	private TextView mVideosDisplay;
 	
 	private int mCurrentMonth = TimeUtil.getCurrentMonth();
 	private int mCurrentYear = TimeUtil.getCurrentYear(); // 1 - 12
@@ -89,11 +91,14 @@ public class StatisticsActivity extends SherlockActivity {
         
         mHoursDisplay = (TextView)findViewById(R.id.hours);
         mRvsDisplay = (TextView)findViewById(R.id.rvs);
-        mMagsDisplay = (TextView)findViewById(R.id.magazines);
-        mBrochuresDisplay = (TextView)findViewById(R.id.brochures);
-        mBooksDisplay = (TextView)findViewById(R.id.books);
+        //mMagsDisplay = (TextView)findViewById(R.id.magazines);
+        //mBrochuresDisplay = (TextView)findViewById(R.id.brochures);
+        //mBooksDisplay = (TextView)findViewById(R.id.books);
         mBibleStudiesDisplay = (TextView)findViewById(R.id.bible_studies);
-        mTractsDisplay = (TextView) findViewById(R.id.tracts);
+        //mTractsDisplay = (TextView) findViewById(R.id.tracts);
+		mPlacementsDisplay = (TextView) findViewById(R.id.placements);
+		mVideosDisplay = (TextView) findViewById(R.id.videos);
+
         
         // Gesture detection
 	    mGestureDetector = new GestureDetector(new MyGestureDetector());
@@ -126,11 +131,9 @@ public class StatisticsActivity extends SherlockActivity {
 		mTimePeriodDisplay.setText(getTimePeriodText());
 		mHoursDisplay.setText(getHours());
 		mRvsDisplay.setText(getRVs());
-		mMagsDisplay.setText(getMagazines());
-		mBrochuresDisplay.setText(getBrochures());
-		mBooksDisplay.setText(getBooks());
 		mBibleStudiesDisplay.setText(getBibleStudies());
-        mTractsDisplay.setText(getTracts());
+        mPlacementsDisplay.setText(getPlacements());
+		mVideosDisplay.setText(getVideos());
 		
 		toggleExtraTimeButton();
 		setShareIntent();
@@ -167,70 +170,16 @@ public class StatisticsActivity extends SherlockActivity {
 		return numOfRVs;
 	}
 
-
-
-	protected String getBooks() {
-		Cursor c = getContentResolver().query(Placements.BOOKS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
-		int sum = 0;
-		if(c != null) {
-            c.moveToFirst();
-            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
-            while(!c.isAfterLast()) {
-                sum += c.getInt(qtyCol);
-                c.moveToNext();
-            }
-            c.close();
-			c = null;
-		}
-		return ""+sum;
-	}
-
-
-
-	protected String getBrochures() {
-		Cursor c = getContentResolver().query(Placements.BROCHURES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
-		int sum = 0;
-		if(c != null) {
-            c.moveToFirst();
-            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
-            while(!c.isAfterLast()) {
-                sum += c.getInt(qtyCol);
-                c.moveToNext();
-            }
-			c.close();
-			c = null;
-		}
-		return ""+sum;
-	}
-
-    protected String getTracts() {
-        Cursor c = getContentResolver().query(Placements.TRACTS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
-        int sum = 0;
-        if(c != null) {
-            c.moveToFirst();
-            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
-            while(!c.isAfterLast()) {
-                sum += c.getInt(qtyCol);
-                c.moveToNext();
-            }
-            c.close();
-            c = null;
-        }
-        return ""+sum;
-    }
-
-
-
-	protected String getMagazines() {
-		Cursor c = getContentResolver().query(Placements.MAGAZINES_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+	protected String getPlacements() {
+		Cursor c = getContentResolver().query(Placements.NON_VIDEOS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
 		int sum = 0;
 		if(c != null) {
 			c.moveToFirst();
 			int weightCol = c.getColumnIndex(Literature.WEIGHT);
-            int qtyCol = c.getColumnIndex(Placements.QUANTITY);
+			int qtyCol = c.getColumnIndex(Placements.QUANTITY);
 			while(!c.isAfterLast()) {
 				sum +=  c.getInt(qtyCol) * c.getInt(weightCol);
-				c.moveToNext(); 
+				c.moveToNext();
 			}
 			c.close();
 			c = null;
@@ -238,7 +187,22 @@ public class StatisticsActivity extends SherlockActivity {
 		return ""+sum;
 	}
 
+	protected String getVideos() {
+		Cursor c = getContentResolver().query(Placements.VIDEOS_CONTENT_URI, PlacementsProjection, getTimePeriodWhere(Placements.DATE), getTimePeriodArgs(mCurrentYear, mCurrentMonth), null);
+		int sum = 0;
+		if(c != null) {
+			c.moveToFirst();
+			int qtyCol = c.getColumnIndex(Placements.QUANTITY);
+			while(!c.isAfterLast()) {
+				sum += c.getInt(qtyCol);
+				c.moveToNext();
+			}
+			c.close();
+			c = null;
+		}
+		return ""+sum;
 
+	}
 
 	protected int getHoursSum() {
 		
@@ -549,10 +513,8 @@ public class StatisticsActivity extends SherlockActivity {
 		
 		sb.append(getString(R.string.service_time_for, getTimePeriodText() + "\n\n"));
 		sb.append(getString(R.string.hours) + ": " + getHours() + "\n");
-		sb.append(getString(R.string.magazines) + ": " + getMagazines() + "\n");
-		sb.append(getString(R.string.brochures) + ": " + getBrochures() + "\n");
-        sb.append(getString(R.string.tracts) + ": " + getTracts() + "\n");
-		sb.append(getString(R.string.books) + ": " + getBooks() + "\n");
+		sb.append(getString(R.string.videos) + ": " + getVideos() + "\n");
+		sb.append(getString(R.string.placements) + ": " + getPlacements() + "\n");
 		sb.append(getString(R.string.rvs) + ": " + getRVs() + "\n");
 		sb.append(getString(R.string.bible_studies) + ": " + getBibleStudies() + "\n");	
 		

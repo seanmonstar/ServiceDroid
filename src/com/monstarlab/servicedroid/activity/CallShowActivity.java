@@ -361,12 +361,14 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
                 getString(R.string.magazine),
                 getString(R.string.brochure),
                 getString(R.string.tract),
-                getString(R.string.book)
+                getString(R.string.book),
+				getString(R.string.video)
         };
 		final int MAGAZINE = 0;
 		final int BROCHURE = 1;
         final int TRACT = 2;
         final int BOOK = 3;
+		final int VIDEO = 4;
 
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -387,6 +389,10 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
                 case TRACT:
                     makeTractPlacement();
                     break;
+			    case VIDEO:
+				    makeVideoPlacement();
+				    break;
+
 		        default:
 		        	break;
 		        }
@@ -425,6 +431,9 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
        makePlacement(Literature.TYPE_TRACT);
     }
 
+	protected void makeVideoPlacement() {
+		makePlacement(Literature.TYPE_VIDEO);
+	}
 
 	protected void returnOnCall() {
 		if(mCallCursor != null) {

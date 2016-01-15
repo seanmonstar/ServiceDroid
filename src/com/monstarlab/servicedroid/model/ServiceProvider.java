@@ -60,13 +60,15 @@ public class ServiceProvider extends ContentProvider {
     private static final int PLACEMENTS_ID = 8;
     private static final int LITERATURE = 9;
     private static final int LITERATURE_ID = 10;
-    private static final int PLACED_MAGAZINES = 11;
-    private static final int PLACED_BROCHURES = 12;
-    private static final int PLACED_BOOKS = 13;
+    //private static final int PLACED_MAGAZINES = 11;
+    //private static final int PLACED_BROCHURES = 12;
+    //private static final int PLACED_BOOKS = 13;
     private static final int PLACEMENTS_DETAILS = 14;
     private static final int PLACEMENTS_DETAILS_ID = 15;
     private static final int BIBLE_STUDIES = 16;
-    private static final int PLACED_TRACTS = 17;
+    //private static final int PLACED_TRACTS = 17;
+	private static final int PLACED_VIDEOS = 18;
+	private static final int PLACED_NON_VIDEOS = 19;
     
     private static final UriMatcher sUriMatcher;
     
@@ -83,12 +85,15 @@ public class ServiceProvider extends ContentProvider {
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/#", PLACEMENTS_ID);
     	sUriMatcher.addURI(Models.AUTHORITY, "literature", LITERATURE);
     	sUriMatcher.addURI(Models.AUTHORITY, "literature/#", LITERATURE_ID);
-    	sUriMatcher.addURI(Models.AUTHORITY, "placements/magazines", PLACED_MAGAZINES);
-    	sUriMatcher.addURI(Models.AUTHORITY, "placements/brochures", PLACED_BROCHURES);
-    	sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
-        sUriMatcher.addURI(Models.AUTHORITY, "placements/tracts", PLACED_TRACTS);
+	    sUriMatcher.addURI(Models.AUTHORITY, "placements/videos", PLACED_VIDEOS);
+	    sUriMatcher.addURI(Models.AUTHORITY, "placements/non-videos", PLACED_NON_VIDEOS);
+    	//sUriMatcher.addURI(Models.AUTHORITY, "placements/magazines", PLACED_MAGAZINES);
+    	//sUriMatcher.addURI(Models.AUTHORITY, "placements/brochures", PLACED_BROCHURES);
+    	//sUriMatcher.addURI(Models.AUTHORITY, "placements/books", PLACED_BOOKS);
+        //sUriMatcher.addURI(Models.AUTHORITY, "placements/tracts", PLACED_TRACTS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details", PLACEMENTS_DETAILS);
     	sUriMatcher.addURI(Models.AUTHORITY, "placements/details/#", PLACEMENTS_DETAILS_ID);
+
     	
     	sTimeProjectionMap = new HashMap<String, String>();
     	sTimeProjectionMap.put(TimeEntries._ID, TimeEntries._ID);
@@ -606,45 +611,25 @@ public class ServiceProvider extends ContentProvider {
 			break;
 			
 			
-		case PLACED_MAGAZINES:
+		case PLACED_VIDEOS:
 			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
 					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND " 
-					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_MAGAZINE +")");
-			qb.setProjectionMap(sPlacementProjectionMap);
-			if(TextUtils.isEmpty(orderBy)) {
-				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
-			}
-			break;
-			
-		case PLACED_BROCHURES:
-			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
-					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND " 
-					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_BROCHURE +")");
-			qb.setProjectionMap(sPlacementProjectionMap);
-			if(TextUtils.isEmpty(orderBy)) {
-				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
-			}
-			break;
-			
-		case PLACED_BOOKS:
-			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON (" 
-					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND " 
-					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_BOOK +")");
+					+ LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_VIDEO +")");
 			qb.setProjectionMap(sPlacementProjectionMap);
 			if(TextUtils.isEmpty(orderBy)) {
 				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
 			}
 			break;
 
-        case PLACED_TRACTS:
-            qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON ("
-                    + PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND "
-                    + LITERATURE_TABLE + "." + Literature.TYPE + "=" + Literature.TYPE_TRACT +")");
-            qb.setProjectionMap(sPlacementProjectionMap);
-            if(TextUtils.isEmpty(orderBy)) {
-                orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
-            }
-            break;
+		case PLACED_NON_VIDEOS:
+			qb.setTables(PLACEMENTS_TABLE + " INNER JOIN " + LITERATURE_TABLE + " ON ("
+					+ PLACEMENTS_TABLE +"."+ Placements.LITERATURE_ID +" = "+LITERATURE_TABLE+"." + Literature._ID + " AND "
+					+ LITERATURE_TABLE + "." + Literature.TYPE + "!=" + Literature.TYPE_VIDEO +")");
+			qb.setProjectionMap(sPlacementProjectionMap);
+			if(TextUtils.isEmpty(orderBy)) {
+				orderBy = PLACEMENTS_TABLE + "."+ Placements.DEFAULT_SORT_ORDER;
+			}
+			break;
 			
 		case PLACEMENTS_DETAILS_ID:
 			qb.appendWhere(PLACEMENTS_TABLE+"."+Placements._ID + "=" + uri.getPathSegments().get(2));

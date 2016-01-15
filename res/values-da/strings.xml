@@ -28,8 +28,6 @@
     <string name="delete_time">Slet tid</string>
     <string name="directions">Vis vej</string>
     <string name="edit">Rediger</string>
-    <string name="enjoy_servicedroid">Synes du om ServiceDroid?</string>
-    <string name="give_review"><![CDATA[Giv gerne en positiv <a href=\"market://details?id=com.monstarlab.servicedroid\">anmeldelse</a>.]]></string>
     <string name="hours">Timer</string>
 	<string name="hr">t</string>
 	<string name="hrs">t</string>
@@ -68,6 +66,8 @@
     <string name="ok">Cool!</string>
     <string name="other">Andet...</string>
     <string name="placement">Afsæt</string>
+    <string name="placements">Afsæter</string>
+    <string name="quantity">Kvantitet</string>
     <string name="require_brochure">Hvad kræver Gud af os?</string>
     <string name="return_visit_success">Du har foretaget et genbesøg d. %s.</string>
     <string name="round_time_prompt">Vil du runde din tid op, eller overføre overskydende minutter til næste måned?</string>
@@ -86,14 +86,17 @@
     <string name="start_time">Start tid</string>
     <string name="stats">Rapport</string>
     <string name="stop_time">Stop tid</string>
+    <string name="tract">Traktat</string>
+    <string name="tracts">Traktater</string>
     <string name="time">Tid</string>
     <string name="time_due">Din tid er overskredet</string>
 	<string name="time_in_service">Tid i tjenesten: %s</string>
 	<string name="time_period_hint">Svirp til venstre eller højre for at ændre tidsperioden.</string>
 	<string name="timer_active">Tjeneste-Timer Aktiv</string>
     <string name="tips">Tips</string>
+    <string name="video">Video</string>
+    <string name="videos">Videoer</string>
     <string name="watchtower">Vagttårnet</string>
-    <string name="whats_new">Hvad er nyt!</string>
 	<string name="year">År</string>
 	<string name="yes">Ja</string>
 </resources>

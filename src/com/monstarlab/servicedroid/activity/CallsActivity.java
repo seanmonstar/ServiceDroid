@@ -132,7 +132,7 @@ public class CallsActivity extends SherlockListActivity {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		Editor editor = settings.edit();
 		editor.putInt(PREFS_SORT_KEY, mSortState);
-		editor.commit();
+		editor.apply();
 	}
 	
 	private Dialog makeDeleteCallDialog() {

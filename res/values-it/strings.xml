@@ -69,6 +69,7 @@
     <string name="ok">Ottimo!</string>
     <string name="other">Other...</string>
     <string name="placement">Distribuzione</string>
+    <string name="placements">Distribuzioni</string>
     <string name="require_brochure">Cosa richiede Dio da noi?</string>
     <string name="return_visit_success">Hai fatto una visita ulteriore il %s.</string>
     <string name="round_time_prompt">Si preferisce arrotondare le ore di servizio o riportare i minuti extra al mese successivo?</string>
@@ -93,6 +94,8 @@
 	<string name="time_period_hint">Swipe sinistra oa destra per modificare il periodo di tempo.</string>
 	<string name="timer_active">Timer di servizio attivo</string>
     <string name="tips">Tips</string>
+    <string name="video">Video</string>
+    <string name="videos">Video</string>
     <string name="watchtower">Torre di Guardia</string>
     <string name="whats_new">Cosa c\'� di nuovo!</string>
 	<string name="year">Anno</string>

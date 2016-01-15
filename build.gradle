@@ -25,7 +25,7 @@ dependencies {
 
 	//compile 'com.crashlytics.android:crashlytics:1.+'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-	compile 'com.android.support:support-v4:21.+'
+	compile 'com.android.support:support-v4:21.0.3'
     //compile 'com.google.android.gms:play-services:4.+'
 
     //instrumentTestCompile files('libs/espresso-1.0-SNAPSHOT-bundled.jar')

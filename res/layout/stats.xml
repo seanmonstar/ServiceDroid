@@ -39,7 +39,7 @@
 			    android:id="@+id/round_or_carry"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:text="@string/round_or_carry"
+			    android:text="@string/extra_minutes"
 			    android:drawableRight="@drawable/btn_carry" />
 			
 			<TableRow>
@@ -54,58 +54,34 @@
 					android:textAppearance="?android:attr/textAppearanceLarge"
 					android:gravity="center_vertical|right" />
 			</TableRow>
-			
-			<TableRow>
-				<TextView android:text="@string/magazines" 
-					android:paddingTop="5dip" 
-					android:paddingBottom="5dip"
-					android:textAppearance="?android:attr/textAppearanceLarge"
-					android:gravity="center_vertical|left" />
-				<TextView android:id="@+id/magazines" 
-					android:paddingTop="5dip" 
-					android:paddingBottom="5dip"
-					android:textAppearance="?android:attr/textAppearanceLarge"
-					android:gravity="center_vertical|right" />
-			</TableRow>
-			<TableRow>
-				<TextView android:text="@string/brochures" 
-					android:paddingTop="5dip" 
-					android:paddingBottom="5dip"
-					android:textAppearance="?android:attr/textAppearanceLarge"
-					android:gravity="center_vertical|left" />
-				<TextView android:id="@+id/brochures" 
-					android:paddingTop="5dip" 
-					android:paddingBottom="5dip"
-					android:textAppearance="?android:attr/textAppearanceLarge"
-					android:gravity="center_vertical|right" />
-			</TableRow>
 
             <TableRow>
-                <TextView android:text="@string/tracts"
+                <TextView android:text="@string/videos"
+                          android:paddingTop="5dip"
+                          android:paddingBottom="5dip"
+                          android:textAppearance="?android:attr/textAppearanceLarge"
+                          android:gravity="center_vertical|left" />
+                <TextView android:id="@+id/videos"
+                          android:paddingTop="5dip"
+                          android:paddingBottom="5dip"
+                          android:textAppearance="?android:attr/textAppearanceLarge"
+                          android:gravity="center_vertical|right" />
+            </TableRow>
+
+            <TableRow>
+                <TextView android:text="@string/placements"
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:gravity="center_vertical|left" />
-                <TextView android:id="@+id/tracts"
+                <TextView android:id="@+id/placements"
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:gravity="center_vertical|right" />
             </TableRow>
 			
-			<TableRow>
-				<TextView android:text="@string/books" 
-					android:paddingTop="5dip" 
-					android:paddingBottom="5dip"
-					android:textAppearance="?android:attr/textAppearanceLarge"
-					android:gravity="center_vertical|left" />
-				<TextView android:id="@+id/books" 
-					android:paddingTop="5dip" 
-					android:paddingBottom="5dip"
-					android:textAppearance="?android:attr/textAppearanceLarge"
-					android:gravity="center_vertical|right" />
-			</TableRow>
-			
+
 			<TableRow>
 				<TextView android:text="@string/rvs" 
 					android:paddingTop="5dip" 

@@ -24,9 +24,11 @@
     <string name="delete_call">Borre Revisita</string>
     <string name="delete_call_prompt">Le gustaría borrar todas las visitas y literatura asociadas con esta revisita?</string>
     <string name="delete_placement">Borre Colocación</string>
+    <string name="delete_rv">Borre Revisita</string>
     <string name="delete_time">Borre Tiempo</string>
     <string name="directions">Direcciones</string>	
     <string name="edit">Editar</string>
+    <string name="extra_minutes">Minutos extras</string>
     <string name="enjoy_servicedroid">Esta disfrutando de ServiceDroid?</string>
     <string name="give_review"><![CDATA[Considere ofrecer un buen <a href=\"market://details?id=com.monstarlab.servicedroid\">comentario</a>.]]></string>
     <string name="hours">Horas</string>
@@ -66,6 +68,8 @@
     <string name="ok">¡Qué bien!</string>
     <string name="other">Otros...</string>
     <string name="placement">Colocación</string>
+    <string name="placements">Colocaciónes</string>
+    <string name="quantity">Cantidad</string>
     <string name="require_brochure">Que exige Dios de nosotros</string>
     <string name="return_visit_success">Hizo una revisita a %s.</string>
     <string name="round_time_prompt">¿Le gustaría que los minutos que tienen se aproximen a la hora o pasarlos para el próximo mes?</string>
@@ -92,6 +96,8 @@
     <string name="tips">Sugerencias</string>
     <string name="tract">Tratado</string>
     <string name="tracts">Tratados</string>
+    <string name="video">Video</string>
+    <string name="videos">Videos</string>
     <string name="watchtower">Atalaya</string>
     <string name="whats_new">Que es nuevo</string>
 	<string name="year">Año</string>

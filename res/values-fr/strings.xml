@@ -69,6 +69,8 @@
     <string name="ok">Cool !</string>
     <string name="other">Autres...</string>
     <string name="placement">Placement</string>
+    <string name="placements">Placements</string>
+    <string name="quantity">Quantité</string>
     <string name="require_brochure">Qu\'est-ce que Dieu attend de nous ?</string>
     <string name="return_visit_success">Vous avez fait une nouvelle visite à %s.</string>
     <string name="round_time_prompt">Voulez-vous arrondir votre temps à l\'heure suppérieure, ou reporter les minutes en plus au mois suivant ?</string>
@@ -93,6 +95,8 @@
 	<string name="time_period_hint">Glissez vers la gauche ou à droite pour changer la période de temps.</string>
 	<string name="timer_active">Chrono prédic actif</string>
     <string name="tips">Astuces</string>
+    <string name="video">Vidéo</string>
+    <string name="videos">Vidéos</string>
     <string name="watchtower">Tour de Garde</string>
     <string name="whats_new">Quoi de neuf !</string>
 	<string name="year">Année</string>

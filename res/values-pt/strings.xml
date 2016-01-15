@@ -69,6 +69,7 @@
     <string name="ok">Boa!</string>
     <string name="other">Outros...</string>
     <string name="placement">Colocação</string>
+    <string name="placements">Colocações</string>
     <string name="require_brochure">O Que Deus Requer de Nós?</string>
     <string name="return_visit_success">Voçê fez uma revisita a %s.</string>
     <string name="round_time_prompt">Deseja manter o seu tempo, ou arredondar minutos extras para o próximo mês?</string>
@@ -93,6 +94,10 @@
 	<string name="time_period_hint">Swipe esquerda ou direita para alterar o período de tempo.</string>
 	<string name="timer_active">Tempo activo no serviço</string>
     <string name="tips">Dicas</string>
+    <string name="tract">Tratado</string>
+    <string name="tracts">Tratados</string>
+    <string name="video">Vídeo</string>
+    <string name="videos">Vídeos</string>
     <string name="watchtower">A Sentinela</string>
     <string name="whats_new">Novidades</string>
 	<string name="year">Ano</string>

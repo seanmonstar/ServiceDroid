@@ -36,6 +36,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 
 
 public class PlacementActivity extends SherlockActivity {
@@ -126,10 +127,9 @@ public class PlacementActivity extends SherlockActivity {
 		//setup view
 		if (mPlacementType == Literature.TYPE_MAGAZINE) {
 			setupMagazineView();
-			
 		} else  {
-			setupBookTractAndBrochureView();
-		} 
+			setupNonPeriodicalView();
+		}
 		
 		setupDateButton();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -211,7 +211,6 @@ public class PlacementActivity extends SherlockActivity {
 				}
 			}			
 			c.close();
-			c = null;
 		}
 		
 		
@@ -245,7 +244,7 @@ public class PlacementActivity extends SherlockActivity {
 				
 				
 			} else {
-				updateBookTractAndBrochureSpinner();
+				updateNonPeriodicalSpinner();
 			}
 			
 		}
@@ -367,7 +366,7 @@ public class PlacementActivity extends SherlockActivity {
 	        public void onClick(DialogInterface dialog, int whichButton) {
 			    String value = input.getText().toString();
 			    createLiterature(value);
-			    updateBookTractAndBrochureSpinner();
+			    updateNonPeriodicalSpinner();
 	        }
         });
 
@@ -395,7 +394,7 @@ public class PlacementActivity extends SherlockActivity {
 		final String awake = getString(R.string.awake);
 		final String combo = getString(R.string.combo);
 		
-		final String[] magChoices = new String[] { combo, watchtower, awake };
+		final String[] magChoices = new String[] { watchtower, awake, combo };
 		
 		mPublicationSpinner = (Spinner) findViewById(R.id.magazine);
 		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, magChoices);
@@ -425,7 +424,7 @@ public class PlacementActivity extends SherlockActivity {
 	    	
 		});
 	    
-	    int startingSelection = 0;
+	    int startingSelection = mMonth % 2 == 0 ? 0 : 1;
 	    for (int i = 0; i < magChoices.length; i++) {
 	    	if (mMagazine.equals(magChoices[i])) {
 	    		startingSelection = i;
@@ -506,8 +505,28 @@ public class PlacementActivity extends SherlockActivity {
 		return year;
 	}
 	
-	private void setupBookTractAndBrochureView() {
+	private void setupNonPeriodicalView() {
 		setContentView(R.layout.place_book);
+
+		TextView title = (TextView) findViewById(R.id.title);
+
+		switch (mPlacementType) {
+			case Literature.TYPE_VIDEO:
+				title.setText(R.string.video);
+				break;
+			case Literature.TYPE_BOOK:
+				title.setText(R.string.book);
+				break;
+			case Literature.TYPE_BROCHURE:
+				title.setText(R.string.brochure);
+				break;
+			case Literature.TYPE_TRACT:
+				title.setText(R.string.tract);
+				break;
+			default:
+				Log.e(TAG, "Unknown placement type");
+				break;
+		}
 		
 		mPublicationSpinner = (Spinner) findViewById(R.id.placement);
 		mPublicationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -532,7 +551,7 @@ public class PlacementActivity extends SherlockActivity {
 		});
 	}
 	
-	private void updateBookTractAndBrochureSpinner() {
+	private void updateNonPeriodicalSpinner() {
 		Cursor c = getContentResolver().query(Literature.CONTENT_URI, LITERATURE_PROJECTION, Literature.TYPE + "=?", new String[] { ""+mPlacementType }, null);
 		if(c != null) {
 			int length = c.getCount() + 1;

@@ -141,6 +141,9 @@ public final class Models {
 		public static final Uri BROCHURES_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/brochures");
         public static final Uri TRACTS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/tracts");
 		public static final Uri BOOKS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/books");
+		public static final Uri VIDEOS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/videos");
+
+		public static final Uri NON_VIDEOS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/placements/non-videos");
 		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.monstarlab.placement";
 		
@@ -187,6 +190,7 @@ public final class Models {
 		public static final int TYPE_BROCHURE = 1;
 		public static final int TYPE_BOOK = 2;
         public static final int TYPE_TRACT = 3;
+		public static final int TYPE_VIDEO = 4;
 		
 		/**
 		 * 	type: varchar

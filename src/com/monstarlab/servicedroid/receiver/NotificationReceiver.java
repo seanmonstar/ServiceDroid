@@ -31,7 +31,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 	private void showReminder(Context context) {
 		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		
-		CharSequence tickerText = context.getString(R.string.send_reminder); //TODO - pull from R.string;
+		CharSequence tickerText = context.getString(R.string.send_reminder);
 		long when = TimeUtil.getCurrentTime();
 		
 		Notification notification = new Notification(R.drawable.icon, tickerText, when);

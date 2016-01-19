@@ -401,15 +401,21 @@ public class PlacementActivity extends SherlockActivity {
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    mPublicationSpinner.setAdapter(adapter);
 	    
-	    if(mMagazine == null) {
-	    	mMagazine = combo;
-	    }
+
 	    if(mMonth == 0) {
 	    	mMonth = TimeUtil.getCurrentMonth();
 	    }
 	    if(mYear == 0) {
 	    	mYear = TimeUtil.getCurrentYear();
 	    }
+
+		if(mMagazine == null) {
+			if (mMonth % 2 == 0) {
+				mMagazine = awake;
+			} else {
+				mMagazine = watchtower;
+			}
+		}
 	    
 	    mPublicationSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -423,8 +429,8 @@ public class PlacementActivity extends SherlockActivity {
 			}
 	    	
 		});
-	    
-	    int startingSelection = mMonth % 2 == 0 ? 0 : 1;
+
+	    int startingSelection = 0;
 	    for (int i = 0; i < magChoices.length; i++) {
 	    	if (mMagazine.equals(magChoices[i])) {
 	    		startingSelection = i;

@@ -32,8 +32,6 @@
     <string name="hours">Stunden</string>
 	<string name="hr">St</string>
 	<string name="hrs">St</string>
-	<string name="is_bible_study">%s ist jetzt ein Heimbibelstudium.</string>
-	<string name="isnt_bible_study">%s ist kein Heimbibelstudium mehr.</string>
 	<string name="issue">Ausgabe</string>
 	<string name="last_visited">Zuletzt besucht: %s</string>
 	<string name="length">Predigtdienststunden</string>
@@ -99,4 +97,6 @@
     <string name="whats_new">What\'s New!</string>
 	<string name="year">Jahr</string>
 	<string name="yes">Ja</string>
+    <string name="tract">Faltblatt</string>
+    <string name="tracts"> Faltblätter</string>
 </resources>

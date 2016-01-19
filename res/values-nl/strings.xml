@@ -35,22 +35,16 @@
     <string name="delete_time">Delete Time</string>
     <string name="directions">Navigatie</string>
     <string name="edit">Bewerken</string>
-    <string name="email_hint">Je kunt je velddienstbericht e-mailen door op de MENU toets van de telefoon te drukken. </string>
-    <string name="enjoy_servicedroid">Bevalt ServiceDroid?</string>
-    <string name="give_review"><![CDATA[Overweeg een <a href=\"market://details?id=com.monstarlab.servicedroid\">review</a> te schrijven.]]></string>
     <string name="hours">Uren</string>
 	<string name="hr">uur</string>
 	<string name="hrs">uur</string>
-	<string name="is_bible_study">%s is nu een bijbelstudie.</string>
-	<string name="isnt_bible_study">%s is niet langer een bijbelstudie.</string>
 	<string name="issue">Uitgave</string>
 	<string name="last_visited">Laatst bezocht: %s</string>
 	<string name="length">Tijd in velddienst</string>
 	<string name="magazine">Tijdschrift</string>
 	<string name="magazines">Tijdschriften</string>
 	<string name="make_return">Teruggeweest op</string>
-	<string name="menu_sms">SMS</string>
-	<string name="min">min</string>
+    <string name="min">min</string>
 	<string name="mins">minuten</string>
 	<string name="month">Maand</string>
 	<string name="monthly">Maandelijks</string>
@@ -81,7 +75,7 @@
     <string name="require_brochure">Wat verlangt God van ons?</string>
     <string name="restore_failure">Neem contact op met de ontwikkelaar.</string>
     <string name="return_visit_success">Je hebt een nabezoek gebracht op %s.</string>
-    <string name="round_or_carry">Extra tijd</string>
+    <string name="extra_minutes">Extra tijd</string>
     <string name="round_time_prompt">Tijd naar boven afronden of minuten meenemen naar volgende maand?</string>
 	<string name="round_time_prompt_carry">Meenemen</string>
 	<string name="round_time_prompt_round">Afronden</string>
@@ -110,4 +104,6 @@
     <string name="whats_new">Wat is nieuw?</string>
 	<string name="year">Jaar</string>
 	<string name="yes">Ja</string>
+    <string name="video">Video</string>
+    <string name="videos">Video\'s</string>
 </resources>

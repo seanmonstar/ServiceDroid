@@ -28,22 +28,16 @@
     <string name="delete_time">Cancella Ore</string>
     <string name="directions">Percorso</string>
     <string name="edit">Edit</string>
-    <string name="email_hint">Premendo il bottone MENU del telefono � possibile inviare il proprio rapporto di servizio per e-mail.</string>
-    <string name="enjoy_servicedroid">Trovi ServiceDroid di tuo gradimento?</string>
-    <string name="give_review"><![CDATA[Considera di offrire un contributo <a href=\"market://details?id=com.monstarlab.servicedroid\">review</a>.]]></string>
     <string name="hours">Ore</string>
 	<string name="hr">hr</string>
 	<string name="hrs">hrs</string>
-	<string name="is_bible_study">%s � ora uno studio bibblico.</string>
-	<string name="isnt_bible_study">%s non � pi� uno studio bibblico.</string>
 	<string name="issue">Numero</string>
 	<string name="last_visited">Ultima Visita: %s</string>
 	<string name="length">Tempo nel Servizio</string>
 	<string name="magazine">Rivista</string>
 	<string name="magazines">Riviste</string>
 	<string name="make_return">Rivisitato</string>
-	<string name="menu_sms">SMS</string>
-	<string name="min">min</string>
+    <string name="min">min</string>
 	<string name="mins">mins</string>
 	<string name="month">Mese</string>
 	<string name="monthly">Mensilmente</string>
@@ -100,4 +94,7 @@
     <string name="whats_new">Cosa c\'� di nuovo!</string>
 	<string name="year">Anno</string>
 	<string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="tract">Volantino</string>
+    <string name="tracts">Volantini</string>
 </resources>

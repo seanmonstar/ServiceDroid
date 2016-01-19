@@ -31,8 +31,6 @@
     <string name="hours">Timer</string>
 	<string name="hr">t</string>
 	<string name="hrs">t</string>
-	<string name="is_bible_study">%s er blevet et bibelstudium.</string>
-	<string name="isnt_bible_study">%s er ikke længere et bibelstudium..</string>
 	<string name="issue">Udgave</string>
 	<string name="last_visited">Sidst besøgt d. %s</string>
 	<string name="length">Tid i tjenesten</string>

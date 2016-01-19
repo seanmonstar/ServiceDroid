@@ -86,7 +86,7 @@
 	<string name="send_by">Send by...</string>
 	<string name="send_reminder">Send in your Service Time</string>
 	<string name="service_year">Service Year</string>
-	<string name="service_time_for">Service Time for %s</string>
+	<string name="service_time_for">Service Report for %s</string>
     <string name="sort">Sort</string>
     <string name="sorted_alpha">Alphabetically</string>
     <string name="sorted_time">Oldest Visit</string>

@@ -37,7 +37,7 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 7
         targetSdkVersion 21
 
     }
@@ -63,6 +63,7 @@ android {
         }
     }
 
+    /*
     signingConfigs {
         debug {
             storeFile file("C:\\Users\\Sean\\.android\\debug.keystore")
@@ -74,6 +75,7 @@ android {
             keyPassword "boo"
         }
     }
+    */
 
     buildTypes {
         debug {
@@ -83,7 +85,7 @@ android {
         release {
             //runProguard true
             //proguardFile file('proguard-project.txt')
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
 }
@@ -112,6 +114,7 @@ task('increaseVersionCode') << {
     manifestFile.write(manifestContent)
 }
 
+/*
 task('askForPasswords') << {
     // Must create String because System.readPassword() returns char[]
     // (and assigning that below fails silently)
@@ -121,6 +124,7 @@ task('askForPasswords') << {
     android.signingConfigs.release.storePassword = storePw
     android.signingConfigs.release.keyPassword = keyPw
 }
+*/
 
 android.applicationVariants.all { variant ->
     variant.generateBuildConfig.dependsOn "increaseVersionName"
@@ -129,8 +133,10 @@ android.applicationVariants.all { variant ->
     }
 }
 
+/*
 tasks.whenTaskAdded { theTask ->
     if (theTask.name.equals("packageRelease")) {
         theTask.dependsOn "askForPasswords"
     }
 }
+*/

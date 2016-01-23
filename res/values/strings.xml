@@ -44,6 +44,7 @@
 	<string name="length">Time in Service</string>
 	<string name="magazine">Magazine</string>
 	<string name="magazines">Mags</string>
+    <string name="magazine_format">%1$s %2$s/%3$s</string>
 	<string name="make_return">Returned On</string>
 	<string name="min">min</string>
 	<string name="mins">mins</string>

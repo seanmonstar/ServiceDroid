@@ -35,6 +35,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.R;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
+import com.monstarlab.servicedroid.model.Models.Literature.Periodical;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.model.Models.ReturnVisits;
 import com.monstarlab.servicedroid.util.TimeUtil;
@@ -50,7 +51,7 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 	
 	
 	private static final String[] CALLS_PROJECTION = new String[] { Calls._ID, Calls.NAME, Calls.ADDRESS, Calls.NOTES, Calls.DATE, Calls.TYPE  };
-	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.PUBLICATION, Placements.DATE, Placements.QUANTITY };
+	private static final String[] PLACEMENTS_PROJECTION = new String[] { Placements._ID, Placements.LITERATURE_ID, Placements.CALL_ID, Literature.TYPE, Literature.PUBLICATION, Placements.DATE, Placements.QUANTITY };
 	private static final String[] RETURN_VISITS_PROJECTION = new String[]{ ReturnVisits._ID, ReturnVisits.CALL_ID, ReturnVisits.DATE, ReturnVisits.IS_BIBLE_STUDY, ReturnVisits.NOTE };
 	
 	private static final int ID_COLUMN = 0;
@@ -190,10 +191,19 @@ public class CallShowActivity extends SherlockActivity implements OnItemClickLis
 				int publicationIndex = placementsCursor.getColumnIndex(Literature.PUBLICATION);
 				int dateIndex = placementsCursor.getColumnIndex(Placements.DATE);
                 int quantityIndex = placementsCursor.getColumnIndex(Placements.QUANTITY);
+				int typeIndex = placementsCursor.getColumnIndex(Literature.TYPE);
 				
 				while (!placementsCursor.isAfterLast()) {
 					HashMap<String, String> map = new HashMap<String, String>();
-					map.put(HISTORY_LOG_TITLE, placementsCursor.getString(publicationIndex));
+					if (placementsCursor.getInt(typeIndex) == Literature.TYPE_MAGAZINE) {
+						String magazine = placementsCursor.getString(publicationIndex);
+						Periodical periodical = Literature.parseName(magazine);
+						//String monthName = getResources().getStringArray(R.array.months_array)[periodical.month - 1];
+						String displayName = getString(R.string.magazine_format, periodical.publication, periodical.month, periodical.year);
+						map.put(HISTORY_LOG_TITLE, displayName);
+					} else {
+						map.put(HISTORY_LOG_TITLE, placementsCursor.getString(publicationIndex));
+					}
 					map.put(HISTORY_LOG_DATE, placementsCursor.getString(dateIndex));
                     map.put(HISTORY_LOG_NOTE, "" + placementsCursor.getInt(quantityIndex));
 					map.put(HISTORY_LOG_TYPE, Placements.CONTENT_ITEM_TYPE);

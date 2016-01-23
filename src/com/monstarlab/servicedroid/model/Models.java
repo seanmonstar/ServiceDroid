@@ -212,6 +212,24 @@ public final class Models {
 		 */
 		public static final String WEIGHT = "weight";
 
+		public static final class Periodical {
+			public String publication;
+			public int month;
+			public int year;
+
+			public Periodical() {}
+
+		}
+
+		public static Periodical parseName(String name) {
+			int lastSpaceIndex = name.lastIndexOf(" ");
+			Periodical periodical = new Periodical();
+			periodical.publication = name.substring(0, lastSpaceIndex);
+			periodical.month =  Integer.parseInt(name.substring(lastSpaceIndex+1, name.indexOf("/")));
+			periodical.year = Integer.parseInt(name.substring(name.indexOf("/")+1));
+			return periodical;
+		}
+
 	}
 	
 	

@@ -28,6 +28,7 @@
     <string name="delete_time">Slet tid</string>
     <string name="directions">Vis vej</string>
     <string name="edit">Rediger</string>
+    <string name="extra_minutes">Overskydende minutter</string>
     <string name="hours">Timer</string>
 	<string name="hr">t</string>
 	<string name="hrs">t</string>
@@ -64,7 +65,7 @@
     <string name="ok">Cool!</string>
     <string name="other">Andet...</string>
     <string name="placement">Afsæt</string>
-    <string name="placements">Afsæter</string>
+    <string name="placements">Afsette publikationer</string>
     <string name="quantity">Kvantitet</string>
     <string name="require_brochure">Hvad kræver Gud af os?</string>
     <string name="return_visit_success">Du har foretaget et genbesøg d. %s.</string>
@@ -93,7 +94,7 @@
 	<string name="timer_active">Tjeneste-Timer Aktiv</string>
     <string name="tips">Tips</string>
     <string name="video">Video</string>
-    <string name="videos">Videoer</string>
+    <string name="videos">Filmvisninger</string>
     <string name="watchtower">Vagttårnet</string>
 	<string name="year">År</string>
 	<string name="yes">Ja</string>

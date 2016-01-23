@@ -17,7 +17,7 @@
     <string name="books">서적</string>
     <string name="brochure">팜플렛</string>
     <string name="brochures">팜플렛</string>
-    <string name="callbook">관심자 정보</string>
+    <string name="callbook">관심자 방문 기록</string>
     <string name="cancel">취소</string>
     <string name="carry_over">이월</string>
     <string name="combo">파수대와 깨어라! 잡지</string>
@@ -26,7 +26,7 @@
     <string name="create_placement">제공 출판물 기록</string>
     <string name="date">기록</string>
     <string name="delete_call">방문기록 지우기</string>
-    <string name="delete_call_prompt">이 방문기록과 관련된 모든 데이터, 제공 출판물 및 재방문 기록을 모두 삭제 하시겠습니까?</string>
+    <string name="delete_call_prompt">이 방문기록과 관련된 모든 데이터, 제공 출판물 및 재방문 기록을 삭제 하시겠습니까?</string>
     <string name="delete_call_title">관련된 모든 데이터를 삭제 하시겠습니까?</string>
     <string name="delete_call_prompt_yes">관련된 모든 데이터 삭제</string>
     <string name="delete_call_prompt_no">방문기록 만 삭제</string>
@@ -44,6 +44,7 @@
     <string name="length">야외봉사 시간</string>
     <string name="magazine">잡지</string>
     <string name="magazines">잡지</string>
+    <string name="magazine_format">%1$s %3$s %2$s</string>
     <string name="make_return">재방문</string>
     <string name="min">분</string>
     <string name="mins">분</string>
@@ -65,7 +66,7 @@
     </string-array>
     <string name="name">이름</string>
     <string name="no">아니오</string>
-    <string name="no_calls">이것은 방문기록 입니다.  모든 제공 출판물, 재방문 기록들을 각각의 관심자들 방문기록에 저장할 수 있습니다.  그런 기록들은 각각의 관심자 이름 안에 저장 될것 입니다.</string>
+    <string name="no_calls">이것은 방문기록 입니다. 모든 제공 출판물, 재방문 기록들을 각각의 관심자들 방문기록에 저장할 수 있습니다. 그런 기록들은 각각의 관심자 이름 안에 저장 될것 입니다.</string>
     <string name="no_placements">제공 출판물과 재방문 기록을 위해 메뉴 버튼을 누르세요.</string>
     <string name="no_time">이번 달 봉사시간을 기록하거나, 야외봉사 타이머를 사용할 수 있습니다.</string>
     <string name="notes">메모</string>
@@ -103,7 +104,7 @@
     <string name="tracts">전도지</string>
     <string name="video">비디오</string>
     <string name="videos">비디오</string>
-    <string name="watchtower">깨어라</string>
+    <string name="watchtower">파수대</string>
     <string name="whats_new">새로워진 것들!</string>
     <string name="year">년</string>
     <string name="yes">예</string>

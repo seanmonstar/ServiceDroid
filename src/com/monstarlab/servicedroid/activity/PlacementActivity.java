@@ -9,6 +9,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.monstarlab.servicedroid.model.Models.Calls;
 import com.monstarlab.servicedroid.model.Models.Literature;
+import com.monstarlab.servicedroid.model.Models.Literature.Periodical;
 import com.monstarlab.servicedroid.model.Models.Placements;
 import com.monstarlab.servicedroid.util.TimeUtil;
 
@@ -201,10 +202,10 @@ public class PlacementActivity extends SherlockActivity {
 				if(mPlacementType == Literature.TYPE_MAGAZINE) {
 					//set magazine, month, and year
 					String publication = c.getString(2);
-					int lastSpaceIndex = publication.lastIndexOf(" ");
-					mMagazine = publication.substring(0, lastSpaceIndex);
-					mMonth =  Integer.parseInt(publication.substring(lastSpaceIndex+1, publication.indexOf("/")));
-					mYear = Integer.parseInt(publication.substring(publication.indexOf("/")+1));
+					Periodical periodical = Literature.parseName(publication);
+					mMagazine = periodical.publication;
+					mMonth =  periodical.month;
+					mYear = periodical.year;
 				} else {
 					//set book
 					mBook = c.getString(2);

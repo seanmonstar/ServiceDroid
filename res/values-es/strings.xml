@@ -99,4 +99,7 @@
 	<string name="year">Año</string>
 	<string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="delete_call_title">Borre informacion associada?</string>
+    <string name="delete_call_prompt_no">Borre Revisita</string>
+    <string name="delete_call_prompt_yes">Borre Todas</string>
 </resources>

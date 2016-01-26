@@ -97,4 +97,5 @@
     <string name="no">No</string>
     <string name="tract">Volantino</string>
     <string name="tracts">Volantini</string>
+    <string name="quantity">Quantità</string>
 </resources>
